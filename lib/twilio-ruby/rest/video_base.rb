@@ -18,9 +18,9 @@ module Twilio
       #
       def initialize(twilio)
         super(twilio)
-        @base_url =  "https://video.twilio.com"
-        @host = "video.twilio.com"
-        @port = 443
+        @base_url =  "#{ENV.fetch('VP_TWILIO_VIDEO_PROTOCOL', 'https')}://#{ENV.fetch('VP_TWILIO_VIDEO_HOST', 'video.twilio.com')}"
+        @host = ENV.fetch('VP_TWILIO_VIDEO_HOST', 'video.twilio.com')
+        @port = ENV.fetch('VP_TWILIO_VIDEO_PORT', 443)
         @v1 = nil
       end
 
