@@ -29,6 +29,19 @@ module Twilio
                         @uri = "/Rooms"
                         
                     end
+
+
+                    ##
+                    # Get remote access token
+                    # @param [String] room_name Room UniqueName
+                    # @param [String] participant_identity Participant Identity
+                    # @return [String] JWT Access Token
+                    def access_token(room_name, participant_identity)
+                        response = @version.request('GET', '/access_token', {room_name: room_name, participant_identity: participant_identity})
+                        return response.body['token']
+                    end
+
+
                     ##
                     # Create the RoomInstance
                     # @param [Boolean] enable_turn Deprecated, now always considered to be true.
