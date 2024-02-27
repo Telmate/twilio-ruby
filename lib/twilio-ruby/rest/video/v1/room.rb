@@ -36,8 +36,8 @@ module Twilio
                     # @param [String] room_name Room UniqueName
                     # @param [String] participant_identity Participant Identity
                     # @return [String] JWT Access Token
-                    def access_token(room_name, participant_identity)
-                        response = @version.request('GET', '/access_token', {room_name: room_name, participant_identity: participant_identity})
+                    def access_token(param_hash={})
+                        response = @version.request('GET', '/access_token', param_hash)
                         return response.body['token']
                     end
 
