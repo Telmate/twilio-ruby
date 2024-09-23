@@ -124,7 +124,12 @@ module Twilio
         end
 
         headers['Accept'] = 'application/json' unless headers['Accept']
+        headers['Facility-ID'] = @facility_id if @facility_id.present?
         headers
+      end
+
+      def facility_id(facility_id)
+        @facility_id = facility_id
       end
     end
   end
