@@ -115,7 +115,13 @@ module Twilio
         headers['Content-Type'] = 'application/x-www-form-urlencoded' if method == 'POST' && !headers['Content-Type']
 
         headers['Accept'] = 'application/json' unless headers['Accept']
+
+        headers['Facility-ID'] = @facility_id if @facility_id.present?
         return headers
+      end
+
+      def facility_id(facility_id)
+        @facility_id = facility_id
       end
     end
   end
