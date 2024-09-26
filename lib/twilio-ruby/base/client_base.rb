@@ -116,12 +116,12 @@ module Twilio
 
         headers['Accept'] = 'application/json' unless headers['Accept']
 
-        headers['Facility-ID'] = @facility_id if @facility_id.present?
+        headers.merge! @additional_headers if @additional_headers.present?
         return headers
       end
 
-      def facility_id(facility_id)
-        @facility_id = facility_id
+      def additional_headers(headers)
+        @additional_headers = headers
       end
     end
   end

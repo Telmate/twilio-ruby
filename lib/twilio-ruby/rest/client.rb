@@ -178,8 +178,8 @@ module Twilio
             end
             ##
             # Access the Video Twilio Domain
-            def video(facility_id)
-                self.facility_id(facility_id)
+            def video(headers={})
+                self.additional_headers(headers)
                 @video ||= Video.new self
             end
             ##
