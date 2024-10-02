@@ -115,7 +115,13 @@ module Twilio
         headers['Content-Type'] = 'application/x-www-form-urlencoded' if method == 'POST' && !headers['Content-Type']
 
         headers['Accept'] = 'application/json' unless headers['Accept']
+
+        headers.merge! @additional_headers if @additional_headers.present?
         return headers
+      end
+
+      def additional_headers(headers)
+        @additional_headers = headers
       end
     end
   end
