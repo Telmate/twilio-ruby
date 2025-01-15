@@ -61,6 +61,14 @@ module Twilio
                     end
 
                     ##
+                    # Update participant attributes
+                    # @param [Hash] list of attributes
+                    def update_participant(attributes = {})
+                        response = @version.request('GET', 'Participants/update_participant', attributes)
+                        response.body['message']
+                    end
+
+                    ##
                     # Streams Instance records from the API as an Enumerable.
                     # This operation lazily loads records as efficiently as possible until the limit
                     # is reached.
