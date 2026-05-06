@@ -37,8 +37,11 @@ module Twilio
                     if flex_user_sid.nil?
                         raise ArgumentError, 'flex_user_sid cannot be nil'
                     end
+
                     if instance_sid == :unset && flex_user_sid == :unset
                         @flex_user ||= FlexUserList.new self
+                    elsif instance_sid != :unset && flex_user_sid == :unset
+                        FlexUserList.new(self, instance_sid: instance_sid)
                     else
                         FlexUserContext.new(self, instance_sid, flex_user_sid)
                     end
@@ -55,8 +58,11 @@ module Twilio
                     if flex_user_sid.nil?
                         raise ArgumentError, 'flex_user_sid cannot be nil'
                     end
+
                     if instance_sid == :unset && flex_user_sid == :unset
                         @flex_user ||= FlexUserList.new self
+                    elsif instance_sid != :unset && flex_user_sid == :unset
+                        FlexUserList.new(self, instance_sid: instance_sid)
                     else
                         FlexUserContext.new(self, instance_sid, flex_user_sid)
                     end

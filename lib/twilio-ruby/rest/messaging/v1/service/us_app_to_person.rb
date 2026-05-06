@@ -56,25 +56,25 @@ module Twilio
                     # @param [String] x_twilio_api_version The version of the Messaging API to use for this request
                     # @return [UsAppToPersonInstance] Created UsAppToPersonInstance
                     def create(
-                        brand_registration_sid: nil, 
-                        description: nil, 
-                        message_flow: nil, 
-                        message_samples: nil, 
-                        us_app_to_person_usecase: nil, 
-                        has_embedded_links: nil, 
-                        has_embedded_phone: nil, 
-                        opt_in_message: :unset, 
-                        opt_out_message: :unset, 
-                        help_message: :unset, 
-                        opt_in_keywords: :unset, 
-                        opt_out_keywords: :unset, 
-                        help_keywords: :unset, 
-                        subscriber_opt_in: :unset, 
-                        age_gated: :unset, 
-                        direct_lending: :unset, 
-                        privacy_policy_url: :unset, 
-                        terms_and_conditions_url: :unset, 
-                        x_twilio_api_version: :unset
+                      brand_registration_sid: nil, 
+                      description: nil, 
+                      message_flow: nil, 
+                      message_samples: nil, 
+                      us_app_to_person_usecase: nil, 
+                      has_embedded_links: nil, 
+                      has_embedded_phone: nil, 
+                      opt_in_message: :unset, 
+                      opt_out_message: :unset, 
+                      help_message: :unset, 
+                      opt_in_keywords: :unset, 
+                      opt_out_keywords: :unset, 
+                      help_keywords: :unset, 
+                      subscriber_opt_in: :unset, 
+                      age_gated: :unset, 
+                      direct_lending: :unset, 
+                      privacy_policy_url: :unset, 
+                      terms_and_conditions_url: :unset, 
+                      x_twilio_api_version: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -237,7 +237,11 @@ module Twilio
                             x_twilio_api_version: x_twilio_api_version,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -273,9 +277,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -378,7 +386,7 @@ module Twilio
                     # @param [String] x_twilio_api_version The version of the Messaging API to use for this request
                     # @return [UsAppToPersonInstance] Fetched UsAppToPersonInstance
                     def fetch(
-                        x_twilio_api_version: :unset
+                      x_twilio_api_version: :unset
                     )
 
                         headers = Twilio::Values.of({'Content-Type' => 'application/x-www-form-urlencoded', 'X-Twilio-Api-Version' => x_twilio_api_version, })
@@ -439,16 +447,16 @@ module Twilio
                     # @param [String] x_twilio_api_version The version of the Messaging API to use for this request
                     # @return [UsAppToPersonInstance] Updated UsAppToPersonInstance
                     def update(
-                        has_embedded_links: nil, 
-                        has_embedded_phone: nil, 
-                        message_samples: nil, 
-                        message_flow: nil, 
-                        description: nil, 
-                        age_gated: nil, 
-                        direct_lending: nil, 
-                        privacy_policy_url: :unset, 
-                        terms_and_conditions_url: :unset, 
-                        x_twilio_api_version: :unset
+                      has_embedded_links: nil, 
+                      has_embedded_phone: nil, 
+                      message_samples: nil, 
+                      message_flow: nil, 
+                      description: nil, 
+                      age_gated: nil, 
+                      direct_lending: nil, 
+                      privacy_policy_url: :unset, 
+                      terms_and_conditions_url: :unset, 
+                      x_twilio_api_version: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -643,7 +651,7 @@ module Twilio
                             @us_app_to_person_page << UsAppToPersonListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -665,7 +673,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -946,7 +954,7 @@ module Twilio
                     # @param [String] x_twilio_api_version The version of the Messaging API to use for this request
                     # @return [UsAppToPersonInstance] Fetched UsAppToPersonInstance
                     def fetch(
-                        x_twilio_api_version: :unset
+                      x_twilio_api_version: :unset
                     )
 
                         context.fetch(
@@ -968,16 +976,16 @@ module Twilio
                     # @param [String] x_twilio_api_version The version of the Messaging API to use for this request
                     # @return [UsAppToPersonInstance] Updated UsAppToPersonInstance
                     def update(
-                        has_embedded_links: nil, 
-                        has_embedded_phone: nil, 
-                        message_samples: nil, 
-                        message_flow: nil, 
-                        description: nil, 
-                        age_gated: nil, 
-                        direct_lending: nil, 
-                        privacy_policy_url: :unset, 
-                        terms_and_conditions_url: :unset, 
-                        x_twilio_api_version: :unset
+                      has_embedded_links: nil, 
+                      has_embedded_phone: nil, 
+                      message_samples: nil, 
+                      message_flow: nil, 
+                      description: nil, 
+                      age_gated: nil, 
+                      direct_lending: nil, 
+                      privacy_policy_url: :unset, 
+                      terms_and_conditions_url: :unset, 
+                      x_twilio_api_version: :unset
                     )
 
                         context.update(

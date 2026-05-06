@@ -74,45 +74,45 @@ module Twilio
                     # @param [String] theme_set_id Theme id for styling the inquiry form.
                     # @return [ComplianceRegistrationInquiriesInstance] Created ComplianceRegistrationInquiriesInstance
                     def create(
-                        end_user_type: nil, 
-                        phone_number_type: nil, 
-                        business_identity_type: :unset, 
-                        business_registration_authority: :unset, 
-                        business_legal_name: :unset, 
-                        notification_email: :unset, 
-                        accepted_notification_receipt: :unset, 
-                        business_registration_number: :unset, 
-                        business_website_url: :unset, 
-                        friendly_name: :unset, 
-                        authorized_representative1_first_name: :unset, 
-                        authorized_representative1_last_name: :unset, 
-                        authorized_representative1_phone: :unset, 
-                        authorized_representative1_email: :unset, 
-                        authorized_representative1_date_of_birth: :unset, 
-                        address_street: :unset, 
-                        address_street_secondary: :unset, 
-                        address_city: :unset, 
-                        address_subdivision: :unset, 
-                        address_postal_code: :unset, 
-                        address_country_code: :unset, 
-                        emergency_address_street: :unset, 
-                        emergency_address_street_secondary: :unset, 
-                        emergency_address_city: :unset, 
-                        emergency_address_subdivision: :unset, 
-                        emergency_address_postal_code: :unset, 
-                        emergency_address_country_code: :unset, 
-                        use_address_as_emergency_address: :unset, 
-                        file_name: :unset, 
-                        file: :unset, 
-                        first_name: :unset, 
-                        last_name: :unset, 
-                        date_of_birth: :unset, 
-                        individual_email: :unset, 
-                        individual_phone: :unset, 
-                        is_isv_embed: :unset, 
-                        isv_registering_for_self_or_tenant: :unset, 
-                        status_callback_url: :unset, 
-                        theme_set_id: :unset
+                      end_user_type: nil, 
+                      phone_number_type: nil, 
+                      business_identity_type: :unset, 
+                      business_registration_authority: :unset, 
+                      business_legal_name: :unset, 
+                      notification_email: :unset, 
+                      accepted_notification_receipt: :unset, 
+                      business_registration_number: :unset, 
+                      business_website_url: :unset, 
+                      friendly_name: :unset, 
+                      authorized_representative1_first_name: :unset, 
+                      authorized_representative1_last_name: :unset, 
+                      authorized_representative1_phone: :unset, 
+                      authorized_representative1_email: :unset, 
+                      authorized_representative1_date_of_birth: :unset, 
+                      address_street: :unset, 
+                      address_street_secondary: :unset, 
+                      address_city: :unset, 
+                      address_subdivision: :unset, 
+                      address_postal_code: :unset, 
+                      address_country_code: :unset, 
+                      emergency_address_street: :unset, 
+                      emergency_address_street_secondary: :unset, 
+                      emergency_address_city: :unset, 
+                      emergency_address_subdivision: :unset, 
+                      emergency_address_postal_code: :unset, 
+                      emergency_address_country_code: :unset, 
+                      use_address_as_emergency_address: :unset, 
+                      file_name: :unset, 
+                      file: :unset, 
+                      first_name: :unset, 
+                      last_name: :unset, 
+                      date_of_birth: :unset, 
+                      individual_email: :unset, 
+                      individual_phone: :unset, 
+                      is_isv_embed: :unset, 
+                      isv_registering_for_self_or_tenant: :unset, 
+                      status_callback_url: :unset, 
+                      theme_set_id: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -347,8 +347,8 @@ module Twilio
                     # @param [String] theme_set_id Theme id for styling the inquiry form.
                     # @return [ComplianceRegistrationInquiriesInstance] Updated ComplianceRegistrationInquiriesInstance
                     def update(
-                        is_isv_embed: :unset, 
-                        theme_set_id: :unset
+                      is_isv_embed: :unset, 
+                      theme_set_id: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -511,7 +511,7 @@ module Twilio
                             @compliance_registration_inquiries_page << ComplianceRegistrationInquiriesListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -533,7 +533,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -625,8 +625,8 @@ module Twilio
                     # @param [String] theme_set_id Theme id for styling the inquiry form.
                     # @return [ComplianceRegistrationInquiriesInstance] Updated ComplianceRegistrationInquiriesInstance
                     def update(
-                        is_isv_embed: :unset, 
-                        theme_set_id: :unset
+                      is_isv_embed: :unset, 
+                      theme_set_id: :unset
                     )
 
                         context.update(

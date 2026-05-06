@@ -38,7 +38,7 @@ module Twilio
                     # @param [String] test_id A 34 character string that uniquely identifies the test event for a Sink being validated.
                     # @return [SinkValidateInstance] Created SinkValidateInstance
                     def create(
-                        test_id: nil
+                      test_id: nil
                     )
 
                         data = Twilio::Values.of({
@@ -143,7 +143,7 @@ module Twilio
                             @sink_validate_page << SinkValidateListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -165,7 +165,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end

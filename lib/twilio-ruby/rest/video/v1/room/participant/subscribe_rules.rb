@@ -85,7 +85,7 @@ module Twilio
                     # @param [Object] rules A JSON-encoded array of subscribe rules. See the [Specifying Subscribe Rules](https://www.twilio.com/docs/video/api/track-subscriptions#specifying-sr) section for further information.
                     # @return [SubscribeRulesInstance] Updated SubscribeRulesInstance
                     def update(
-                        rules: :unset
+                      rules: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -192,7 +192,7 @@ module Twilio
                             @subscribe_rules_page << SubscribeRulesListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -214,7 +214,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end

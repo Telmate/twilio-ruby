@@ -43,12 +43,12 @@ module Twilio
                     # @param [String] status_callback_method The HTTP method we should use to call `status_callback`. Can be: `GET` or `POST`, and the default is `POST`.
                     # @return [ValidationRequestInstance] Created ValidationRequestInstance
                     def create(
-                        phone_number: nil, 
-                        friendly_name: :unset, 
-                        call_delay: :unset, 
-                        extension: :unset, 
-                        status_callback: :unset, 
-                        status_callback_method: :unset
+                      phone_number: nil, 
+                      friendly_name: :unset, 
+                      call_delay: :unset, 
+                      extension: :unset, 
+                      status_callback: :unset, 
+                      status_callback_method: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -173,7 +173,7 @@ module Twilio
                             @validation_request_page << ValidationRequestListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -195,7 +195,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end

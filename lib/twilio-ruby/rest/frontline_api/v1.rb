@@ -32,6 +32,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @users ||= UserList.new self
                     else

@@ -52,23 +52,23 @@ module Twilio
                     # @param [String] integration_retry_count The number of times to retry the Studio Flow or webhook in case of failure. Takes integer values from 0 to 3 with the default being 3. Optional when `integrationType` is `studio` or `external`, not applicable otherwise.
                     # @return [FlexFlowInstance] Created FlexFlowInstance
                     def create(
-                        friendly_name: nil, 
-                        chat_service_sid: nil, 
-                        channel_type: nil, 
-                        contact_identity: :unset, 
-                        enabled: :unset, 
-                        integration_type: :unset, 
-                        integration_flow_sid: :unset, 
-                        integration_url: :unset, 
-                        integration_workspace_sid: :unset, 
-                        integration_workflow_sid: :unset, 
-                        integration_channel: :unset, 
-                        integration_timeout: :unset, 
-                        integration_priority: :unset, 
-                        integration_creation_on_message: :unset, 
-                        long_lived: :unset, 
-                        janitor_enabled: :unset, 
-                        integration_retry_count: :unset
+                      friendly_name: nil, 
+                      chat_service_sid: nil, 
+                      channel_type: nil, 
+                      contact_identity: :unset, 
+                      enabled: :unset, 
+                      integration_type: :unset, 
+                      integration_flow_sid: :unset, 
+                      integration_url: :unset, 
+                      integration_workspace_sid: :unset, 
+                      integration_workflow_sid: :unset, 
+                      integration_channel: :unset, 
+                      integration_timeout: :unset, 
+                      integration_priority: :unset, 
+                      integration_creation_on_message: :unset, 
+                      long_lived: :unset, 
+                      janitor_enabled: :unset, 
+                      integration_retry_count: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -223,7 +223,11 @@ module Twilio
                             friendly_name: friendly_name,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -259,9 +263,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -423,23 +431,23 @@ module Twilio
                     # @param [String] integration_retry_count The number of times to retry the Studio Flow or webhook in case of failure. Takes integer values from 0 to 3 with the default being 3. Optional when `integrationType` is `studio` or `external`, not applicable otherwise.
                     # @return [FlexFlowInstance] Updated FlexFlowInstance
                     def update(
-                        friendly_name: :unset, 
-                        chat_service_sid: :unset, 
-                        channel_type: :unset, 
-                        contact_identity: :unset, 
-                        enabled: :unset, 
-                        integration_type: :unset, 
-                        integration_flow_sid: :unset, 
-                        integration_url: :unset, 
-                        integration_workspace_sid: :unset, 
-                        integration_workflow_sid: :unset, 
-                        integration_channel: :unset, 
-                        integration_timeout: :unset, 
-                        integration_priority: :unset, 
-                        integration_creation_on_message: :unset, 
-                        long_lived: :unset, 
-                        janitor_enabled: :unset, 
-                        integration_retry_count: :unset
+                      friendly_name: :unset, 
+                      chat_service_sid: :unset, 
+                      channel_type: :unset, 
+                      contact_identity: :unset, 
+                      enabled: :unset, 
+                      integration_type: :unset, 
+                      integration_flow_sid: :unset, 
+                      integration_url: :unset, 
+                      integration_workspace_sid: :unset, 
+                      integration_workflow_sid: :unset, 
+                      integration_channel: :unset, 
+                      integration_timeout: :unset, 
+                      integration_priority: :unset, 
+                      integration_creation_on_message: :unset, 
+                      long_lived: :unset, 
+                      janitor_enabled: :unset, 
+                      integration_retry_count: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -662,7 +670,7 @@ module Twilio
                             @flex_flow_page << FlexFlowListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -684,7 +692,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -877,23 +885,23 @@ module Twilio
                     # @param [String] integration_retry_count The number of times to retry the Studio Flow or webhook in case of failure. Takes integer values from 0 to 3 with the default being 3. Optional when `integrationType` is `studio` or `external`, not applicable otherwise.
                     # @return [FlexFlowInstance] Updated FlexFlowInstance
                     def update(
-                        friendly_name: :unset, 
-                        chat_service_sid: :unset, 
-                        channel_type: :unset, 
-                        contact_identity: :unset, 
-                        enabled: :unset, 
-                        integration_type: :unset, 
-                        integration_flow_sid: :unset, 
-                        integration_url: :unset, 
-                        integration_workspace_sid: :unset, 
-                        integration_workflow_sid: :unset, 
-                        integration_channel: :unset, 
-                        integration_timeout: :unset, 
-                        integration_priority: :unset, 
-                        integration_creation_on_message: :unset, 
-                        long_lived: :unset, 
-                        janitor_enabled: :unset, 
-                        integration_retry_count: :unset
+                      friendly_name: :unset, 
+                      chat_service_sid: :unset, 
+                      channel_type: :unset, 
+                      contact_identity: :unset, 
+                      enabled: :unset, 
+                      integration_type: :unset, 
+                      integration_flow_sid: :unset, 
+                      integration_url: :unset, 
+                      integration_workspace_sid: :unset, 
+                      integration_workflow_sid: :unset, 
+                      integration_channel: :unset, 
+                      integration_timeout: :unset, 
+                      integration_priority: :unset, 
+                      integration_creation_on_message: :unset, 
+                      long_lived: :unset, 
+                      janitor_enabled: :unset, 
+                      integration_retry_count: :unset
                     )
 
                         context.update(

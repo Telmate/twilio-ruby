@@ -39,8 +39,8 @@ module Twilio
                     # @param [String] iso_country_code The Optional Two Character ISO Country Code the Alphanumeric Sender ID will be used for. If the IsoCountryCode is not provided, a default Alpha Sender will be created that can be used across all countries.
                     # @return [DestinationAlphaSenderInstance] Created DestinationAlphaSenderInstance
                     def create(
-                        alpha_sender: nil, 
-                        iso_country_code: :unset
+                      alpha_sender: nil, 
+                      iso_country_code: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -137,7 +137,11 @@ module Twilio
                             iso_country_code: iso_country_code,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -173,9 +177,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -425,7 +433,7 @@ module Twilio
                             @destination_alpha_sender_page << DestinationAlphaSenderListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -447,7 +455,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end

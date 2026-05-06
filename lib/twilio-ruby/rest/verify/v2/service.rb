@@ -61,32 +61,32 @@ module Twilio
                     # @param [Boolean] verify_event_subscription_enabled Whether to allow verifications from the service to reach the stream-events sinks if configured
                     # @return [ServiceInstance] Created ServiceInstance
                     def create(
-                        friendly_name: nil, 
-                        code_length: :unset, 
-                        lookup_enabled: :unset, 
-                        skip_sms_to_landlines: :unset, 
-                        dtmf_input_required: :unset, 
-                        tts_name: :unset, 
-                        psd2_enabled: :unset, 
-                        do_not_share_warning_enabled: :unset, 
-                        custom_code_enabled: :unset, 
-                        push_include_date: :unset, 
-                        push_apn_credential_sid: :unset, 
-                        push_fcm_credential_sid: :unset, 
-                        totp_issuer: :unset, 
-                        totp_time_step: :unset, 
-                        totp_code_length: :unset, 
-                        totp_skew: :unset, 
-                        default_template_sid: :unset, 
-                        whatsapp_msg_service_sid: :unset, 
-                        whatsapp_from: :unset, 
-                        passkeys_relying_party_id: :unset, 
-                        passkeys_relying_party_name: :unset, 
-                        passkeys_relying_party_origins: :unset, 
-                        passkeys_authenticator_attachment: :unset, 
-                        passkeys_discoverable_credentials: :unset, 
-                        passkeys_user_verification: :unset, 
-                        verify_event_subscription_enabled: :unset
+                      friendly_name: nil, 
+                      code_length: :unset, 
+                      lookup_enabled: :unset, 
+                      skip_sms_to_landlines: :unset, 
+                      dtmf_input_required: :unset, 
+                      tts_name: :unset, 
+                      psd2_enabled: :unset, 
+                      do_not_share_warning_enabled: :unset, 
+                      custom_code_enabled: :unset, 
+                      push_include_date: :unset, 
+                      push_apn_credential_sid: :unset, 
+                      push_fcm_credential_sid: :unset, 
+                      totp_issuer: :unset, 
+                      totp_time_step: :unset, 
+                      totp_code_length: :unset, 
+                      totp_skew: :unset, 
+                      default_template_sid: :unset, 
+                      whatsapp_msg_service_sid: :unset, 
+                      whatsapp_from: :unset, 
+                      passkeys_relying_party_id: :unset, 
+                      passkeys_relying_party_name: :unset, 
+                      passkeys_relying_party_origins: :unset, 
+                      passkeys_authenticator_attachment: :unset, 
+                      passkeys_discoverable_credentials: :unset, 
+                      passkeys_user_verification: :unset, 
+                      verify_event_subscription_enabled: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -273,7 +273,11 @@ module Twilio
                         page = self.page(
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -307,9 +311,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -489,32 +497,32 @@ module Twilio
                     # @param [Boolean] verify_event_subscription_enabled Whether to allow verifications from the service to reach the stream-events sinks if configured
                     # @return [ServiceInstance] Updated ServiceInstance
                     def update(
-                        friendly_name: :unset, 
-                        code_length: :unset, 
-                        lookup_enabled: :unset, 
-                        skip_sms_to_landlines: :unset, 
-                        dtmf_input_required: :unset, 
-                        tts_name: :unset, 
-                        psd2_enabled: :unset, 
-                        do_not_share_warning_enabled: :unset, 
-                        custom_code_enabled: :unset, 
-                        push_include_date: :unset, 
-                        push_apn_credential_sid: :unset, 
-                        push_fcm_credential_sid: :unset, 
-                        totp_issuer: :unset, 
-                        totp_time_step: :unset, 
-                        totp_code_length: :unset, 
-                        totp_skew: :unset, 
-                        default_template_sid: :unset, 
-                        whatsapp_msg_service_sid: :unset, 
-                        whatsapp_from: :unset, 
-                        passkeys_relying_party_id: :unset, 
-                        passkeys_relying_party_name: :unset, 
-                        passkeys_relying_party_origins: :unset, 
-                        passkeys_authenticator_attachment: :unset, 
-                        passkeys_discoverable_credentials: :unset, 
-                        passkeys_user_verification: :unset, 
-                        verify_event_subscription_enabled: :unset
+                      friendly_name: :unset, 
+                      code_length: :unset, 
+                      lookup_enabled: :unset, 
+                      skip_sms_to_landlines: :unset, 
+                      dtmf_input_required: :unset, 
+                      tts_name: :unset, 
+                      psd2_enabled: :unset, 
+                      do_not_share_warning_enabled: :unset, 
+                      custom_code_enabled: :unset, 
+                      push_include_date: :unset, 
+                      push_apn_credential_sid: :unset, 
+                      push_fcm_credential_sid: :unset, 
+                      totp_issuer: :unset, 
+                      totp_time_step: :unset, 
+                      totp_code_length: :unset, 
+                      totp_skew: :unset, 
+                      default_template_sid: :unset, 
+                      whatsapp_msg_service_sid: :unset, 
+                      whatsapp_from: :unset, 
+                      passkeys_relying_party_id: :unset, 
+                      passkeys_relying_party_name: :unset, 
+                      passkeys_relying_party_origins: :unset, 
+                      passkeys_authenticator_attachment: :unset, 
+                      passkeys_discoverable_credentials: :unset, 
+                      passkeys_user_verification: :unset, 
+                      verify_event_subscription_enabled: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -941,7 +949,7 @@ module Twilio
                             @service_page << ServiceListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -963,7 +971,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -1214,32 +1222,32 @@ module Twilio
                     # @param [Boolean] verify_event_subscription_enabled Whether to allow verifications from the service to reach the stream-events sinks if configured
                     # @return [ServiceInstance] Updated ServiceInstance
                     def update(
-                        friendly_name: :unset, 
-                        code_length: :unset, 
-                        lookup_enabled: :unset, 
-                        skip_sms_to_landlines: :unset, 
-                        dtmf_input_required: :unset, 
-                        tts_name: :unset, 
-                        psd2_enabled: :unset, 
-                        do_not_share_warning_enabled: :unset, 
-                        custom_code_enabled: :unset, 
-                        push_include_date: :unset, 
-                        push_apn_credential_sid: :unset, 
-                        push_fcm_credential_sid: :unset, 
-                        totp_issuer: :unset, 
-                        totp_time_step: :unset, 
-                        totp_code_length: :unset, 
-                        totp_skew: :unset, 
-                        default_template_sid: :unset, 
-                        whatsapp_msg_service_sid: :unset, 
-                        whatsapp_from: :unset, 
-                        passkeys_relying_party_id: :unset, 
-                        passkeys_relying_party_name: :unset, 
-                        passkeys_relying_party_origins: :unset, 
-                        passkeys_authenticator_attachment: :unset, 
-                        passkeys_discoverable_credentials: :unset, 
-                        passkeys_user_verification: :unset, 
-                        verify_event_subscription_enabled: :unset
+                      friendly_name: :unset, 
+                      code_length: :unset, 
+                      lookup_enabled: :unset, 
+                      skip_sms_to_landlines: :unset, 
+                      dtmf_input_required: :unset, 
+                      tts_name: :unset, 
+                      psd2_enabled: :unset, 
+                      do_not_share_warning_enabled: :unset, 
+                      custom_code_enabled: :unset, 
+                      push_include_date: :unset, 
+                      push_apn_credential_sid: :unset, 
+                      push_fcm_credential_sid: :unset, 
+                      totp_issuer: :unset, 
+                      totp_time_step: :unset, 
+                      totp_code_length: :unset, 
+                      totp_skew: :unset, 
+                      default_template_sid: :unset, 
+                      whatsapp_msg_service_sid: :unset, 
+                      whatsapp_from: :unset, 
+                      passkeys_relying_party_id: :unset, 
+                      passkeys_relying_party_name: :unset, 
+                      passkeys_relying_party_origins: :unset, 
+                      passkeys_authenticator_attachment: :unset, 
+                      passkeys_discoverable_credentials: :unset, 
+                      passkeys_user_verification: :unset, 
+                      verify_event_subscription_enabled: :unset
                     )
 
                         context.update(

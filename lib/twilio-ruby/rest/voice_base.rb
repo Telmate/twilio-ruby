@@ -22,16 +22,21 @@ module Twilio
         @host = "voice.twilio.com"
         @port = 443
         @v1 = nil
+        @v3 = nil
       end
 
       def v1
         @v1 ||= Voice::V1.new self
       end
 
+      def v3
+        @v3 ||= Voice::V3.new self
+      end
+
       ##
       # Provide a user friendly representation
       def to_s
-        '<Twilio::REST::Voice::V1>';
+        '<Twilio::REST::Voice>';
       end
     end
   end

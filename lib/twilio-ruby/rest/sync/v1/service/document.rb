@@ -40,9 +40,9 @@ module Twilio
                     # @param [String] ttl How long, [in seconds](https://www.twilio.com/docs/sync/limits#sync-payload-limits), before the Sync Document expires and is deleted (the Sync Document's time-to-live).
                     # @return [DocumentInstance] Created DocumentInstance
                     def create(
-                        unique_name: :unset, 
-                        data: :unset, 
-                        ttl: :unset
+                      unique_name: :unset, 
+                      data: :unset, 
+                      ttl: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -139,7 +139,11 @@ module Twilio
                         page = self.page(
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -173,9 +177,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -325,9 +333,9 @@ module Twilio
                     # @param [String] if_match The If-Match HTTP request header
                     # @return [DocumentInstance] Updated DocumentInstance
                     def update(
-                        data: :unset, 
-                        ttl: :unset, 
-                        if_match: :unset
+                      data: :unset, 
+                      ttl: :unset, 
+                      if_match: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -513,7 +521,7 @@ module Twilio
                             @document_page << DocumentListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -535,7 +543,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -700,9 +708,9 @@ module Twilio
                     # @param [String] if_match The If-Match HTTP request header
                     # @return [DocumentInstance] Updated DocumentInstance
                     def update(
-                        data: :unset, 
-                        ttl: :unset, 
-                        if_match: :unset
+                      data: :unset, 
+                      ttl: :unset, 
+                      if_match: :unset
                     )
 
                         context.update(

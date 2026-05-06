@@ -41,12 +41,12 @@ module Twilio
                     # @param [Array[String]] cc_emails Email recipients who will be informed when an Authorization Document has been sent and signed.
                     # @return [AuthorizationDocumentInstance] Created AuthorizationDocumentInstance
                     def create(
-                        address_sid: nil, 
-                        email: nil, 
-                        contact_phone_number: nil, 
-                        hosted_number_order_sids: nil, 
-                        contact_title: :unset, 
-                        cc_emails: :unset
+                      address_sid: nil, 
+                      email: nil, 
+                      contact_phone_number: nil, 
+                      hosted_number_order_sids: nil, 
+                      contact_title: :unset, 
+                      cc_emails: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -161,7 +161,11 @@ module Twilio
                             status: status,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -199,9 +203,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -462,7 +470,7 @@ module Twilio
                             @authorization_document_page << AuthorizationDocumentListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -484,7 +492,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end

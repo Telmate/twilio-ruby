@@ -109,10 +109,10 @@ module Twilio
                     # @param [Boolean] is_available Whether the User is available for new conversations. Set to `false` to prevent User from receiving new inbound conversations if you are using [Pool Routing](https://www.twilio.com/docs/frontline/handle-incoming-conversations#3-pool-routing).
                     # @return [UserInstance] Updated UserInstance
                     def update(
-                        friendly_name: :unset, 
-                        avatar: :unset, 
-                        state: :unset, 
-                        is_available: :unset
+                      friendly_name: :unset, 
+                      avatar: :unset, 
+                      state: :unset, 
+                      is_available: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -283,7 +283,7 @@ module Twilio
                             @user_page << UserListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -305,7 +305,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -428,10 +428,10 @@ module Twilio
                     # @param [Boolean] is_available Whether the User is available for new conversations. Set to `false` to prevent User from receiving new inbound conversations if you are using [Pool Routing](https://www.twilio.com/docs/frontline/handle-incoming-conversations#3-pool-routing).
                     # @return [UserInstance] Updated UserInstance
                     def update(
-                        friendly_name: :unset, 
-                        avatar: :unset, 
-                        state: :unset, 
-                        is_available: :unset
+                      friendly_name: :unset, 
+                      avatar: :unset, 
+                      state: :unset, 
+                      is_available: :unset
                     )
 
                         context.update(

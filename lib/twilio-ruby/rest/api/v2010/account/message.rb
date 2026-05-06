@@ -62,31 +62,31 @@ module Twilio
                     # @param [String] content_sid For [Content Editor/API](https://www.twilio.com/docs/content) only: The SID of the Content Template to be used with the Message, e.g., `HXXXXXXXXXXXXXXXXXXXXXXXXXXXXX`. If this parameter is not provided, a Content Template is not used. Find the SID in the Console on the Content Editor page. For Content API users, the SID is found in Twilio's response when [creating the Template](https://www.twilio.com/docs/content/content-api-resources#create-templates) or by [fetching your Templates](https://www.twilio.com/docs/content/content-api-resources#fetch-all-content-resources).
                     # @return [MessageInstance] Created MessageInstance
                     def create(
-                        to: nil, 
-                        status_callback: :unset, 
-                        application_sid: :unset, 
-                        max_price: :unset, 
-                        provide_feedback: :unset, 
-                        attempt: :unset, 
-                        validity_period: :unset, 
-                        force_delivery: :unset, 
-                        content_retention: :unset, 
-                        address_retention: :unset, 
-                        smart_encoded: :unset, 
-                        persistent_action: :unset, 
-                        traffic_type: :unset, 
-                        shorten_urls: :unset, 
-                        schedule_type: :unset, 
-                        send_at: :unset, 
-                        send_as_mms: :unset, 
-                        content_variables: :unset, 
-                        risk_check: :unset, 
-                        from: :unset, 
-                        fallback_from: :unset, 
-                        messaging_service_sid: :unset, 
-                        body: :unset, 
-                        media_url: :unset, 
-                        content_sid: :unset
+                      to: nil, 
+                      status_callback: :unset, 
+                      application_sid: :unset, 
+                      max_price: :unset, 
+                      provide_feedback: :unset, 
+                      attempt: :unset, 
+                      validity_period: :unset, 
+                      force_delivery: :unset, 
+                      content_retention: :unset, 
+                      address_retention: :unset, 
+                      smart_encoded: :unset, 
+                      persistent_action: :unset, 
+                      traffic_type: :unset, 
+                      shorten_urls: :unset, 
+                      schedule_type: :unset, 
+                      send_at: :unset, 
+                      send_as_mms: :unset, 
+                      content_variables: :unset, 
+                      risk_check: :unset, 
+                      from: :unset, 
+                      fallback_from: :unset, 
+                      messaging_service_sid: :unset, 
+                      body: :unset, 
+                      media_url: :unset, 
+                      content_sid: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -291,7 +291,11 @@ module Twilio
                             date_sent_after: date_sent_after,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -335,9 +339,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -497,8 +505,8 @@ module Twilio
                     # @param [UpdateStatus] status 
                     # @return [MessageInstance] Updated MessageInstance
                     def update(
-                        body: :unset, 
-                        status: :unset
+                      body: :unset, 
+                      status: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -693,7 +701,7 @@ module Twilio
                             @message_page << MessageListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -715,7 +723,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -935,8 +943,8 @@ module Twilio
                     # @param [UpdateStatus] status 
                     # @return [MessageInstance] Updated MessageInstance
                     def update(
-                        body: :unset, 
-                        status: :unset
+                      body: :unset, 
+                      status: :unset
                     )
 
                         context.update(

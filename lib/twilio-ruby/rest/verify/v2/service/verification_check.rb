@@ -43,12 +43,12 @@ module Twilio
                     # @param [String] sna_client_token A sna client token received in sna url invocation response needs to be passed in Verification Check request and should match to get successful response.
                     # @return [VerificationCheckInstance] Created VerificationCheckInstance
                     def create(
-                        code: :unset, 
-                        to: :unset, 
-                        verification_sid: :unset, 
-                        amount: :unset, 
-                        payee: :unset, 
-                        sna_client_token: :unset
+                      code: :unset, 
+                      to: :unset, 
+                      verification_sid: :unset, 
+                      amount: :unset, 
+                      payee: :unset, 
+                      sna_client_token: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -173,7 +173,7 @@ module Twilio
                             @verification_check_page << VerificationCheckListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -195,7 +195,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end

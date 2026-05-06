@@ -33,6 +33,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @credentials ||= CredentialList.new self
                     else
@@ -47,6 +48,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @services ||= ServiceList.new self
                     else

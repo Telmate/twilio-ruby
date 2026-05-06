@@ -25,17 +25,23 @@ module Twilio
                             # @param [role_sid]: [String] Twilio Role Sid representing assigned role
                             # @param [scope]: [String] Twilio Sid representing scope of this assignment
                             # @param [identity]: [String] Twilio Sid representing identity of this assignment
-                        attr_accessor :role_sid, :scope, :identity
+                            # @param [resource_type]: [String] The resource type for resource-level role assignments
+                            # @param [resource_id]: [String] The resource id for resource-level role assignments
+                        attr_accessor :role_sid, :scope, :identity, :resource_type, :resource_id
                         def initialize(payload)
                                 @role_sid = payload["role_sid"]
                                 @scope = payload["scope"]
                                 @identity = payload["identity"]
+                                @resource_type = payload["resource_type"]
+                                @resource_id = payload["resource_id"]
                         end
                         def to_json(options = {})
                         {
                                 "role_sid": @role_sid,
                                 "scope": @scope,
                                 "identity": @identity,
+                                "resource_type": @resource_type,
+                                "resource_id": @resource_id,
                         }.to_json(options)
                         end
                     end
@@ -108,6 +114,8 @@ module Twilio
                     # memory before returning.
                     # @param [String] identity 
                     # @param [String] scope 
+                    # @param [String] resource_type Filter by resource type for resource-level role assignments
+                    # @param [String] resource_id Filter by resource id for resource-level role assignments
                     # @param [Integer] limit Upper limit for the number of records to return. stream()
                     #    guarantees to never return more than limit.  Default is no limit
                     # @param [Integer] page_size Number of records to fetch per request, when
@@ -115,10 +123,12 @@ module Twilio
                     #    but a limit is defined, stream() will attempt to read the limit with the most
                     #    efficient page size, i.e. min(limit, 1000)
                     # @return [Array] Array of up to limit results
-                    def list(identity: :unset, scope: :unset, limit: nil, page_size: nil)
+                    def list(identity: :unset, scope: :unset, resource_type: :unset, resource_id: :unset, limit: nil, page_size: nil)
                         self.stream(
                             identity: identity,
                             scope: scope,
+                            resource_type: resource_type,
+                            resource_id: resource_id,
                             limit: limit,
                             page_size: page_size
                         ).entries
@@ -130,6 +140,8 @@ module Twilio
                     # is reached.
                     # @param [String] identity 
                     # @param [String] scope 
+                    # @param [String] resource_type Filter by resource type for resource-level role assignments
+                    # @param [String] resource_id Filter by resource id for resource-level role assignments
                     # @param [Integer] limit Upper limit for the number of records to return. stream()
                     #    guarantees to never return more than limit.  Default is no limit
                     # @param [Integer] page_size Number of records to fetch per request, when
@@ -137,21 +149,29 @@ module Twilio
                     #    but a limit is defined, stream() will attempt to read the limit with the most
                     #    efficient page size, i.e. min(limit, 1000)
                     # @return [Enumerable] Enumerable that will yield up to limit results
-                    def stream(identity: :unset, scope: :unset, limit: nil, page_size: nil)
+                    def stream(identity: :unset, scope: :unset, resource_type: :unset, resource_id: :unset, limit: nil, page_size: nil)
                         limits = @version.read_limits(limit, page_size)
 
                         page = self.page(
                             identity: identity,
                             scope: scope,
+                            resource_type: resource_type,
+                            resource_id: resource_id,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
                     # Lists RoleAssignmentPageMetadata records from the API as a list.
                       # @param [String] identity 
                       # @param [String] scope 
+                      # @param [String] resource_type Filter by resource type for resource-level role assignments
+                      # @param [String] resource_id Filter by resource id for resource-level role assignments
                     # @param [Integer] limit Upper limit for the number of records to return. stream()
                     #    guarantees to never return more than limit.  Default is no limit
                     # @param [Integer] page_size Number of records to fetch per request, when
@@ -159,11 +179,13 @@ module Twilio
                     #    but a limit is defined, stream() will attempt to read the limit with the most
                     #    efficient page size, i.e. min(limit, 1000)
                     # @return [Array] Array of up to limit results
-                    def list_with_metadata(identity: :unset, scope: :unset, limit: nil, page_size: nil)
+                    def list_with_metadata(identity: :unset, scope: :unset, resource_type: :unset, resource_id: :unset, limit: nil, page_size: nil)
                         limits = @version.read_limits(limit, page_size)
                         params = Twilio::Values.of({
                             'Identity' => identity,
                             'Scope' => scope,
+                            'ResourceType' => resource_type,
+                            'ResourceId' => resource_id,
                             
                             'PageSize' => limits[:page_size],
                         });
@@ -183,9 +205,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -193,14 +219,18 @@ module Twilio
                     # Request is executed immediately.
                     # @param [String] identity 
                     # @param [String] scope 
+                    # @param [String] resource_type Filter by resource type for resource-level role assignments
+                    # @param [String] resource_id Filter by resource id for resource-level role assignments
                     # @param [String] page_token PageToken provided by the API
                     # @param [Integer] page_number Page Number, this value is simply for client state
                     # @param [Integer] page_size Number of records to return, defaults to 50
                     # @return [Page] Page of RoleAssignmentInstance
-                    def page(identity: :unset, scope: :unset, page_token: :unset, page_number: :unset,page_size: :unset)
+                    def page(identity: :unset, scope: :unset, resource_type: :unset, resource_id: :unset, page_token: :unset, page_number: :unset,page_size: :unset)
                         params = Twilio::Values.of({
                             'Identity' => identity,
                             'Scope' => scope,
+                            'ResourceType' => resource_type,
+                            'ResourceId' => resource_id,
                             'PageToken' => page_token,
                             'Page' => page_number,
                             'PageSize' => page_size,
@@ -391,7 +421,7 @@ module Twilio
                             @role_assignment_page << RoleAssignmentListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -413,7 +443,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -457,6 +487,8 @@ module Twilio
                             'role_sid' => payload['role_sid'],
                             'scope' => payload['scope'],
                             'identity' => payload['identity'],
+                            'resource_type' => payload['resource_type'],
+                            'resource_id' => payload['resource_id'],
                             'code' => payload['code'],
                             'message' => payload['message'],
                             'more_info' => payload['more_info'],
@@ -501,6 +533,18 @@ module Twilio
                     # @return [String] Twilio Sid representing scope of this assignment
                     def identity
                         @properties['identity']
+                    end
+                    
+                    ##
+                    # @return [String] The resource type for resource-level role assignments
+                    def resource_type
+                        @properties['resource_type']
+                    end
+                    
+                    ##
+                    # @return [String] The resource id for resource-level role assignments
+                    def resource_id
+                        @properties['resource_id']
                     end
                     
                     ##

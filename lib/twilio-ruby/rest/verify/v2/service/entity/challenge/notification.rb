@@ -40,7 +40,7 @@ module Twilio
                     # @param [String] ttl How long, in seconds, the notification is valid. Can be an integer between 0 and 300. Default is 300. Delivery is attempted until the TTL elapses, even if the device is offline. 0 means that the notification delivery is attempted immediately, only once, and is not stored for future delivery.
                     # @return [NotificationInstance] Created NotificationInstance
                     def create(
-                        ttl: :unset
+                      ttl: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -149,7 +149,7 @@ module Twilio
                             @notification_page << NotificationListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -171,7 +171,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end

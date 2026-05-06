@@ -34,6 +34,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @channels_senders ||= ChannelsSenderList.new self
                     else
@@ -48,6 +49,7 @@ module Twilio
                     if domain_sid.nil?
                         raise ArgumentError, 'domain_sid cannot be nil'
                     end
+
                     if domain_sid == :unset
                         @domain_certs ||= DomainCertsList.new self
                     else

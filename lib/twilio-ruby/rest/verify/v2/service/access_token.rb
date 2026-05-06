@@ -41,10 +41,10 @@ module Twilio
                     # @param [String] ttl How long, in seconds, the access token is valid. Can be an integer between 60 and 300. Default is 60.
                     # @return [AccessTokenInstance] Created AccessTokenInstance
                     def create(
-                        identity: nil, 
-                        factor_type: nil, 
-                        factor_friendly_name: :unset, 
-                        ttl: :unset
+                      identity: nil, 
+                      factor_type: nil, 
+                      factor_friendly_name: :unset, 
+                      ttl: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -288,7 +288,7 @@ module Twilio
                             @access_token_page << AccessTokenListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -310,7 +310,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end

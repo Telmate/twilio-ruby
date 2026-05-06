@@ -50,19 +50,19 @@ module Twilio
                     # @param [ServiceConversationWithParticipantsEnumWebhookEnabledType] x_twilio_webhook_enabled The X-Twilio-Webhook-Enabled HTTP request header
                     # @return [ConversationWithParticipantsInstance] Created ConversationWithParticipantsInstance
                     def create(
-                        friendly_name: :unset, 
-                        unique_name: :unset, 
-                        date_created: :unset, 
-                        date_updated: :unset, 
-                        messaging_service_sid: :unset, 
-                        attributes: :unset, 
-                        state: :unset, 
-                        timers_inactive: :unset, 
-                        timers_closed: :unset, 
-                        bindings_email_address: :unset, 
-                        bindings_email_name: :unset, 
-                        participant: :unset, 
-                        x_twilio_webhook_enabled: :unset
+                      friendly_name: :unset, 
+                      unique_name: :unset, 
+                      date_created: :unset, 
+                      date_updated: :unset, 
+                      messaging_service_sid: :unset, 
+                      attributes: :unset, 
+                      state: :unset, 
+                      timers_inactive: :unset, 
+                      timers_closed: :unset, 
+                      bindings_email_address: :unset, 
+                      bindings_email_name: :unset, 
+                      participant: :unset, 
+                      x_twilio_webhook_enabled: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -213,7 +213,7 @@ module Twilio
                             @conversation_with_participants_page << ConversationWithParticipantsListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -235,7 +235,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end

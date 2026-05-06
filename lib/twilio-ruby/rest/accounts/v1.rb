@@ -46,9 +46,18 @@ module Twilio
                     @bulk_contacts ||= BulkContactsList.new self
                 end
                 ##
+                # @param [String] sid The Twilio-provided string that uniquely identifies the PublicKey resource to fetch.
                 # @return [Twilio::REST::Accounts::V1::CredentialList]
-                def credentials
-                    @credentials ||= CredentialList.new self
+                def credentials(sid=:unset)
+                    if sid.nil?
+                        raise ArgumentError, 'sid cannot be nil'
+                    end
+
+                    if sid == :unset
+                        @credentials ||= CredentialList.new self
+                    else
+                        CredentialList.new(self, sid: sid)
+                    end
                 end
                 ##
                 # @return [Twilio::REST::Accounts::V1::MessagingGeopermissionsList]

@@ -49,6 +49,7 @@ module Twilio
                     # @param [String] recording_channels The number of channels in the final recording. Can be: `mono` or `dual`. The default is `mono`. `mono` records both legs of the call in a single channel of the recording file. `dual` records each leg to a separate channel of the recording file. The first channel of a dual-channel recording contains the parent call and the second channel contains the child call.
                     # @param [String] recording_status_callback The URL that we call when the recording is available to be accessed.
                     # @param [String] recording_status_callback_method The HTTP method we should use when calling the `recording_status_callback` URL. Can be: `GET` or `POST` and the default is `POST`.
+                    # @param [String] recording_configuration_id The identifier of the configuration to be used when creating and processing the recording
                     # @param [String] sip_auth_username The username used to authenticate the caller making a SIP call.
                     # @param [String] sip_auth_password The password required to authenticate the user account specified in `sip_auth_username`.
                     # @param [String] machine_detection Whether to detect if a human, answering machine, or fax has picked up the call. Can be: `Enable` or `DetectMessageEnd`. Use `Enable` if you would like us to return `AnsweredBy` as soon as the called party is identified. Use `DetectMessageEnd`, if you would like to leave a message on an answering machine. If `send_digits` is provided, this parameter is ignored. For more information, see [Answering Machine Detection](https://www.twilio.com/docs/voice/answering-machine-detection).
@@ -73,42 +74,43 @@ module Twilio
                     # @param [String] application_sid The SID of the Application resource that will handle the call, if the call will be handled by an application.
                     # @return [CallInstance] Created CallInstance
                     def create(
-                        to: nil, 
-                        from: nil, 
-                        method: :unset, 
-                        fallback_url: :unset, 
-                        fallback_method: :unset, 
-                        status_callback: :unset, 
-                        status_callback_event: :unset, 
-                        status_callback_method: :unset, 
-                        send_digits: :unset, 
-                        timeout: :unset, 
-                        record: :unset, 
-                        recording_channels: :unset, 
-                        recording_status_callback: :unset, 
-                        recording_status_callback_method: :unset, 
-                        sip_auth_username: :unset, 
-                        sip_auth_password: :unset, 
-                        machine_detection: :unset, 
-                        machine_detection_timeout: :unset, 
-                        recording_status_callback_event: :unset, 
-                        trim: :unset, 
-                        caller_id: :unset, 
-                        machine_detection_speech_threshold: :unset, 
-                        machine_detection_speech_end_threshold: :unset, 
-                        machine_detection_silence_timeout: :unset, 
-                        async_amd: :unset, 
-                        async_amd_status_callback: :unset, 
-                        async_amd_status_callback_method: :unset, 
-                        byoc: :unset, 
-                        call_reason: :unset, 
-                        call_token: :unset, 
-                        recording_track: :unset, 
-                        time_limit: :unset, 
-                        client_notification_url: :unset, 
-                        url: :unset, 
-                        twiml: :unset, 
-                        application_sid: :unset
+                      to: nil, 
+                      from: nil, 
+                      method: :unset, 
+                      fallback_url: :unset, 
+                      fallback_method: :unset, 
+                      status_callback: :unset, 
+                      status_callback_event: :unset, 
+                      status_callback_method: :unset, 
+                      send_digits: :unset, 
+                      timeout: :unset, 
+                      record: :unset, 
+                      recording_channels: :unset, 
+                      recording_status_callback: :unset, 
+                      recording_status_callback_method: :unset, 
+                      recording_configuration_id: :unset, 
+                      sip_auth_username: :unset, 
+                      sip_auth_password: :unset, 
+                      machine_detection: :unset, 
+                      machine_detection_timeout: :unset, 
+                      recording_status_callback_event: :unset, 
+                      trim: :unset, 
+                      caller_id: :unset, 
+                      machine_detection_speech_threshold: :unset, 
+                      machine_detection_speech_end_threshold: :unset, 
+                      machine_detection_silence_timeout: :unset, 
+                      async_amd: :unset, 
+                      async_amd_status_callback: :unset, 
+                      async_amd_status_callback_method: :unset, 
+                      byoc: :unset, 
+                      call_reason: :unset, 
+                      call_token: :unset, 
+                      recording_track: :unset, 
+                      time_limit: :unset, 
+                      client_notification_url: :unset, 
+                      url: :unset, 
+                      twiml: :unset, 
+                      application_sid: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -126,6 +128,7 @@ module Twilio
                             'RecordingChannels' => recording_channels,
                             'RecordingStatusCallback' => recording_status_callback,
                             'RecordingStatusCallbackMethod' => recording_status_callback_method,
+                            'RecordingConfigurationId' => recording_configuration_id,
                             'SipAuthUsername' => sip_auth_username,
                             'SipAuthPassword' => sip_auth_password,
                             'MachineDetection' => machine_detection,
@@ -180,6 +183,7 @@ module Twilio
                     # @param [String] recording_channels The number of channels in the final recording. Can be: `mono` or `dual`. The default is `mono`. `mono` records both legs of the call in a single channel of the recording file. `dual` records each leg to a separate channel of the recording file. The first channel of a dual-channel recording contains the parent call and the second channel contains the child call.
                     # @param [String] recording_status_callback The URL that we call when the recording is available to be accessed.
                     # @param [String] recording_status_callback_method The HTTP method we should use when calling the `recording_status_callback` URL. Can be: `GET` or `POST` and the default is `POST`.
+                    # @param [String] recording_configuration_id The identifier of the configuration to be used when creating and processing the recording
                     # @param [String] sip_auth_username The username used to authenticate the caller making a SIP call.
                     # @param [String] sip_auth_password The password required to authenticate the user account specified in `sip_auth_username`.
                     # @param [String] machine_detection Whether to detect if a human, answering machine, or fax has picked up the call. Can be: `Enable` or `DetectMessageEnd`. Use `Enable` if you would like us to return `AnsweredBy` as soon as the called party is identified. Use `DetectMessageEnd`, if you would like to leave a message on an answering machine. If `send_digits` is provided, this parameter is ignored. For more information, see [Answering Machine Detection](https://www.twilio.com/docs/voice/answering-machine-detection).
@@ -218,6 +222,7 @@ module Twilio
                       recording_channels: :unset, 
                       recording_status_callback: :unset, 
                       recording_status_callback_method: :unset, 
+                      recording_configuration_id: :unset, 
                       sip_auth_username: :unset, 
                       sip_auth_password: :unset, 
                       machine_detection: :unset, 
@@ -257,6 +262,7 @@ module Twilio
                             'RecordingChannels' => recording_channels,
                             'RecordingStatusCallback' => recording_status_callback,
                             'RecordingStatusCallbackMethod' => recording_status_callback_method,
+                            'RecordingConfigurationId' => recording_configuration_id,
                             'SipAuthUsername' => sip_auth_username,
                             'SipAuthPassword' => sip_auth_password,
                             'MachineDetection' => machine_detection,
@@ -377,7 +383,11 @@ module Twilio
                             end_time_after: end_time_after,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -431,9 +441,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -617,15 +631,15 @@ module Twilio
                     # @param [String] time_limit The maximum duration of the call in seconds. Constraints depend on account and configuration.
                     # @return [CallInstance] Updated CallInstance
                     def update(
-                        url: :unset, 
-                        method: :unset, 
-                        status: :unset, 
-                        fallback_url: :unset, 
-                        fallback_method: :unset, 
-                        status_callback: :unset, 
-                        status_callback_method: :unset, 
-                        twiml: :unset, 
-                        time_limit: :unset
+                      url: :unset, 
+                      method: :unset, 
+                      status: :unset, 
+                      fallback_url: :unset, 
+                      fallback_method: :unset, 
+                      status_callback: :unset, 
+                      status_callback_method: :unset, 
+                      twiml: :unset, 
+                      time_limit: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -973,7 +987,7 @@ module Twilio
                             @call_page << CallListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -995,7 +1009,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -1264,15 +1278,15 @@ module Twilio
                     # @param [String] time_limit The maximum duration of the call in seconds. Constraints depend on account and configuration.
                     # @return [CallInstance] Updated CallInstance
                     def update(
-                        url: :unset, 
-                        method: :unset, 
-                        status: :unset, 
-                        fallback_url: :unset, 
-                        fallback_method: :unset, 
-                        status_callback: :unset, 
-                        status_callback_method: :unset, 
-                        twiml: :unset, 
-                        time_limit: :unset
+                      url: :unset, 
+                      method: :unset, 
+                      status: :unset, 
+                      fallback_url: :unset, 
+                      fallback_method: :unset, 
+                      status_callback: :unset, 
+                      status_callback_method: :unset, 
+                      twiml: :unset, 
+                      time_limit: :unset
                     )
 
                         context.update(

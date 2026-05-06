@@ -121,19 +121,19 @@ module Twilio
                     # @param [String] new_message_with_media_template The template to use to create the notification text displayed when a new message with media/file attachments is added to a conversation and `new_message.attachments.enabled` is `true`.
                     # @return [NotificationInstance] Updated NotificationInstance
                     def update(
-                        log_enabled: :unset, 
-                        new_message_enabled: :unset, 
-                        new_message_template: :unset, 
-                        new_message_sound: :unset, 
-                        new_message_badge_count_enabled: :unset, 
-                        added_to_conversation_enabled: :unset, 
-                        added_to_conversation_template: :unset, 
-                        added_to_conversation_sound: :unset, 
-                        removed_from_conversation_enabled: :unset, 
-                        removed_from_conversation_template: :unset, 
-                        removed_from_conversation_sound: :unset, 
-                        new_message_with_media_enabled: :unset, 
-                        new_message_with_media_template: :unset
+                      log_enabled: :unset, 
+                      new_message_enabled: :unset, 
+                      new_message_template: :unset, 
+                      new_message_sound: :unset, 
+                      new_message_badge_count_enabled: :unset, 
+                      added_to_conversation_enabled: :unset, 
+                      added_to_conversation_template: :unset, 
+                      added_to_conversation_sound: :unset, 
+                      removed_from_conversation_enabled: :unset, 
+                      removed_from_conversation_template: :unset, 
+                      removed_from_conversation_sound: :unset, 
+                      new_message_with_media_enabled: :unset, 
+                      new_message_with_media_template: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -340,7 +340,7 @@ module Twilio
                             @notification_page << NotificationListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -362,7 +362,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -494,19 +494,19 @@ module Twilio
                     # @param [String] new_message_with_media_template The template to use to create the notification text displayed when a new message with media/file attachments is added to a conversation and `new_message.attachments.enabled` is `true`.
                     # @return [NotificationInstance] Updated NotificationInstance
                     def update(
-                        log_enabled: :unset, 
-                        new_message_enabled: :unset, 
-                        new_message_template: :unset, 
-                        new_message_sound: :unset, 
-                        new_message_badge_count_enabled: :unset, 
-                        added_to_conversation_enabled: :unset, 
-                        added_to_conversation_template: :unset, 
-                        added_to_conversation_sound: :unset, 
-                        removed_from_conversation_enabled: :unset, 
-                        removed_from_conversation_template: :unset, 
-                        removed_from_conversation_sound: :unset, 
-                        new_message_with_media_enabled: :unset, 
-                        new_message_with_media_template: :unset
+                      log_enabled: :unset, 
+                      new_message_enabled: :unset, 
+                      new_message_template: :unset, 
+                      new_message_sound: :unset, 
+                      new_message_badge_count_enabled: :unset, 
+                      added_to_conversation_enabled: :unset, 
+                      added_to_conversation_template: :unset, 
+                      added_to_conversation_sound: :unset, 
+                      removed_from_conversation_enabled: :unset, 
+                      removed_from_conversation_template: :unset, 
+                      removed_from_conversation_sound: :unset, 
+                      new_message_with_media_enabled: :unset, 
+                      new_message_with_media_template: :unset
                     )
 
                         context.update(

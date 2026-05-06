@@ -40,6 +40,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @esim_profiles ||= EsimProfileList.new self
                     else
@@ -54,6 +55,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @fleets ||= FleetList.new self
                     else
@@ -68,6 +70,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @ip_commands ||= IpCommandList.new self
                     else
@@ -82,6 +85,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @networks ||= NetworkList.new self
                     else
@@ -96,6 +100,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @network_access_profiles ||= NetworkAccessProfileList.new self
                     else
@@ -115,6 +120,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @sims ||= SimList.new self
                     else
@@ -129,6 +135,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @sms_commands ||= SmsCommandList.new self
                     else

@@ -39,7 +39,7 @@ module Twilio
                     # @param [Object] data A JSON string that represents an arbitrary, schema-less object that makes up the Stream Message body. Can be up to 4 KiB in length.
                     # @return [StreamMessageInstance] Created StreamMessageInstance
                     def create(
-                        data: nil
+                      data: nil
                     )
 
                         data = Twilio::Values.of({
@@ -146,7 +146,7 @@ module Twilio
                             @stream_message_page << StreamMessageListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -168,7 +168,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end

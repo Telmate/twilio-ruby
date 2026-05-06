@@ -74,6 +74,7 @@ module Twilio
                     # @param [String] caller_id The phone number, Client identifier, or username portion of SIP address that made this call. Phone numbers are in [E.164](https://www.twilio.com/docs/glossary/what-e164) format (e.g., +16175551212). Client identifiers are formatted `client:name`. If using a phone number, it must be a Twilio number or a Verified [outgoing caller id](https://www.twilio.com/docs/voice/api/outgoing-caller-ids) for your account. If the `to` parameter is a phone number, `callerId` must also be a phone number. If `to` is sip address, this value of `callerId` should be a username portion to be used to populate the From header that is passed to the SIP endpoint.
                     # @param [String] call_reason The Reason for the outgoing call. Use it to specify the purpose of the call that is presented on the called party's phone. (Branded Calls Beta)
                     # @param [String] recording_track The audio track to record for the call. Can be: `inbound`, `outbound` or `both`. The default is `both`. `inbound` records the audio that is received by Twilio. `outbound` records the audio that is sent from Twilio. `both` records the audio that is received and sent by Twilio.
+                    # @param [String] recording_configuration_id The identifier of the configuration to be used when creating and processing the recording
                     # @param [String] time_limit The maximum duration of the call in seconds. Constraints depend on account and configuration.
                     # @param [String] machine_detection Whether to detect if a human, answering machine, or fax has picked up the call. Can be: `Enable` or `DetectMessageEnd`. Use `Enable` if you would like us to return `AnsweredBy` as soon as the called party is identified. Use `DetectMessageEnd`, if you would like to leave a message on an answering machine. For more information, see [Answering Machine Detection](https://www.twilio.com/docs/voice/answering-machine-detection).
                     # @param [String] machine_detection_timeout The number of seconds that we should attempt to detect an answering machine before timing out and sending a voice request with `AnsweredBy` of `unknown`. The default timeout is 30 seconds.
@@ -88,56 +89,57 @@ module Twilio
                     # @param [String] caller_display_name The name that populates the display name in the From header. Must be between 2 and 255 characters. Only applicable for calls to sip address.
                     # @return [ParticipantInstance] Created ParticipantInstance
                     def create(
-                        from: nil, 
-                        to: nil, 
-                        status_callback: :unset, 
-                        status_callback_method: :unset, 
-                        status_callback_event: :unset, 
-                        label: :unset, 
-                        timeout: :unset, 
-                        record: :unset, 
-                        muted: :unset, 
-                        beep: :unset, 
-                        start_conference_on_enter: :unset, 
-                        end_conference_on_exit: :unset, 
-                        wait_url: :unset, 
-                        wait_method: :unset, 
-                        early_media: :unset, 
-                        max_participants: :unset, 
-                        conference_record: :unset, 
-                        conference_trim: :unset, 
-                        conference_status_callback: :unset, 
-                        conference_status_callback_method: :unset, 
-                        conference_status_callback_event: :unset, 
-                        recording_channels: :unset, 
-                        recording_status_callback: :unset, 
-                        recording_status_callback_method: :unset, 
-                        sip_auth_username: :unset, 
-                        sip_auth_password: :unset, 
-                        region: :unset, 
-                        conference_recording_status_callback: :unset, 
-                        conference_recording_status_callback_method: :unset, 
-                        recording_status_callback_event: :unset, 
-                        conference_recording_status_callback_event: :unset, 
-                        coaching: :unset, 
-                        call_sid_to_coach: :unset, 
-                        jitter_buffer_size: :unset, 
-                        byoc: :unset, 
-                        caller_id: :unset, 
-                        call_reason: :unset, 
-                        recording_track: :unset, 
-                        time_limit: :unset, 
-                        machine_detection: :unset, 
-                        machine_detection_timeout: :unset, 
-                        machine_detection_speech_threshold: :unset, 
-                        machine_detection_speech_end_threshold: :unset, 
-                        machine_detection_silence_timeout: :unset, 
-                        amd_status_callback: :unset, 
-                        amd_status_callback_method: :unset, 
-                        trim: :unset, 
-                        call_token: :unset, 
-                        client_notification_url: :unset, 
-                        caller_display_name: :unset
+                      from: nil, 
+                      to: nil, 
+                      status_callback: :unset, 
+                      status_callback_method: :unset, 
+                      status_callback_event: :unset, 
+                      label: :unset, 
+                      timeout: :unset, 
+                      record: :unset, 
+                      muted: :unset, 
+                      beep: :unset, 
+                      start_conference_on_enter: :unset, 
+                      end_conference_on_exit: :unset, 
+                      wait_url: :unset, 
+                      wait_method: :unset, 
+                      early_media: :unset, 
+                      max_participants: :unset, 
+                      conference_record: :unset, 
+                      conference_trim: :unset, 
+                      conference_status_callback: :unset, 
+                      conference_status_callback_method: :unset, 
+                      conference_status_callback_event: :unset, 
+                      recording_channels: :unset, 
+                      recording_status_callback: :unset, 
+                      recording_status_callback_method: :unset, 
+                      sip_auth_username: :unset, 
+                      sip_auth_password: :unset, 
+                      region: :unset, 
+                      conference_recording_status_callback: :unset, 
+                      conference_recording_status_callback_method: :unset, 
+                      recording_status_callback_event: :unset, 
+                      conference_recording_status_callback_event: :unset, 
+                      coaching: :unset, 
+                      call_sid_to_coach: :unset, 
+                      jitter_buffer_size: :unset, 
+                      byoc: :unset, 
+                      caller_id: :unset, 
+                      call_reason: :unset, 
+                      recording_track: :unset, 
+                      recording_configuration_id: :unset, 
+                      time_limit: :unset, 
+                      machine_detection: :unset, 
+                      machine_detection_timeout: :unset, 
+                      machine_detection_speech_threshold: :unset, 
+                      machine_detection_speech_end_threshold: :unset, 
+                      machine_detection_silence_timeout: :unset, 
+                      amd_status_callback: :unset, 
+                      amd_status_callback_method: :unset, 
+                      trim: :unset, 
+                      call_token: :unset, 
+                      client_notification_url: :unset, 
+                      caller_display_name: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -179,6 +181,7 @@ module Twilio
                             'CallerId' => caller_id,
                             'CallReason' => call_reason,
                             'RecordingTrack' => recording_track,
+                            'RecordingConfigurationId' => recording_configuration_id,
                             'TimeLimit' => time_limit,
                             'MachineDetection' => machine_detection,
                             'MachineDetectionTimeout' => machine_detection_timeout,
@@ -248,6 +251,7 @@ module Twilio
                     # @param [String] caller_id The phone number, Client identifier, or username portion of SIP address that made this call. Phone numbers are in [E.164](https://www.twilio.com/docs/glossary/what-e164) format (e.g., +16175551212). Client identifiers are formatted `client:name`. If using a phone number, it must be a Twilio number or a Verified [outgoing caller id](https://www.twilio.com/docs/voice/api/outgoing-caller-ids) for your account. If the `to` parameter is a phone number, `callerId` must also be a phone number. If `to` is sip address, this value of `callerId` should be a username portion to be used to populate the From header that is passed to the SIP endpoint.
                     # @param [String] call_reason The Reason for the outgoing call. Use it to specify the purpose of the call that is presented on the called party's phone. (Branded Calls Beta)
                     # @param [String] recording_track The audio track to record for the call. Can be: `inbound`, `outbound` or `both`. The default is `both`. `inbound` records the audio that is received by Twilio. `outbound` records the audio that is sent from Twilio. `both` records the audio that is received and sent by Twilio.
+                    # @param [String] recording_configuration_id The identifier of the configuration to be used when creating and processing the recording
                     # @param [String] time_limit The maximum duration of the call in seconds. Constraints depend on account and configuration.
                     # @param [String] machine_detection Whether to detect if a human, answering machine, or fax has picked up the call. Can be: `Enable` or `DetectMessageEnd`. Use `Enable` if you would like us to return `AnsweredBy` as soon as the called party is identified. Use `DetectMessageEnd`, if you would like to leave a message on an answering machine. For more information, see [Answering Machine Detection](https://www.twilio.com/docs/voice/answering-machine-detection).
                     # @param [String] machine_detection_timeout The number of seconds that we should attempt to detect an answering machine before timing out and sending a voice request with `AnsweredBy` of `unknown`. The default timeout is 30 seconds.
@@ -300,6 +304,7 @@ module Twilio
                       caller_id: :unset, 
                       call_reason: :unset, 
                       recording_track: :unset, 
+                      recording_configuration_id: :unset, 
                       time_limit: :unset, 
                       machine_detection: :unset, 
                       machine_detection_timeout: :unset, 
@@ -353,6 +358,7 @@ module Twilio
                             'CallerId' => caller_id,
                             'CallReason' => call_reason,
                             'RecordingTrack' => recording_track,
+                            'RecordingConfigurationId' => recording_configuration_id,
                             'TimeLimit' => time_limit,
                             'MachineDetection' => machine_detection,
                             'MachineDetectionTimeout' => machine_detection_timeout,
@@ -436,7 +442,11 @@ module Twilio
                             coaching: coaching,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -476,9 +486,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -645,18 +659,18 @@ module Twilio
                     # @param [String] call_sid_to_coach The SID of the participant who is being `coached`. The participant being coached is the only participant who can hear the participant who is `coaching`.
                     # @return [ParticipantInstance] Updated ParticipantInstance
                     def update(
-                        muted: :unset, 
-                        hold: :unset, 
-                        hold_url: :unset, 
-                        hold_method: :unset, 
-                        announce_url: :unset, 
-                        announce_method: :unset, 
-                        wait_url: :unset, 
-                        wait_method: :unset, 
-                        beep_on_exit: :unset, 
-                        end_conference_on_exit: :unset, 
-                        coaching: :unset, 
-                        call_sid_to_coach: :unset
+                      muted: :unset, 
+                      hold: :unset, 
+                      hold_url: :unset, 
+                      hold_method: :unset, 
+                      announce_url: :unset, 
+                      announce_method: :unset, 
+                      wait_url: :unset, 
+                      wait_method: :unset, 
+                      beep_on_exit: :unset, 
+                      end_conference_on_exit: :unset, 
+                      coaching: :unset, 
+                      call_sid_to_coach: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -863,7 +877,7 @@ module Twilio
                             @participant_page << ParticipantListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -885,7 +899,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -1080,18 +1094,18 @@ module Twilio
                     # @param [String] call_sid_to_coach The SID of the participant who is being `coached`. The participant being coached is the only participant who can hear the participant who is `coaching`.
                     # @return [ParticipantInstance] Updated ParticipantInstance
                     def update(
-                        muted: :unset, 
-                        hold: :unset, 
-                        hold_url: :unset, 
-                        hold_method: :unset, 
-                        announce_url: :unset, 
-                        announce_method: :unset, 
-                        wait_url: :unset, 
-                        wait_method: :unset, 
-                        beep_on_exit: :unset, 
-                        end_conference_on_exit: :unset, 
-                        coaching: :unset, 
-                        call_sid_to_coach: :unset
+                      muted: :unset, 
+                      hold: :unset, 
+                      hold_url: :unset, 
+                      hold_method: :unset, 
+                      announce_url: :unset, 
+                      announce_method: :unset, 
+                      wait_url: :unset, 
+                      wait_method: :unset, 
+                      beep_on_exit: :unset, 
+                      end_conference_on_exit: :unset, 
+                      coaching: :unset, 
+                      call_sid_to_coach: :unset
                     )
 
                         context.update(

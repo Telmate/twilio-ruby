@@ -107,6 +107,11 @@ module Twilio
                 @marketplace ||= Marketplace.new self
             end
             ##
+            # Access the Memory Twilio Domain
+            def memory
+                @memory ||= Memory.new self
+            end
+            ##
             # Access the Messaging Twilio Domain
             def messaging
                 @messaging ||= Messaging.new self

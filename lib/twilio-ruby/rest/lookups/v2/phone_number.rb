@@ -76,21 +76,21 @@ module Twilio
                     # @param [String] partner_sub_id The optional partnerSubId parameter to provide context for your sub-accounts, tenantIDs, sender IDs or other segmentation, enhancing the accuracy of the risk analysis.
                     # @return [PhoneNumberInstance] Fetched PhoneNumberInstance
                     def fetch(
-                        fields: :unset, 
-                        country_code: :unset, 
-                        first_name: :unset, 
-                        last_name: :unset, 
-                        address_line1: :unset, 
-                        address_line2: :unset, 
-                        city: :unset, 
-                        state: :unset, 
-                        postal_code: :unset, 
-                        address_country_code: :unset, 
-                        national_id: :unset, 
-                        date_of_birth: :unset, 
-                        last_verified_date: :unset, 
-                        verification_sid: :unset, 
-                        partner_sub_id: :unset
+                      fields: :unset, 
+                      country_code: :unset, 
+                      first_name: :unset, 
+                      last_name: :unset, 
+                      address_line1: :unset, 
+                      address_line2: :unset, 
+                      city: :unset, 
+                      state: :unset, 
+                      postal_code: :unset, 
+                      address_country_code: :unset, 
+                      national_id: :unset, 
+                      date_of_birth: :unset, 
+                      last_verified_date: :unset, 
+                      verification_sid: :unset, 
+                      partner_sub_id: :unset
                     )
 
                         params = Twilio::Values.of({
@@ -303,7 +303,7 @@ module Twilio
                             @phone_number_page << PhoneNumberListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -325,7 +325,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -521,21 +521,21 @@ module Twilio
                     # @param [String] partner_sub_id The optional partnerSubId parameter to provide context for your sub-accounts, tenantIDs, sender IDs or other segmentation, enhancing the accuracy of the risk analysis.
                     # @return [PhoneNumberInstance] Fetched PhoneNumberInstance
                     def fetch(
-                        fields: :unset, 
-                        country_code: :unset, 
-                        first_name: :unset, 
-                        last_name: :unset, 
-                        address_line1: :unset, 
-                        address_line2: :unset, 
-                        city: :unset, 
-                        state: :unset, 
-                        postal_code: :unset, 
-                        address_country_code: :unset, 
-                        national_id: :unset, 
-                        date_of_birth: :unset, 
-                        last_verified_date: :unset, 
-                        verification_sid: :unset, 
-                        partner_sub_id: :unset
+                      fields: :unset, 
+                      country_code: :unset, 
+                      first_name: :unset, 
+                      last_name: :unset, 
+                      address_line1: :unset, 
+                      address_line2: :unset, 
+                      city: :unset, 
+                      state: :unset, 
+                      postal_code: :unset, 
+                      address_country_code: :unset, 
+                      national_id: :unset, 
+                      date_of_birth: :unset, 
+                      last_verified_date: :unset, 
+                      verification_sid: :unset, 
+                      partner_sub_id: :unset
                     )
 
                         context.fetch(

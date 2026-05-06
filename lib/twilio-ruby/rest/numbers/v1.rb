@@ -43,6 +43,7 @@ module Twilio
                     if request_id.nil?
                         raise ArgumentError, 'request_id cannot be nil'
                     end
+
                     if request_id == :unset
                         @bulk_eligibilities ||= BulkEligibilityList.new self
                     else
@@ -55,9 +56,18 @@ module Twilio
                     @eligibilities ||= EligibilityList.new self
                 end
                 ##
+                # @param [String] bundle_sid The unique identifier of the registration (BU-prefixed).
                 # @return [Twilio::REST::Numbers::V1::EmbeddedSessionList]
-                def embedded_sessions
-                    @embedded_sessions ||= EmbeddedSessionList.new self
+                def embedded_sessions(bundle_sid=:unset)
+                    if bundle_sid.nil?
+                        raise ArgumentError, 'bundle_sid cannot be nil'
+                    end
+
+                    if bundle_sid == :unset
+                        @embedded_sessions ||= EmbeddedSessionList.new self
+                    else
+                        EmbeddedSessionList.new(self, bundle_sid: bundle_sid)
+                    end
                 end
                 ##
                 # @return [Twilio::REST::Numbers::V1::PortingAllPortInList]
@@ -72,6 +82,7 @@ module Twilio
                     if port_in_request_sid.nil?
                         raise ArgumentError, 'port_in_request_sid cannot be nil'
                     end
+
                     if port_in_request_sid == :unset
                         @porting_port_ins ||= PortingPortInList.new self
                     else
@@ -90,8 +101,11 @@ module Twilio
                     if phone_number_sid.nil?
                         raise ArgumentError, 'phone_number_sid cannot be nil'
                     end
+
                     if port_in_request_sid == :unset && phone_number_sid == :unset
                         @porting_port_in_phone_number ||= PortingPortInPhoneNumberList.new self
+                    elsif port_in_request_sid != :unset && phone_number_sid == :unset
+                        PortingPortInPhoneNumberList.new(self, port_in_request_sid: port_in_request_sid)
                     else
                         PortingPortInPhoneNumberContext.new(self, port_in_request_sid, phone_number_sid)
                     end
@@ -108,8 +122,11 @@ module Twilio
                     if phone_number_sid.nil?
                         raise ArgumentError, 'phone_number_sid cannot be nil'
                     end
+
                     if port_in_request_sid == :unset && phone_number_sid == :unset
                         @porting_port_in_phone_number ||= PortingPortInPhoneNumberList.new self
+                    elsif port_in_request_sid != :unset && phone_number_sid == :unset
+                        PortingPortInPhoneNumberList.new(self, port_in_request_sid: port_in_request_sid)
                     else
                         PortingPortInPhoneNumberContext.new(self, port_in_request_sid, phone_number_sid)
                     end
@@ -122,6 +139,7 @@ module Twilio
                     if phone_number.nil?
                         raise ArgumentError, 'phone_number cannot be nil'
                     end
+
                     if phone_number == :unset
                         @porting_portabilities ||= PortingPortabilityList.new self
                     else
@@ -141,6 +159,7 @@ module Twilio
                     if webhook_type.nil?
                         raise ArgumentError, 'webhook_type cannot be nil'
                     end
+
                     if webhook_type == :unset
                         @porting_webhook_configurations_delete ||= PortingWebhookConfigurationDeleteList.new self
                     else

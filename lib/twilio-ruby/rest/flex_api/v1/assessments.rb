@@ -46,17 +46,17 @@ module Twilio
                     # @param [String] authorization The Authorization HTTP request header
                     # @return [AssessmentsInstance] Created AssessmentsInstance
                     def create(
-                        category_sid: nil, 
-                        category_name: nil, 
-                        segment_id: nil, 
-                        agent_id: nil, 
-                        offset: nil, 
-                        metric_id: nil, 
-                        metric_name: nil, 
-                        answer_text: nil, 
-                        answer_id: nil, 
-                        questionnaire_sid: nil, 
-                        authorization: :unset
+                      category_sid: nil, 
+                      category_name: nil, 
+                      segment_id: nil, 
+                      agent_id: nil, 
+                      offset: nil, 
+                      metric_id: nil, 
+                      metric_name: nil, 
+                      answer_text: nil, 
+                      answer_id: nil, 
+                      questionnaire_sid: nil, 
+                      authorization: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -189,7 +189,11 @@ module Twilio
                             segment_id: segment_id,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -227,9 +231,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -304,10 +312,10 @@ module Twilio
                     # @param [String] authorization The Authorization HTTP request header
                     # @return [AssessmentsInstance] Updated AssessmentsInstance
                     def update(
-                        offset: nil, 
-                        answer_text: nil, 
-                        answer_id: nil, 
-                        authorization: :unset
+                      offset: nil, 
+                      answer_text: nil, 
+                      answer_id: nil, 
+                      authorization: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -476,7 +484,7 @@ module Twilio
                             @assessments_page << AssessmentsListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -498,7 +506,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -662,10 +670,10 @@ module Twilio
                     # @param [String] authorization The Authorization HTTP request header
                     # @return [AssessmentsInstance] Updated AssessmentsInstance
                     def update(
-                        offset: nil, 
-                        answer_text: nil, 
-                        answer_id: nil, 
-                        authorization: :unset
+                      offset: nil, 
+                      answer_text: nil, 
+                      answer_id: nil, 
+                      authorization: :unset
                     )
 
                         context.update(

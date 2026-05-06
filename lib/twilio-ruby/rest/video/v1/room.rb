@@ -52,23 +52,23 @@ module Twilio
                     # @param [Boolean] large_room When set to true, indicated that this is the large room.
                     # @return [RoomInstance] Created RoomInstance
                     def create(
-                        enable_turn: :unset, 
-                        type: :unset, 
-                        unique_name: :unset, 
-                        status_callback: :unset, 
-                        status_callback_method: :unset, 
-                        max_participants: :unset, 
-                        record_participants_on_connect: :unset, 
-                        transcribe_participants_on_connect: :unset, 
-                        video_codecs: :unset, 
-                        media_region: :unset, 
-                        recording_rules: :unset, 
-                        transcriptions_configuration: :unset, 
-                        audio_only: :unset, 
-                        max_participant_duration: :unset, 
-                        empty_room_timeout: :unset, 
-                        unused_room_timeout: :unset, 
-                        large_room: :unset
+                      enable_turn: :unset, 
+                      type: :unset, 
+                      unique_name: :unset, 
+                      status_callback: :unset, 
+                      status_callback_method: :unset, 
+                      max_participants: :unset, 
+                      record_participants_on_connect: :unset, 
+                      transcribe_participants_on_connect: :unset, 
+                      video_codecs: :unset, 
+                      media_region: :unset, 
+                      recording_rules: :unset, 
+                      transcriptions_configuration: :unset, 
+                      audio_only: :unset, 
+                      max_participant_duration: :unset, 
+                      empty_room_timeout: :unset, 
+                      unused_room_timeout: :unset, 
+                      large_room: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -235,7 +235,11 @@ module Twilio
                             date_created_before: date_created_before,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -277,9 +281,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -403,7 +411,7 @@ module Twilio
                     # @param [RoomStatus] status 
                     # @return [RoomInstance] Updated RoomInstance
                     def update(
-                        status: nil
+                      status: nil
                     )
 
                         data = Twilio::Values.of({
@@ -630,7 +638,7 @@ module Twilio
                             @room_page << RoomListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -652,7 +660,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -891,7 +899,7 @@ module Twilio
                     # @param [RoomStatus] status 
                     # @return [RoomInstance] Updated RoomInstance
                     def update(
-                        status: nil
+                      status: nil
                     )
 
                         context.update(

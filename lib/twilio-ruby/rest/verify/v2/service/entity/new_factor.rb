@@ -52,20 +52,20 @@ module Twilio
                     # @param [Object] metadata Custom metadata associated with the factor. This is added by the Device/SDK directly to allow for the inclusion of device information. It must be a stringified JSON with only strings values eg. `{\\\"os\\\": \\\"Android\\\"}`. Can be up to 1024 characters in length.
                     # @return [NewFactorInstance] Created NewFactorInstance
                     def create(
-                        friendly_name: nil, 
-                        factor_type: nil, 
-                        binding_alg: :unset, 
-                        binding_public_key: :unset, 
-                        config_app_id: :unset, 
-                        config_notification_platform: :unset, 
-                        config_notification_token: :unset, 
-                        config_sdk_version: :unset, 
-                        binding_secret: :unset, 
-                        config_time_step: :unset, 
-                        config_skew: :unset, 
-                        config_code_length: :unset, 
-                        config_alg: :unset, 
-                        metadata: :unset
+                      friendly_name: nil, 
+                      factor_type: nil, 
+                      binding_alg: :unset, 
+                      binding_public_key: :unset, 
+                      config_app_id: :unset, 
+                      config_notification_platform: :unset, 
+                      config_notification_token: :unset, 
+                      config_sdk_version: :unset, 
+                      binding_secret: :unset, 
+                      config_time_step: :unset, 
+                      config_skew: :unset, 
+                      config_code_length: :unset, 
+                      config_alg: :unset, 
+                      metadata: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -224,7 +224,7 @@ module Twilio
                             @new_factor_page << NewFactorListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -246,7 +246,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end

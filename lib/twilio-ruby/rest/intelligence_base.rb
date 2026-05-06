@@ -22,16 +22,21 @@ module Twilio
         @host = "intelligence.twilio.com"
         @port = 443
         @v2 = nil
+        @v3 = nil
       end
 
       def v2
         @v2 ||= Intelligence::V2.new self
       end
 
+      def v3
+        @v3 ||= Intelligence::V3.new self
+      end
+
       ##
       # Provide a user friendly representation
       def to_s
-        '<Twilio::REST::Intelligence::V2>';
+        '<Twilio::REST::Intelligence>';
       end
     end
   end

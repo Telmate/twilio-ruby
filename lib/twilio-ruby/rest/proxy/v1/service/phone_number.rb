@@ -40,9 +40,9 @@ module Twilio
                     # @param [Boolean] is_reserved Whether the new phone number should be reserved and not be assigned to a participant using proxy pool logic. See [Reserved Phone Numbers](https://www.twilio.com/docs/proxy/reserved-phone-numbers) for more information.
                     # @return [PhoneNumberInstance] Created PhoneNumberInstance
                     def create(
-                        sid: :unset, 
-                        phone_number: :unset, 
-                        is_reserved: :unset
+                      sid: :unset, 
+                      phone_number: :unset, 
+                      is_reserved: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -139,7 +139,11 @@ module Twilio
                         page = self.page(
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -173,9 +177,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -322,7 +330,7 @@ module Twilio
                     # @param [Boolean] is_reserved Whether the phone number should be reserved and not be assigned to a participant using proxy pool logic. See [Reserved Phone Numbers](https://www.twilio.com/docs/proxy/reserved-phone-numbers) for more information.
                     # @return [PhoneNumberInstance] Updated PhoneNumberInstance
                     def update(
-                        is_reserved: :unset
+                      is_reserved: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -483,7 +491,7 @@ module Twilio
                             @phone_number_page << PhoneNumberListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -505,7 +513,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -668,7 +676,7 @@ module Twilio
                     # @param [Boolean] is_reserved Whether the phone number should be reserved and not be assigned to a participant using proxy pool logic. See [Reserved Phone Numbers](https://www.twilio.com/docs/proxy/reserved-phone-numbers) for more information.
                     # @return [PhoneNumberInstance] Updated PhoneNumberInstance
                     def update(
-                        is_reserved: :unset
+                      is_reserved: :unset
                     )
 
                         context.update(

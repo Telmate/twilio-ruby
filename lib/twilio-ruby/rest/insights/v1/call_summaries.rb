@@ -211,7 +211,11 @@ module Twilio
                             business_profile_type: business_profile_type,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -317,9 +321,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -480,7 +488,7 @@ module Twilio
                             @call_summaries_page << CallSummariesListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -502,7 +510,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -636,37 +644,37 @@ module Twilio
                     end
                     
                     ##
-                    # @return [Hash] The calling party.
+                    # @return [Hash] `object` The calling party. See [Details: Call Summary](https://www.twilio.com/docs/voice/voice-insights/api/call/details-call-summary#tofrom-object) for the object properties.
                     def from
                         @properties['from']
                     end
                     
                     ##
-                    # @return [Hash] The called party.
+                    # @return [Hash] `object` The called party. See [Details: Call Summary](https://www.twilio.com/docs/voice/voice-insights/api/call/details-call-summary#tofrom-object) for the object properties.
                     def to
                         @properties['to']
                     end
                     
                     ##
-                    # @return [Hash] Contains metrics and properties for the Twilio media gateway of a PSTN call.
+                    # @return [Hash] `object` Contains metrics and properties for the Twilio media gateway of a PSTN call. See [Details: Call Summary](https://www.twilio.com/docs/voice/voice-insights/api/call/details-call-summary#edges-and-their-properties) for the object properties.
                     def carrier_edge
                         @properties['carrier_edge']
                     end
                     
                     ##
-                    # @return [Hash] Contains metrics and properties for the Twilio media gateway of a Client call.
+                    # @return [Hash] `object` Contains metrics and properties for the Twilio media gateway of a Client call. See [Details: Call Summary](https://www.twilio.com/docs/voice/voice-insights/api/call/details-call-summary#edges-and-their-properties) for the object properties.
                     def client_edge
                         @properties['client_edge']
                     end
                     
                     ##
-                    # @return [Hash] Contains metrics and properties for the SDK sensor library for Client calls.
+                    # @return [Hash] `object` Contains metrics and properties for the SDK sensor library for Client calls. See [Details: Call Summary](https://www.twilio.com/docs/voice/voice-insights/api/call/details-call-summary#edges-and-their-properties) for the object properties.
                     def sdk_edge
                         @properties['sdk_edge']
                     end
                     
                     ##
-                    # @return [Hash] Contains metrics and properties for the Twilio media gateway of a SIP Interface or Trunking call.
+                    # @return [Hash] `object` Contains metrics and properties for the Twilio media gateway of a SIP Interface or Trunking call. See [Details: Call Summary](https://www.twilio.com/docs/voice/voice-insights/api/call/details-call-summary#edges-and-their-properties) for the object properties.
                     def sip_edge
                         @properties['sip_edge']
                     end
@@ -684,25 +692,25 @@ module Twilio
                     end
                     
                     ##
-                    # @return [Hash] Attributes capturing call-flow-specific details.
+                    # @return [Hash] `object` Attributes capturing call-flow-specific details. See [Details: Call Summary](https://www.twilio.com/docs/voice/voice-insights/api/call/details-call-summary#attributes-object) for the object properties.
                     def attributes
                         @properties['attributes']
                     end
                     
                     ##
-                    # @return [Hash] Contains edge-agnostic call-level details.
+                    # @return [Hash] `object` Contains edge-agnostic call-level details. See [Details: Call Summary](https://www.twilio.com/docs/voice/voice-insights/api/call/details-call-summary#properties-object) for the object properties.
                     def properties
                         @properties['properties']
                     end
                     
                     ##
-                    # @return [Hash] Contains trusted communications details including Branded Call and verified caller ID.
+                    # @return [Hash] `object` Contains trusted communications details including Branded Call and verified caller ID. See [Details: Call Summary](https://www.twilio.com/docs/voice/voice-insights/api/call/details-call-summary#trust-object) for the object properties.
                     def trust
                         @properties['trust']
                     end
                     
                     ##
-                    # @return [Hash] 
+                    # @return [Hash] `object` Programmatically labeled annotations for the Call. Developers can update the Call Summary records with Annotation during or after a Call. Annotations can be updated as long as the Call Summary record is addressable via the API. See [Details: Call Summary](https://www.twilio.com/docs/voice/voice-insights/api/call/details-call-summary#annotation-object) for the object properties.
                     def annotation
                         @properties['annotation']
                     end

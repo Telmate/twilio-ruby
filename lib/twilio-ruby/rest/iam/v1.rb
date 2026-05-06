@@ -37,6 +37,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @api_key ||= ApiKeyList.new self
                     else
@@ -61,6 +62,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @o_auth_apps ||= OAuthAppList.new self
                     else
@@ -68,9 +70,18 @@ module Twilio
                     end
                 end
                 ##
+                # @param [String] role_sid The SID of the Role for which Permissions will be fetched.
                 # @return [Twilio::REST::Iam::V1::RolePermissionList]
-                def role_permission
-                    @role_permission ||= RolePermissionList.new self
+                def role_permission(role_sid=:unset)
+                    if role_sid.nil?
+                        raise ArgumentError, 'role_sid cannot be nil'
+                    end
+
+                    if role_sid == :unset
+                        @role_permission ||= RolePermissionList.new self
+                    else
+                        RolePermissionList.new(self, role_sid: role_sid)
+                    end
                 end
                 ##
                 # @return [Twilio::REST::Iam::V1::TokenList]

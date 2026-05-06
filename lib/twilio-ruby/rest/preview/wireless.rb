@@ -34,6 +34,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @commands ||= CommandList.new self
                     else
@@ -48,6 +49,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @rate_plans ||= RatePlanList.new self
                     else
@@ -62,6 +64,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @sims ||= SimList.new self
                     else

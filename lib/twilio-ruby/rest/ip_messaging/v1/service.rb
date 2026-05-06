@@ -36,7 +36,7 @@ module Twilio
                     # @param [String] friendly_name 
                     # @return [ServiceInstance] Created ServiceInstance
                     def create(
-                        friendly_name: nil
+                      friendly_name: nil
                     )
 
                         data = Twilio::Values.of({
@@ -123,7 +123,11 @@ module Twilio
                         page = self.page(
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -157,9 +161,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -359,60 +367,60 @@ module Twilio
                     # @param [String] limits_user_channels 
                     # @return [ServiceInstance] Updated ServiceInstance
                     def update(
-                        friendly_name: :unset, 
-                        default_service_role_sid: :unset, 
-                        default_channel_role_sid: :unset, 
-                        default_channel_creator_role_sid: :unset, 
-                        read_status_enabled: :unset, 
-                        reachability_enabled: :unset, 
-                        typing_indicator_timeout: :unset, 
-                        consumption_report_interval: :unset, 
-                        notifications_new_message_enabled: :unset, 
-                        notifications_new_message_template: :unset, 
-                        notifications_added_to_channel_enabled: :unset, 
-                        notifications_added_to_channel_template: :unset, 
-                        notifications_removed_from_channel_enabled: :unset, 
-                        notifications_removed_from_channel_template: :unset, 
-                        notifications_invited_to_channel_enabled: :unset, 
-                        notifications_invited_to_channel_template: :unset, 
-                        pre_webhook_url: :unset, 
-                        post_webhook_url: :unset, 
-                        webhook_method: :unset, 
-                        webhook_filters: :unset, 
-                        webhooks_on_message_send_url: :unset, 
-                        webhooks_on_message_send_method: :unset, 
-                        webhooks_on_message_update_url: :unset, 
-                        webhooks_on_message_update_method: :unset, 
-                        webhooks_on_message_remove_url: :unset, 
-                        webhooks_on_message_remove_method: :unset, 
-                        webhooks_on_channel_add_url: :unset, 
-                        webhooks_on_channel_add_method: :unset, 
-                        webhooks_on_channel_destroy_url: :unset, 
-                        webhooks_on_channel_destroy_method: :unset, 
-                        webhooks_on_channel_update_url: :unset, 
-                        webhooks_on_channel_update_method: :unset, 
-                        webhooks_on_member_add_url: :unset, 
-                        webhooks_on_member_add_method: :unset, 
-                        webhooks_on_member_remove_url: :unset, 
-                        webhooks_on_member_remove_method: :unset, 
-                        webhooks_on_message_sent_url: :unset, 
-                        webhooks_on_message_sent_method: :unset, 
-                        webhooks_on_message_updated_url: :unset, 
-                        webhooks_on_message_updated_method: :unset, 
-                        webhooks_on_message_removed_url: :unset, 
-                        webhooks_on_message_removed_method: :unset, 
-                        webhooks_on_channel_added_url: :unset, 
-                        webhooks_on_channel_added_method: :unset, 
-                        webhooks_on_channel_destroyed_url: :unset, 
-                        webhooks_on_channel_destroyed_method: :unset, 
-                        webhooks_on_channel_updated_url: :unset, 
-                        webhooks_on_channel_updated_method: :unset, 
-                        webhooks_on_member_added_url: :unset, 
-                        webhooks_on_member_added_method: :unset, 
-                        webhooks_on_member_removed_url: :unset, 
-                        webhooks_on_member_removed_method: :unset, 
-                        limits_channel_members: :unset, 
-                        limits_user_channels: :unset
+                      friendly_name: :unset, 
+                      default_service_role_sid: :unset, 
+                      default_channel_role_sid: :unset, 
+                      default_channel_creator_role_sid: :unset, 
+                      read_status_enabled: :unset, 
+                      reachability_enabled: :unset, 
+                      typing_indicator_timeout: :unset, 
+                      consumption_report_interval: :unset, 
+                      notifications_new_message_enabled: :unset, 
+                      notifications_new_message_template: :unset, 
+                      notifications_added_to_channel_enabled: :unset, 
+                      notifications_added_to_channel_template: :unset, 
+                      notifications_removed_from_channel_enabled: :unset, 
+                      notifications_removed_from_channel_template: :unset, 
+                      notifications_invited_to_channel_enabled: :unset, 
+                      notifications_invited_to_channel_template: :unset, 
+                      pre_webhook_url: :unset, 
+                      post_webhook_url: :unset, 
+                      webhook_method: :unset, 
+                      webhook_filters: :unset, 
+                      webhooks_on_message_send_url: :unset, 
+                      webhooks_on_message_send_method: :unset, 
+                      webhooks_on_message_update_url: :unset, 
+                      webhooks_on_message_update_method: :unset, 
+                      webhooks_on_message_remove_url: :unset, 
+                      webhooks_on_message_remove_method: :unset, 
+                      webhooks_on_channel_add_url: :unset, 
+                      webhooks_on_channel_add_method: :unset, 
+                      webhooks_on_channel_destroy_url: :unset, 
+                      webhooks_on_channel_destroy_method: :unset, 
+                      webhooks_on_channel_update_url: :unset, 
+                      webhooks_on_channel_update_method: :unset, 
+                      webhooks_on_member_add_url: :unset, 
+                      webhooks_on_member_add_method: :unset, 
+                      webhooks_on_member_remove_url: :unset, 
+                      webhooks_on_member_remove_method: :unset, 
+                      webhooks_on_message_sent_url: :unset, 
+                      webhooks_on_message_sent_method: :unset, 
+                      webhooks_on_message_updated_url: :unset, 
+                      webhooks_on_message_updated_method: :unset, 
+                      webhooks_on_message_removed_url: :unset, 
+                      webhooks_on_message_removed_method: :unset, 
+                      webhooks_on_channel_added_url: :unset, 
+                      webhooks_on_channel_added_method: :unset, 
+                      webhooks_on_channel_destroyed_url: :unset, 
+                      webhooks_on_channel_destroyed_method: :unset, 
+                      webhooks_on_channel_updated_url: :unset, 
+                      webhooks_on_channel_updated_method: :unset, 
+                      webhooks_on_member_added_url: :unset, 
+                      webhooks_on_member_added_method: :unset, 
+                      webhooks_on_member_removed_url: :unset, 
+                      webhooks_on_member_removed_method: :unset, 
+                      limits_channel_members: :unset, 
+                      limits_user_channels: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -840,7 +848,7 @@ module Twilio
                             @service_page << ServiceListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -862,7 +870,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -1141,60 +1149,60 @@ module Twilio
                     # @param [String] limits_user_channels 
                     # @return [ServiceInstance] Updated ServiceInstance
                     def update(
-                        friendly_name: :unset, 
-                        default_service_role_sid: :unset, 
-                        default_channel_role_sid: :unset, 
-                        default_channel_creator_role_sid: :unset, 
-                        read_status_enabled: :unset, 
-                        reachability_enabled: :unset, 
-                        typing_indicator_timeout: :unset, 
-                        consumption_report_interval: :unset, 
-                        notifications_new_message_enabled: :unset, 
-                        notifications_new_message_template: :unset, 
-                        notifications_added_to_channel_enabled: :unset, 
-                        notifications_added_to_channel_template: :unset, 
-                        notifications_removed_from_channel_enabled: :unset, 
-                        notifications_removed_from_channel_template: :unset, 
-                        notifications_invited_to_channel_enabled: :unset, 
-                        notifications_invited_to_channel_template: :unset, 
-                        pre_webhook_url: :unset, 
-                        post_webhook_url: :unset, 
-                        webhook_method: :unset, 
-                        webhook_filters: :unset, 
-                        webhooks_on_message_send_url: :unset, 
-                        webhooks_on_message_send_method: :unset, 
-                        webhooks_on_message_update_url: :unset, 
-                        webhooks_on_message_update_method: :unset, 
-                        webhooks_on_message_remove_url: :unset, 
-                        webhooks_on_message_remove_method: :unset, 
-                        webhooks_on_channel_add_url: :unset, 
-                        webhooks_on_channel_add_method: :unset, 
-                        webhooks_on_channel_destroy_url: :unset, 
-                        webhooks_on_channel_destroy_method: :unset, 
-                        webhooks_on_channel_update_url: :unset, 
-                        webhooks_on_channel_update_method: :unset, 
-                        webhooks_on_member_add_url: :unset, 
-                        webhooks_on_member_add_method: :unset, 
-                        webhooks_on_member_remove_url: :unset, 
-                        webhooks_on_member_remove_method: :unset, 
-                        webhooks_on_message_sent_url: :unset, 
-                        webhooks_on_message_sent_method: :unset, 
-                        webhooks_on_message_updated_url: :unset, 
-                        webhooks_on_message_updated_method: :unset, 
-                        webhooks_on_message_removed_url: :unset, 
-                        webhooks_on_message_removed_method: :unset, 
-                        webhooks_on_channel_added_url: :unset, 
-                        webhooks_on_channel_added_method: :unset, 
-                        webhooks_on_channel_destroyed_url: :unset, 
-                        webhooks_on_channel_destroyed_method: :unset, 
-                        webhooks_on_channel_updated_url: :unset, 
-                        webhooks_on_channel_updated_method: :unset, 
-                        webhooks_on_member_added_url: :unset, 
-                        webhooks_on_member_added_method: :unset, 
-                        webhooks_on_member_removed_url: :unset, 
-                        webhooks_on_member_removed_method: :unset, 
-                        limits_channel_members: :unset, 
-                        limits_user_channels: :unset
+                      friendly_name: :unset, 
+                      default_service_role_sid: :unset, 
+                      default_channel_role_sid: :unset, 
+                      default_channel_creator_role_sid: :unset, 
+                      read_status_enabled: :unset, 
+                      reachability_enabled: :unset, 
+                      typing_indicator_timeout: :unset, 
+                      consumption_report_interval: :unset, 
+                      notifications_new_message_enabled: :unset, 
+                      notifications_new_message_template: :unset, 
+                      notifications_added_to_channel_enabled: :unset, 
+                      notifications_added_to_channel_template: :unset, 
+                      notifications_removed_from_channel_enabled: :unset, 
+                      notifications_removed_from_channel_template: :unset, 
+                      notifications_invited_to_channel_enabled: :unset, 
+                      notifications_invited_to_channel_template: :unset, 
+                      pre_webhook_url: :unset, 
+                      post_webhook_url: :unset, 
+                      webhook_method: :unset, 
+                      webhook_filters: :unset, 
+                      webhooks_on_message_send_url: :unset, 
+                      webhooks_on_message_send_method: :unset, 
+                      webhooks_on_message_update_url: :unset, 
+                      webhooks_on_message_update_method: :unset, 
+                      webhooks_on_message_remove_url: :unset, 
+                      webhooks_on_message_remove_method: :unset, 
+                      webhooks_on_channel_add_url: :unset, 
+                      webhooks_on_channel_add_method: :unset, 
+                      webhooks_on_channel_destroy_url: :unset, 
+                      webhooks_on_channel_destroy_method: :unset, 
+                      webhooks_on_channel_update_url: :unset, 
+                      webhooks_on_channel_update_method: :unset, 
+                      webhooks_on_member_add_url: :unset, 
+                      webhooks_on_member_add_method: :unset, 
+                      webhooks_on_member_remove_url: :unset, 
+                      webhooks_on_member_remove_method: :unset, 
+                      webhooks_on_message_sent_url: :unset, 
+                      webhooks_on_message_sent_method: :unset, 
+                      webhooks_on_message_updated_url: :unset, 
+                      webhooks_on_message_updated_method: :unset, 
+                      webhooks_on_message_removed_url: :unset, 
+                      webhooks_on_message_removed_method: :unset, 
+                      webhooks_on_channel_added_url: :unset, 
+                      webhooks_on_channel_added_method: :unset, 
+                      webhooks_on_channel_destroyed_url: :unset, 
+                      webhooks_on_channel_destroyed_method: :unset, 
+                      webhooks_on_channel_updated_url: :unset, 
+                      webhooks_on_channel_updated_method: :unset, 
+                      webhooks_on_member_added_url: :unset, 
+                      webhooks_on_member_added_method: :unset, 
+                      webhooks_on_member_removed_url: :unset, 
+                      webhooks_on_member_removed_method: :unset, 
+                      limits_channel_members: :unset, 
+                      limits_user_channels: :unset
                     )
 
                         context.update(

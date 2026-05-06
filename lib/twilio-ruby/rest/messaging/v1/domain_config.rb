@@ -109,10 +109,10 @@ module Twilio
                     # @param [Boolean] disable_https Customer's choice to send links with/without \\\"https://\\\" attached to shortened url. If true, messages will not be sent with https:// at the beginning of the url. If false, messages will be sent with https:// at the beginning of the url. False is the default behavior if it is not specified.
                     # @return [DomainConfigInstance] Updated DomainConfigInstance
                     def update(
-                        fallback_url: :unset, 
-                        callback_url: :unset, 
-                        continue_on_failure: :unset, 
-                        disable_https: :unset
+                      fallback_url: :unset, 
+                      callback_url: :unset, 
+                      continue_on_failure: :unset, 
+                      disable_https: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -283,7 +283,7 @@ module Twilio
                             @domain_config_page << DomainConfigListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -305,7 +305,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -442,10 +442,10 @@ module Twilio
                     # @param [Boolean] disable_https Customer's choice to send links with/without \\\"https://\\\" attached to shortened url. If true, messages will not be sent with https:// at the beginning of the url. If false, messages will be sent with https:// at the beginning of the url. False is the default behavior if it is not specified.
                     # @return [DomainConfigInstance] Updated DomainConfigInstance
                     def update(
-                        fallback_url: :unset, 
-                        callback_url: :unset, 
-                        continue_on_failure: :unset, 
-                        disable_https: :unset
+                      fallback_url: :unset, 
+                      callback_url: :unset, 
+                      continue_on_failure: :unset, 
+                      disable_https: :unset
                     )
 
                         context.update(

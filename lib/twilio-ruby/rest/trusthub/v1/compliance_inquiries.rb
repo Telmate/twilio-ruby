@@ -38,9 +38,9 @@ module Twilio
                     # @param [String] primary_profile_sid The unique SID identifier of the Primary Customer Profile that should be used as a parent. Only necessary when creating a secondary Customer Profile.
                     # @return [ComplianceInquiriesInstance] Created ComplianceInquiriesInstance
                     def create(
-                        notification_email: :unset, 
-                        theme_set_id: :unset, 
-                        primary_profile_sid: :unset
+                      notification_email: :unset, 
+                      theme_set_id: :unset, 
+                      primary_profile_sid: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -131,8 +131,8 @@ module Twilio
                     # @param [String] theme_set_id Theme id for styling the inquiry form.
                     # @return [ComplianceInquiriesInstance] Updated ComplianceInquiriesInstance
                     def update(
-                        primary_profile_sid: nil, 
-                        theme_set_id: :unset
+                      primary_profile_sid: nil, 
+                      theme_set_id: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -295,7 +295,7 @@ module Twilio
                             @compliance_inquiries_page << ComplianceInquiriesListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -317,7 +317,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -409,8 +409,8 @@ module Twilio
                     # @param [String] theme_set_id Theme id for styling the inquiry form.
                     # @return [ComplianceInquiriesInstance] Updated ComplianceInquiriesInstance
                     def update(
-                        primary_profile_sid: nil, 
-                        theme_set_id: :unset
+                      primary_profile_sid: nil, 
+                      theme_set_id: :unset
                     )
 
                         context.update(

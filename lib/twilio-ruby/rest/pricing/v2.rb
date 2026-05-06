@@ -34,6 +34,7 @@ module Twilio
                     if iso_country.nil?
                         raise ArgumentError, 'iso_country cannot be nil'
                     end
+
                     if iso_country == :unset
                         @countries ||= CountryList.new self
                     else
@@ -48,6 +49,7 @@ module Twilio
                     if destination_number.nil?
                         raise ArgumentError, 'destination_number cannot be nil'
                     end
+
                     if destination_number == :unset
                         @numbers ||= NumberList.new self
                     else
@@ -55,9 +57,18 @@ module Twilio
                     end
                 end
                 ##
+                # @param [String] iso_country The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the origin-based voice pricing information to fetch.
                 # @return [Twilio::REST::Pricing::V2::VoiceList]
-                def voice
-                    @voice ||= VoiceList.new self
+                def voice(iso_country=:unset)
+                    if iso_country.nil?
+                        raise ArgumentError, 'iso_country cannot be nil'
+                    end
+
+                    if iso_country == :unset
+                        @voice ||= VoiceList.new self
+                    else
+                        VoiceList.new(self, iso_country: iso_country)
+                    end
                 end
                 ##
                 # Provide a user friendly representation

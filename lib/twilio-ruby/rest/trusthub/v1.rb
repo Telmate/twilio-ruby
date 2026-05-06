@@ -41,6 +41,7 @@ module Twilio
                     if customer_id.nil?
                         raise ArgumentError, 'customer_id cannot be nil'
                     end
+
                     if customer_id == :unset
                         @compliance_inquiries ||= ComplianceInquiriesList.new self
                     else
@@ -55,6 +56,7 @@ module Twilio
                     if registration_id.nil?
                         raise ArgumentError, 'registration_id cannot be nil'
                     end
+
                     if registration_id == :unset
                         @compliance_registration_inquiries ||= ComplianceRegistrationInquiriesList.new self
                     else
@@ -74,6 +76,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @customer_profiles ||= CustomerProfilesList.new self
                     else
@@ -88,6 +91,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @end_users ||= EndUserList.new self
                     else
@@ -102,6 +106,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @end_user_types ||= EndUserTypeList.new self
                     else
@@ -116,6 +121,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @policies ||= PoliciesList.new self
                     else
@@ -130,6 +136,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @supporting_documents ||= SupportingDocumentList.new self
                     else
@@ -144,6 +151,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @supporting_document_types ||= SupportingDocumentTypeList.new self
                     else
@@ -158,6 +166,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @trust_products ||= TrustProductsList.new self
                     else

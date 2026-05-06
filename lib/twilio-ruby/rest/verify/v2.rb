@@ -37,6 +37,7 @@ module Twilio
                     if form_type.nil?
                         raise ArgumentError, 'form_type cannot be nil'
                     end
+
                     if form_type == :unset
                         @forms ||= FormList.new self
                     else
@@ -51,6 +52,7 @@ module Twilio
                     if phone_number.nil?
                         raise ArgumentError, 'phone_number cannot be nil'
                     end
+
                     if phone_number == :unset
                         @safelist ||= SafelistList.new self
                     else
@@ -65,6 +67,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @services ||= ServiceList.new self
                     else
@@ -84,6 +87,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @verification_attempts ||= VerificationAttemptList.new self
                     else

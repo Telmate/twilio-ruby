@@ -42,6 +42,7 @@ module Twilio
       # record:: Record the call
       # trim:: Trim the recording
       # recording_status_callback:: Recording status callback URL
+      # recording_configuration_id:: Configuration for the recording
       # recording_status_callback_method:: Recording status callback URL method
       # recording_status_callback_event:: Recording status callback events
       # answer_on_bridge:: Preserve the ringing behavior of the inbound call until the Dialed call picks up
@@ -52,8 +53,8 @@ module Twilio
       # refer_method:: The HTTP method to use for the refer Webhook
       # events:: Subscription to events
       # keyword_args:: additional attributes
-      def dial(number: nil, action: nil, method: nil, timeout: nil, hangup_on_star: nil, time_limit: nil, caller_id: nil, record: nil, trim: nil, recording_status_callback: nil, recording_status_callback_method: nil, recording_status_callback_event: nil, answer_on_bridge: nil, ring_tone: nil, recording_track: nil, sequential: nil, refer_url: nil, refer_method: nil, events: nil, **keyword_args)
-        dial = Dial.new(number: number, action: action, method: method, timeout: timeout, hangup_on_star: hangup_on_star, time_limit: time_limit, caller_id: caller_id, record: record, trim: trim, recording_status_callback: recording_status_callback, recording_status_callback_method: recording_status_callback_method, recording_status_callback_event: recording_status_callback_event, answer_on_bridge: answer_on_bridge, ring_tone: ring_tone, recording_track: recording_track, sequential: sequential, refer_url: refer_url, refer_method: refer_method, events: events, **keyword_args)
+      def dial(number: nil, action: nil, method: nil, timeout: nil, hangup_on_star: nil, time_limit: nil, caller_id: nil, record: nil, trim: nil, recording_status_callback: nil, recording_configuration_id: nil, recording_status_callback_method: nil, recording_status_callback_event: nil, answer_on_bridge: nil, ring_tone: nil, recording_track: nil, sequential: nil, refer_url: nil, refer_method: nil, events: nil, **keyword_args)
+        dial = Dial.new(number: number, action: action, method: method, timeout: timeout, hangup_on_star: hangup_on_star, time_limit: time_limit, caller_id: caller_id, record: record, trim: trim, recording_status_callback: recording_status_callback, recording_configuration_id: recording_configuration_id, recording_status_callback_method: recording_status_callback_method, recording_status_callback_event: recording_status_callback_event, answer_on_bridge: answer_on_bridge, ring_tone: ring_tone, recording_track: recording_track, sequential: sequential, refer_url: refer_url, refer_method: refer_method, events: events, **keyword_args)
 
         yield(dial) if block_given?
         append(dial)
@@ -172,9 +173,10 @@ module Twilio
       # recording_status_callback_event:: Recording status callback events
       # transcribe:: Transcribe the recording
       # transcribe_callback:: Transcribe callback URL
+      # recording_configuration_id:: Configuration for the recording
       # keyword_args:: additional attributes
-      def record(action: nil, method: nil, timeout: nil, finish_on_key: nil, max_length: nil, play_beep: nil, trim: nil, recording_status_callback: nil, recording_status_callback_method: nil, recording_status_callback_event: nil, transcribe: nil, transcribe_callback: nil, **keyword_args)
-        append(Record.new(action: action, method: method, timeout: timeout, finish_on_key: finish_on_key, max_length: max_length, play_beep: play_beep, trim: trim, recording_status_callback: recording_status_callback, recording_status_callback_method: recording_status_callback_method, recording_status_callback_event: recording_status_callback_event, transcribe: transcribe, transcribe_callback: transcribe_callback, **keyword_args))
+      def record(action: nil, method: nil, timeout: nil, finish_on_key: nil, max_length: nil, play_beep: nil, trim: nil, recording_status_callback: nil, recording_status_callback_method: nil, recording_status_callback_event: nil, transcribe: nil, transcribe_callback: nil, recording_configuration_id: nil, **keyword_args)
+        append(Record.new(action: action, method: method, timeout: timeout, finish_on_key: finish_on_key, max_length: max_length, play_beep: play_beep, trim: trim, recording_status_callback: recording_status_callback, recording_status_callback_method: recording_status_callback_method, recording_status_callback_event: recording_status_callback_event, transcribe: transcribe, transcribe_callback: transcribe_callback, recording_configuration_id: recording_configuration_id, **keyword_args))
       end
 
       ##
@@ -562,9 +564,10 @@ module Twilio
       # trim:: Trim the recording
       # track:: To indicate which audio track should be recorded
       # channels:: The recording channels for the final recording
+      # recording_configuration_id:: Configuration for the recording
       # keyword_args:: additional attributes
-      def recording(recording_status_callback: nil, recording_status_callback_method: nil, recording_status_callback_event: nil, trim: nil, track: nil, channels: nil, **keyword_args)
-        append(Recording.new(recording_status_callback: recording_status_callback, recording_status_callback_method: recording_status_callback_method, recording_status_callback_event: recording_status_callback_event, trim: trim, track: track, channels: channels, **keyword_args))
+      def recording(recording_status_callback: nil, recording_status_callback_method: nil, recording_status_callback_event: nil, trim: nil, track: nil, channels: nil, recording_configuration_id: nil, **keyword_args)
+        append(Recording.new(recording_status_callback: recording_status_callback, recording_status_callback_method: recording_status_callback_method, recording_status_callback_event: recording_status_callback_event, trim: trim, track: track, channels: channels, recording_configuration_id: recording_configuration_id, **keyword_args))
       end
     end
 
@@ -1687,6 +1690,7 @@ module Twilio
       # wait_method:: Wait URL method
       # max_participants:: Maximum number of participants
       # record:: Record the conference
+      # recording_configuration_id:: Configuration for the recording
       # region:: Conference region
       # coach:: Call coach
       # trim:: Trim the conference recording
@@ -1700,8 +1704,8 @@ module Twilio
       # jitter_buffer_size:: Size of jitter buffer for participant
       # participant_label:: A label for participant
       # keyword_args:: additional attributes
-      def conference(name, muted: nil, beep: nil, start_conference_on_enter: nil, end_conference_on_exit: nil, wait_url: nil, wait_method: nil, max_participants: nil, record: nil, region: nil, coach: nil, trim: nil, status_callback_event: nil, status_callback: nil, status_callback_method: nil, recording_status_callback: nil, recording_status_callback_method: nil, recording_status_callback_event: nil, event_callback_url: nil, jitter_buffer_size: nil, participant_label: nil, **keyword_args)
-        append(Conference.new(name, muted: muted, beep: beep, start_conference_on_enter: start_conference_on_enter, end_conference_on_exit: end_conference_on_exit, wait_url: wait_url, wait_method: wait_method, max_participants: max_participants, record: record, region: region, coach: coach, trim: trim, status_callback_event: status_callback_event, status_callback: status_callback, status_callback_method: status_callback_method, recording_status_callback: recording_status_callback, recording_status_callback_method: recording_status_callback_method, recording_status_callback_event: recording_status_callback_event, event_callback_url: event_callback_url, jitter_buffer_size: jitter_buffer_size, participant_label: participant_label, **keyword_args))
+      def conference(name, muted: nil, beep: nil, start_conference_on_enter: nil, end_conference_on_exit: nil, wait_url: nil, wait_method: nil, max_participants: nil, record: nil, recording_configuration_id: nil, region: nil, coach: nil, trim: nil, status_callback_event: nil, status_callback: nil, status_callback_method: nil, recording_status_callback: nil, recording_status_callback_method: nil, recording_status_callback_event: nil, event_callback_url: nil, jitter_buffer_size: nil, participant_label: nil, **keyword_args)
+        append(Conference.new(name, muted: muted, beep: beep, start_conference_on_enter: start_conference_on_enter, end_conference_on_exit: end_conference_on_exit, wait_url: wait_url, wait_method: wait_method, max_participants: max_participants, record: record, recording_configuration_id: recording_configuration_id, region: region, coach: coach, trim: trim, status_callback_event: status_callback_event, status_callback: status_callback, status_callback_method: status_callback_method, recording_status_callback: recording_status_callback, recording_status_callback_method: recording_status_callback_method, recording_status_callback_event: recording_status_callback_event, event_callback_url: event_callback_url, jitter_buffer_size: jitter_buffer_size, participant_label: participant_label, **keyword_args))
       end
 
       ##

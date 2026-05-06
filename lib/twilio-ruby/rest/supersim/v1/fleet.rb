@@ -44,15 +44,15 @@ module Twilio
                     # @param [String] sms_commands_method A string representing the HTTP method to use when making a request to `sms_commands_url`. Can be one of `POST` or `GET`. Defaults to `POST`.
                     # @return [FleetInstance] Created FleetInstance
                     def create(
-                        network_access_profile: nil, 
-                        unique_name: :unset, 
-                        data_enabled: :unset, 
-                        data_limit: :unset, 
-                        ip_commands_url: :unset, 
-                        ip_commands_method: :unset, 
-                        sms_commands_enabled: :unset, 
-                        sms_commands_url: :unset, 
-                        sms_commands_method: :unset
+                      network_access_profile: nil, 
+                      unique_name: :unset, 
+                      data_enabled: :unset, 
+                      data_limit: :unset, 
+                      ip_commands_url: :unset, 
+                      ip_commands_method: :unset, 
+                      sms_commands_enabled: :unset, 
+                      sms_commands_url: :unset, 
+                      sms_commands_method: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -175,7 +175,11 @@ module Twilio
                             network_access_profile: network_access_profile,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -211,9 +215,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -333,13 +341,13 @@ module Twilio
                     # @param [String] data_limit The total data usage (download and upload combined) in Megabytes that each Super SIM assigned to the Fleet can consume during a billing period (normally one month). Value must be between 1MB (1) and 2TB (2,000,000). Defaults to 1GB (1,000).
                     # @return [FleetInstance] Updated FleetInstance
                     def update(
-                        unique_name: :unset, 
-                        network_access_profile: :unset, 
-                        ip_commands_url: :unset, 
-                        ip_commands_method: :unset, 
-                        sms_commands_url: :unset, 
-                        sms_commands_method: :unset, 
-                        data_limit: :unset
+                      unique_name: :unset, 
+                      network_access_profile: :unset, 
+                      ip_commands_url: :unset, 
+                      ip_commands_method: :unset, 
+                      sms_commands_url: :unset, 
+                      sms_commands_method: :unset, 
+                      data_limit: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -522,7 +530,7 @@ module Twilio
                             @fleet_page << FleetListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -544,7 +552,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -726,13 +734,13 @@ module Twilio
                     # @param [String] data_limit The total data usage (download and upload combined) in Megabytes that each Super SIM assigned to the Fleet can consume during a billing period (normally one month). Value must be between 1MB (1) and 2TB (2,000,000). Defaults to 1GB (1,000).
                     # @return [FleetInstance] Updated FleetInstance
                     def update(
-                        unique_name: :unset, 
-                        network_access_profile: :unset, 
-                        ip_commands_url: :unset, 
-                        ip_commands_method: :unset, 
-                        sms_commands_url: :unset, 
-                        sms_commands_method: :unset, 
-                        data_limit: :unset
+                      unique_name: :unset, 
+                      network_access_profile: :unset, 
+                      ip_commands_url: :unset, 
+                      ip_commands_method: :unset, 
+                      sms_commands_url: :unset, 
+                      sms_commands_method: :unset, 
+                      data_limit: :unset
                     )
 
                         context.update(

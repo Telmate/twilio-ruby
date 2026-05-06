@@ -62,7 +62,7 @@ module Twilio
                     # @param [String] origination_number The origination phone number, in [E.164](https://www.twilio.com/docs/glossary/what-e164) format, for which to fetch the origin-based voice pricing information. E.164 format consists of a + followed by the country code and subscriber number.
                     # @return [NumberInstance] Fetched NumberInstance
                     def fetch(
-                        origination_number: :unset
+                      origination_number: :unset
                     )
 
                         params = Twilio::Values.of({
@@ -219,7 +219,7 @@ module Twilio
                             @number_page << NumberListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -241,7 +241,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -360,7 +360,7 @@ module Twilio
                     # @param [String] origination_number The origination phone number, in [E.164](https://www.twilio.com/docs/glossary/what-e164) format, for which to fetch the origin-based voice pricing information. E.164 format consists of a + followed by the country code and subscriber number.
                     # @return [NumberInstance] Fetched NumberInstance
                     def fetch(
-                        origination_number: :unset
+                      origination_number: :unset
                     )
 
                         context.fetch(

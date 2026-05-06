@@ -34,6 +34,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @contents ||= ContentList.new self
                     else

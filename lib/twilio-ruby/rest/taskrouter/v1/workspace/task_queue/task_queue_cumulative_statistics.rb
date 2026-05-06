@@ -70,11 +70,11 @@ module Twilio
                     # @param [String] split_by_wait_time A comma separated list of values that describes the thresholds, in seconds, to calculate statistics on. For each threshold specified, the number of Tasks canceled and reservations accepted above and below the specified thresholds in seconds are computed. TaskRouter will calculate statistics on up to 10,000 Tasks/Reservations for any given threshold.
                     # @return [TaskQueueCumulativeStatisticsInstance] Fetched TaskQueueCumulativeStatisticsInstance
                     def fetch(
-                        end_date: :unset, 
-                        minutes: :unset, 
-                        start_date: :unset, 
-                        task_channel: :unset, 
-                        split_by_wait_time: :unset
+                      end_date: :unset, 
+                      minutes: :unset, 
+                      start_date: :unset, 
+                      task_channel: :unset, 
+                      split_by_wait_time: :unset
                     )
 
                         params = Twilio::Values.of({
@@ -249,7 +249,7 @@ module Twilio
                             @task_queue_cumulative_statistics_page << TaskQueueCumulativeStatisticsListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -271,7 +271,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -492,11 +492,11 @@ module Twilio
                     # @param [String] split_by_wait_time A comma separated list of values that describes the thresholds, in seconds, to calculate statistics on. For each threshold specified, the number of Tasks canceled and reservations accepted above and below the specified thresholds in seconds are computed. TaskRouter will calculate statistics on up to 10,000 Tasks/Reservations for any given threshold.
                     # @return [TaskQueueCumulativeStatisticsInstance] Fetched TaskQueueCumulativeStatisticsInstance
                     def fetch(
-                        end_date: :unset, 
-                        minutes: :unset, 
-                        start_date: :unset, 
-                        task_channel: :unset, 
-                        split_by_wait_time: :unset
+                      end_date: :unset, 
+                      minutes: :unset, 
+                      start_date: :unset, 
+                      task_channel: :unset, 
+                      split_by_wait_time: :unset
                     )
 
                         context.fetch(

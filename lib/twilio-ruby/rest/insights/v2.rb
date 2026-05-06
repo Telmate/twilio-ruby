@@ -34,6 +34,7 @@ module Twilio
                     if report_id.nil?
                         raise ArgumentError, 'report_id cannot be nil'
                     end
+
                     if report_id == :unset
                         @inbound ||= InboundList.new self
                     else
@@ -48,6 +49,7 @@ module Twilio
                     if report_id.nil?
                         raise ArgumentError, 'report_id cannot be nil'
                     end
+
                     if report_id == :unset
                         @outbound ||= OutboundList.new self
                     else
@@ -62,6 +64,7 @@ module Twilio
                     if report_id.nil?
                         raise ArgumentError, 'report_id cannot be nil'
                     end
+
                     if report_id == :unset
                         @reports ||= ReportList.new self
                     else

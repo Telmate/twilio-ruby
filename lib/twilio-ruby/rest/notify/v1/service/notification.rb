@@ -55,24 +55,24 @@ module Twilio
                     # @param [Array[String]] tag A tag that selects the Bindings to notify. Repeat this parameter to specify more than one tag, up to a total of 5 tags. The implicit tag `all` is available to notify all Bindings in a Service instance. Similarly, the implicit tags `apn`, `fcm`, `gcm`, `sms` and `facebook-messenger` are available to notify all Bindings in a specific channel.
                     # @return [NotificationInstance] Created NotificationInstance
                     def create(
-                        body: :unset, 
-                        priority: :unset, 
-                        ttl: :unset, 
-                        title: :unset, 
-                        sound: :unset, 
-                        action: :unset, 
-                        data: :unset, 
-                        apn: :unset, 
-                        gcm: :unset, 
-                        sms: :unset, 
-                        facebook_messenger: :unset, 
-                        fcm: :unset, 
-                        segment: :unset, 
-                        alexa: :unset, 
-                        to_binding: :unset, 
-                        delivery_callback_url: :unset, 
-                        identity: :unset, 
-                        tag: :unset
+                      body: :unset, 
+                      priority: :unset, 
+                      ttl: :unset, 
+                      title: :unset, 
+                      sound: :unset, 
+                      action: :unset, 
+                      data: :unset, 
+                      apn: :unset, 
+                      gcm: :unset, 
+                      sms: :unset, 
+                      facebook_messenger: :unset, 
+                      fcm: :unset, 
+                      segment: :unset, 
+                      alexa: :unset, 
+                      to_binding: :unset, 
+                      delivery_callback_url: :unset, 
+                      identity: :unset, 
+                      tag: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -245,7 +245,7 @@ module Twilio
                             @notification_page << NotificationListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -267,7 +267,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end

@@ -38,9 +38,9 @@ module Twilio
                     # @param [Boolean] cnp_migration Customers should use this flag during the ERC registration process to indicate to Twilio that the campaign being registered is undergoing CNP migration. It is important for the user to first trigger the CNP migration process for said campaign in their CSP portal and have Twilio accept the sharing request, before making this api call.
                     # @return [ExternalCampaignInstance] Created ExternalCampaignInstance
                     def create(
-                        campaign_id: nil, 
-                        messaging_service_sid: nil, 
-                        cnp_migration: :unset
+                      campaign_id: nil, 
+                      messaging_service_sid: nil, 
+                      cnp_migration: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -151,7 +151,7 @@ module Twilio
                             @external_campaign_page << ExternalCampaignListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -173,7 +173,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end

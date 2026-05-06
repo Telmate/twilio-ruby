@@ -36,6 +36,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @available_add_ons ||= AvailableAddOnList.new self
                     else
@@ -50,6 +51,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @installed_add_ons ||= InstalledAddOnList.new self
                     else
@@ -69,6 +71,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @module_data_management ||= ModuleDataManagementList.new self
                     else

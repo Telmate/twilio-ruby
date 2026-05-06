@@ -139,8 +139,8 @@ module Twilio
                     # @param [Object] policy The \\\\`Policy\\\\` object is a collection that specifies the allowed Twilio permissions for the restricted key. For more information on the permissions available with restricted API keys, refer to the [Twilio documentation](https://www.twilio.com/docs/iam/api-keys/restricted-api-keys#permissions-available-with-restricted-api-keys).
                     # @return [ApiKeyInstance] Updated ApiKeyInstance
                     def update(
-                        friendly_name: :unset, 
-                        policy: :unset
+                      friendly_name: :unset, 
+                      policy: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -303,7 +303,7 @@ module Twilio
                             @api_key_page << ApiKeyListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -325,7 +325,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -440,8 +440,8 @@ module Twilio
                     # @param [Object] policy The \\\\`Policy\\\\` object is a collection that specifies the allowed Twilio permissions for the restricted key. For more information on the permissions available with restricted API keys, refer to the [Twilio documentation](https://www.twilio.com/docs/iam/api-keys/restricted-api-keys#permissions-available-with-restricted-api-keys).
                     # @return [ApiKeyInstance] Updated ApiKeyInstance
                     def update(
-                        friendly_name: :unset, 
-                        policy: :unset
+                      friendly_name: :unset, 
+                      policy: :unset
                     )
 
                         context.update(

@@ -36,7 +36,7 @@ module Twilio
                     # @param [String] country_code The country code to filter the geo permissions. If provided, only the geo permission for the specified country will be returned.
                     # @return [MessagingGeopermissionsInstance] Fetched MessagingGeopermissionsInstance
                     def fetch(
-                        country_code: :unset
+                      country_code: :unset
                     )
 
                         params = Twilio::Values.of({
@@ -90,7 +90,7 @@ module Twilio
                     # @param [Array[Hash]] permissions A list of objects where each object represents the Geo Permission to be updated. Each object contains the following fields: `country_code`, unique code for each country of Geo Permission; `type`, permission type of the Geo Permission i.e. country; `enabled`, configure true for enabling the Geo Permission, false for disabling the Geo Permission.
                     # @return [MessagingGeopermissionsInstance] Updated MessagingGeopermissionsInstance
                     def update(
-                        permissions: nil
+                      permissions: nil
                     )
 
                         data = Twilio::Values.of({
@@ -193,7 +193,7 @@ module Twilio
                             @messaging_geopermissions_page << MessagingGeopermissionsListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -215,7 +215,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end

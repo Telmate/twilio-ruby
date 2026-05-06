@@ -39,8 +39,8 @@ module Twilio
                     # @param [Boolean] available Whether the Worker should be eligible to receive a Task when it occupies the Activity. A value of `true`, `1`, or `yes` specifies the Activity is available. All other values specify that it is not. The value cannot be changed after the Activity is created.
                     # @return [ActivityInstance] Created ActivityInstance
                     def create(
-                        friendly_name: nil, 
-                        available: :unset
+                      friendly_name: nil, 
+                      available: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -141,7 +141,11 @@ module Twilio
                             available: available,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -179,9 +183,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -332,7 +340,7 @@ module Twilio
                     # @param [String] friendly_name A descriptive string that you create to describe the Activity resource. It can be up to 64 characters long. These names are used to calculate and expose statistics about Workers, and provide visibility into the state of each Worker. Examples of friendly names include: `on-call`, `break`, and `email`.
                     # @return [ActivityInstance] Updated ActivityInstance
                     def update(
-                        friendly_name: :unset
+                      friendly_name: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -493,7 +501,7 @@ module Twilio
                             @activity_page << ActivityListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -515,7 +523,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -657,7 +665,7 @@ module Twilio
                     # @param [String] friendly_name A descriptive string that you create to describe the Activity resource. It can be up to 64 characters long. These names are used to calculate and expose statistics about Workers, and provide visibility into the state of each Worker. Examples of friendly names include: `on-call`, `break`, and `email`.
                     # @return [ActivityInstance] Updated ActivityInstance
                     def update(
-                        friendly_name: :unset
+                      friendly_name: :unset
                     )
 
                         context.update(

@@ -45,16 +45,16 @@ module Twilio
                     # @param [String] from_domain_sid The SID of the SIP Domain that should be used in the `From` header of originating calls sent to your SIP infrastructure. If your SIP infrastructure allows users to \\\"call back\\\" an incoming call, configure this with a [SIP Domain](https://www.twilio.com/docs/voice/api/sending-sip) to ensure proper routing. If not configured, the from domain will default to \\\"sip.twilio.com\\\".
                     # @return [ByocTrunkInstance] Created ByocTrunkInstance
                     def create(
-                        friendly_name: :unset, 
-                        voice_url: :unset, 
-                        voice_method: :unset, 
-                        voice_fallback_url: :unset, 
-                        voice_fallback_method: :unset, 
-                        status_callback_url: :unset, 
-                        status_callback_method: :unset, 
-                        cnam_lookup_enabled: :unset, 
-                        connection_policy_sid: :unset, 
-                        from_domain_sid: :unset
+                      friendly_name: :unset, 
+                      voice_url: :unset, 
+                      voice_method: :unset, 
+                      voice_fallback_url: :unset, 
+                      voice_fallback_method: :unset, 
+                      status_callback_url: :unset, 
+                      status_callback_method: :unset, 
+                      cnam_lookup_enabled: :unset, 
+                      connection_policy_sid: :unset, 
+                      from_domain_sid: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -177,7 +177,11 @@ module Twilio
                         page = self.page(
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -211,9 +215,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -366,16 +374,16 @@ module Twilio
                     # @param [String] from_domain_sid The SID of the SIP Domain that should be used in the `From` header of originating calls sent to your SIP infrastructure. If your SIP infrastructure allows users to \\\"call back\\\" an incoming call, configure this with a [SIP Domain](https://www.twilio.com/docs/voice/api/sending-sip) to ensure proper routing. If not configured, the from domain will default to \\\"sip.twilio.com\\\".
                     # @return [ByocTrunkInstance] Updated ByocTrunkInstance
                     def update(
-                        friendly_name: :unset, 
-                        voice_url: :unset, 
-                        voice_method: :unset, 
-                        voice_fallback_url: :unset, 
-                        voice_fallback_method: :unset, 
-                        status_callback_url: :unset, 
-                        status_callback_method: :unset, 
-                        cnam_lookup_enabled: :unset, 
-                        connection_policy_sid: :unset, 
-                        from_domain_sid: :unset
+                      friendly_name: :unset, 
+                      voice_url: :unset, 
+                      voice_method: :unset, 
+                      voice_fallback_url: :unset, 
+                      voice_fallback_method: :unset, 
+                      status_callback_url: :unset, 
+                      status_callback_method: :unset, 
+                      cnam_lookup_enabled: :unset, 
+                      connection_policy_sid: :unset, 
+                      from_domain_sid: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -570,7 +578,7 @@ module Twilio
                             @byoc_trunk_page << ByocTrunkListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -592,7 +600,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -785,16 +793,16 @@ module Twilio
                     # @param [String] from_domain_sid The SID of the SIP Domain that should be used in the `From` header of originating calls sent to your SIP infrastructure. If your SIP infrastructure allows users to \\\"call back\\\" an incoming call, configure this with a [SIP Domain](https://www.twilio.com/docs/voice/api/sending-sip) to ensure proper routing. If not configured, the from domain will default to \\\"sip.twilio.com\\\".
                     # @return [ByocTrunkInstance] Updated ByocTrunkInstance
                     def update(
-                        friendly_name: :unset, 
-                        voice_url: :unset, 
-                        voice_method: :unset, 
-                        voice_fallback_url: :unset, 
-                        voice_fallback_method: :unset, 
-                        status_callback_url: :unset, 
-                        status_callback_method: :unset, 
-                        cnam_lookup_enabled: :unset, 
-                        connection_policy_sid: :unset, 
-                        from_domain_sid: :unset
+                      friendly_name: :unset, 
+                      voice_url: :unset, 
+                      voice_method: :unset, 
+                      voice_fallback_url: :unset, 
+                      voice_fallback_method: :unset, 
+                      status_callback_url: :unset, 
+                      status_callback_method: :unset, 
+                      cnam_lookup_enabled: :unset, 
+                      connection_policy_sid: :unset, 
+                      from_domain_sid: :unset
                     )
 
                         context.update(

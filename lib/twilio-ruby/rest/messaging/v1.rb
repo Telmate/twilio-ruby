@@ -44,6 +44,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @brand_registrations ||= BrandRegistrationList.new self
                     else
@@ -63,6 +64,7 @@ module Twilio
                     if domain_sid.nil?
                         raise ArgumentError, 'domain_sid cannot be nil'
                     end
+
                     if domain_sid == :unset
                         @domain_certs ||= DomainCertsList.new self
                     else
@@ -77,6 +79,7 @@ module Twilio
                     if domain_sid.nil?
                         raise ArgumentError, 'domain_sid cannot be nil'
                     end
+
                     if domain_sid == :unset
                         @domain_config ||= DomainConfigList.new self
                     else
@@ -91,6 +94,7 @@ module Twilio
                     if messaging_service_sid.nil?
                         raise ArgumentError, 'messaging_service_sid cannot be nil'
                     end
+
                     if messaging_service_sid == :unset
                         @domain_config_messaging_service ||= DomainConfigMessagingServiceList.new self
                     else
@@ -105,6 +109,7 @@ module Twilio
                     if domain_sid.nil?
                         raise ArgumentError, 'domain_sid cannot be nil'
                     end
+
                     if domain_sid == :unset
                         @domain_validate_dns ||= DomainValidateDnList.new self
                     else
@@ -128,8 +133,11 @@ module Twilio
                     if messaging_service_sid.nil?
                         raise ArgumentError, 'messaging_service_sid cannot be nil'
                     end
+
                     if domain_sid == :unset && messaging_service_sid == :unset
                         @linkshortening_messaging_service ||= LinkshorteningMessagingServiceList.new self
+                    elsif domain_sid != :unset && messaging_service_sid == :unset
+                        LinkshorteningMessagingServiceList.new(self, domain_sid: domain_sid)
                     else
                         LinkshorteningMessagingServiceContext.new(self, domain_sid, messaging_service_sid)
                     end
@@ -146,8 +154,11 @@ module Twilio
                     if messaging_service_sid.nil?
                         raise ArgumentError, 'messaging_service_sid cannot be nil'
                     end
+
                     if domain_sid == :unset && messaging_service_sid == :unset
                         @linkshortening_messaging_service ||= LinkshorteningMessagingServiceList.new self
+                    elsif domain_sid != :unset && messaging_service_sid == :unset
+                        LinkshorteningMessagingServiceList.new(self, domain_sid: domain_sid)
                     else
                         LinkshorteningMessagingServiceContext.new(self, domain_sid, messaging_service_sid)
                     end
@@ -160,6 +171,7 @@ module Twilio
                     if messaging_service_sid.nil?
                         raise ArgumentError, 'messaging_service_sid cannot be nil'
                     end
+
                     if messaging_service_sid == :unset
                         @linkshortening_messaging_service_domain_association ||= LinkshorteningMessagingServiceDomainAssociationList.new self
                     else
@@ -174,6 +186,7 @@ module Twilio
                     if domain_sid.nil?
                         raise ArgumentError, 'domain_sid cannot be nil'
                     end
+
                     if domain_sid == :unset
                         @request_managed_cert ||= RequestManagedCertList.new self
                     else
@@ -188,6 +201,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @services ||= ServiceList.new self
                     else
@@ -202,6 +216,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @tollfree_verifications ||= TollfreeVerificationList.new self
                     else

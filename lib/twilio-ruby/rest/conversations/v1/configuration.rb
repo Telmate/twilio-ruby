@@ -107,10 +107,10 @@ module Twilio
                     # @param [String] default_closed_timer Default ISO8601 duration when conversation will be switched to `closed` state. Minimum value for this timer is 10 minutes.
                     # @return [ConfigurationInstance] Updated ConfigurationInstance
                     def update(
-                        default_chat_service_sid: :unset, 
-                        default_messaging_service_sid: :unset, 
-                        default_inactive_timer: :unset, 
-                        default_closed_timer: :unset
+                      default_chat_service_sid: :unset, 
+                      default_messaging_service_sid: :unset, 
+                      default_inactive_timer: :unset, 
+                      default_closed_timer: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -288,7 +288,7 @@ module Twilio
                             @configuration_page << ConfigurationListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -310,7 +310,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -433,10 +433,10 @@ module Twilio
                     # @param [String] default_closed_timer Default ISO8601 duration when conversation will be switched to `closed` state. Minimum value for this timer is 10 minutes.
                     # @return [ConfigurationInstance] Updated ConfigurationInstance
                     def update(
-                        default_chat_service_sid: :unset, 
-                        default_messaging_service_sid: :unset, 
-                        default_inactive_timer: :unset, 
-                        default_closed_timer: :unset
+                      default_chat_service_sid: :unset, 
+                      default_messaging_service_sid: :unset, 
+                      default_inactive_timer: :unset, 
+                      default_closed_timer: :unset
                     )
 
                         context.update(

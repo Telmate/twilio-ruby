@@ -37,8 +37,8 @@ module Twilio
                     # @param [String] registration_code The 10-digit code required to claim the Super SIM for your Account.
                     # @return [SimInstance] Created SimInstance
                     def create(
-                        iccid: nil, 
-                        registration_code: nil
+                      iccid: nil, 
+                      registration_code: nil
                     )
 
                         data = Twilio::Values.of({
@@ -141,7 +141,11 @@ module Twilio
                             iccid: iccid,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -181,9 +185,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -308,12 +316,12 @@ module Twilio
                     # @param [String] account_sid The SID of the Account to which the Sim resource should belong. The Account SID can only be that of the requesting Account or that of a Subaccount of the requesting Account. Only valid when the Sim resource's status is new.
                     # @return [SimInstance] Updated SimInstance
                     def update(
-                        unique_name: :unset, 
-                        status: :unset, 
-                        fleet: :unset, 
-                        callback_url: :unset, 
-                        callback_method: :unset, 
-                        account_sid: :unset
+                      unique_name: :unset, 
+                      status: :unset, 
+                      fleet: :unset, 
+                      callback_url: :unset, 
+                      callback_method: :unset, 
+                      account_sid: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -514,7 +522,7 @@ module Twilio
                             @sim_page << SimListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -536,7 +544,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -682,12 +690,12 @@ module Twilio
                     # @param [String] account_sid The SID of the Account to which the Sim resource should belong. The Account SID can only be that of the requesting Account or that of a Subaccount of the requesting Account. Only valid when the Sim resource's status is new.
                     # @return [SimInstance] Updated SimInstance
                     def update(
-                        unique_name: :unset, 
-                        status: :unset, 
-                        fleet: :unset, 
-                        callback_url: :unset, 
-                        callback_method: :unset, 
-                        account_sid: :unset
+                      unique_name: :unset, 
+                      status: :unset, 
+                      fleet: :unset, 
+                      callback_url: :unset, 
+                      callback_method: :unset, 
+                      account_sid: :unset
                     )
 
                         context.update(

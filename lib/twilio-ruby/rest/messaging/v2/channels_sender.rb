@@ -29,11 +29,12 @@ module Twilio
                             # @param [privacy_url]: [String] The privacy URL of the sender. Must be a publicly accessible HTTP or HTTPS URI associated with the sender. 
                             # @param [terms_of_service_url]: [String] The terms of service URL of the sender.
                             # @param [accent_color]: [String] The color theme of the sender. Must be in hex format and have at least a 4:5:1 contrast ratio against white.
+                            # @param [use_case]: [String] The messaging use case type for the RCS sender. Allowed values are `PROMOTIONAL`, `TRANSACTIONAL`, `OTP`, `MULTI_USE`. Defaults to `MULTI_USE` if not provided. Cannot be modified after launch.
                             # @param [vertical]: [String] The vertical of the sender. Allowed values are: - `Alcohol` - `Automotive` - `Beauty, Spa and Salon` - `Clothing and Apparel` - `Education` - `Entertainment` - `Event Planning and Service` - `Finance and Banking` - `Food and Grocery` - `Hotel and Lodging` - `Matrimony Service` - `Medical and Health` - `Non-profit` - `Online Gambling` - `OTC Drugs` - `Other` - `Physical Gambling` - `Professional Services` - `Public Service` - `Restaurant` - `Shopping and Retail` - `Travel and Transportation` 
                             # @param [websites]: [Hash] The websites of the sender.
                             # @param [emails]: [Hash] The emails of the sender.
                             # @param [phone_numbers]: [Hash] The phone numbers of the sender.
-                        attr_accessor :name, :about, :address, :description, :logo_url, :banner_url, :privacy_url, :terms_of_service_url, :accent_color, :vertical, :websites, :emails, :phone_numbers
+                        attr_accessor :name, :about, :address, :description, :logo_url, :banner_url, :privacy_url, :terms_of_service_url, :accent_color, :use_case, :vertical, :websites, :emails, :phone_numbers
                         def initialize(payload)
                                 @name = payload["name"]
                                 @about = payload["about"]
@@ -44,6 +45,7 @@ module Twilio
                                 @privacy_url = payload["privacy_url"]
                                 @terms_of_service_url = payload["terms_of_service_url"]
                                 @accent_color = payload["accent_color"]
+                                @use_case = payload["use_case"]
                                 @vertical = payload["vertical"]
                                 @websites = payload["websites"]
                                 @emails = payload["emails"]
@@ -60,6 +62,7 @@ module Twilio
                                 "privacy_url": @privacy_url,
                                 "terms_of_service_url": @terms_of_service_url,
                                 "accent_color": @accent_color,
+                                "use_case": @use_case,
                                 "vertical": @vertical,
                                 "websites": @websites,
                                 "emails": @emails,
@@ -206,11 +209,12 @@ module Twilio
                             # @param [privacy_url]: [String] The privacy URL of the sender. Must be a publicly accessible HTTP or HTTPS URI associated with the sender. 
                             # @param [terms_of_service_url]: [String] The terms of service URL of the sender.
                             # @param [accent_color]: [String] The color theme of the sender. Must be in hex format and have at least a 4:5:1 contrast ratio against white.
+                            # @param [use_case]: [String] The messaging use case type for the RCS sender. Allowed values are `PROMOTIONAL`, `TRANSACTIONAL`, `OTP`, `MULTI_USE`. Defaults to `MULTI_USE` if not provided. Cannot be modified after launch.
                             # @param [vertical]: [String] The vertical of the sender. Allowed values are: - `Alcohol` - `Automotive` - `Beauty, Spa and Salon` - `Clothing and Apparel` - `Education` - `Entertainment` - `Event Planning and Service` - `Finance and Banking` - `Food and Grocery` - `Hotel and Lodging` - `Matrimony Service` - `Medical and Health` - `Non-profit` - `Online Gambling` - `OTC Drugs` - `Other` - `Physical Gambling` - `Professional Services` - `Public Service` - `Restaurant` - `Shopping and Retail` - `Travel and Transportation` 
                             # @param [websites]: [Hash] The websites of the sender.
                             # @param [emails]: [Hash] The emails of the sender.
                             # @param [phone_numbers]: [Hash] The phone numbers of the sender.
-                        attr_accessor :name, :about, :address, :description, :logo_url, :banner_url, :privacy_url, :terms_of_service_url, :accent_color, :vertical, :websites, :emails, :phone_numbers
+                        attr_accessor :name, :about, :address, :description, :logo_url, :banner_url, :privacy_url, :terms_of_service_url, :accent_color, :use_case, :vertical, :websites, :emails, :phone_numbers
                         def initialize(payload)
                                 @name = payload["name"]
                                 @about = payload["about"]
@@ -221,6 +225,7 @@ module Twilio
                                 @privacy_url = payload["privacy_url"]
                                 @terms_of_service_url = payload["terms_of_service_url"]
                                 @accent_color = payload["accent_color"]
+                                @use_case = payload["use_case"]
                                 @vertical = payload["vertical"]
                                 @websites = payload["websites"]
                                 @emails = payload["emails"]
@@ -237,6 +242,7 @@ module Twilio
                                 "privacy_url": @privacy_url,
                                 "terms_of_service_url": @terms_of_service_url,
                                 "accent_color": @accent_color,
+                                "use_case": @use_case,
                                 "vertical": @vertical,
                                 "websites": @websites,
                                 "emails": @emails,
@@ -471,7 +477,11 @@ module Twilio
                             channel: channel,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -507,9 +517,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -804,7 +818,7 @@ module Twilio
                             @channels_sender_page << ChannelsSenderListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -826,7 +840,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -978,6 +992,7 @@ module Twilio
                     )
 
                         context.update(
+                            messaging_v2_channels_sender_requests_update: messaging_v2_channels_sender_requests_update, 
                         )
                     end
 

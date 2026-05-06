@@ -77,7 +77,11 @@ module Twilio
                             short_code: short_code,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -115,9 +119,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -241,12 +249,12 @@ module Twilio
                     # @param [String] sms_fallback_method The HTTP method that we should use to call the `sms_fallback_url`. Can be: `GET` or `POST`.
                     # @return [ShortCodeInstance] Updated ShortCodeInstance
                     def update(
-                        friendly_name: :unset, 
-                        api_version: :unset, 
-                        sms_url: :unset, 
-                        sms_method: :unset, 
-                        sms_fallback_url: :unset, 
-                        sms_fallback_method: :unset
+                      friendly_name: :unset, 
+                      api_version: :unset, 
+                      sms_url: :unset, 
+                      sms_method: :unset, 
+                      sms_fallback_url: :unset, 
+                      sms_fallback_method: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -427,7 +435,7 @@ module Twilio
                             @short_code_page << ShortCodeListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -449,7 +457,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -609,12 +617,12 @@ module Twilio
                     # @param [String] sms_fallback_method The HTTP method that we should use to call the `sms_fallback_url`. Can be: `GET` or `POST`.
                     # @return [ShortCodeInstance] Updated ShortCodeInstance
                     def update(
-                        friendly_name: :unset, 
-                        api_version: :unset, 
-                        sms_url: :unset, 
-                        sms_method: :unset, 
-                        sms_fallback_url: :unset, 
-                        sms_fallback_method: :unset
+                      friendly_name: :unset, 
+                      api_version: :unset, 
+                      sms_url: :unset, 
+                      sms_method: :unset, 
+                      sms_fallback_url: :unset, 
+                      sms_fallback_method: :unset
                     )
 
                         context.update(

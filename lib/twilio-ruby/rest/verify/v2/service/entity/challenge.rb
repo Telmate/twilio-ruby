@@ -44,12 +44,12 @@ module Twilio
                     # @param [String] auth_payload Optional payload used to verify the Challenge upon creation. Only used with a Factor of type `totp` to carry the TOTP code that needs to be verified. For `TOTP` this value must be between 3 and 8 characters long.
                     # @return [ChallengeInstance] Created ChallengeInstance
                     def create(
-                        factor_sid: nil, 
-                        expiration_date: :unset, 
-                        details_message: :unset, 
-                        details_fields: :unset, 
-                        hidden_details: :unset, 
-                        auth_payload: :unset
+                      factor_sid: nil, 
+                      expiration_date: :unset, 
+                      details_message: :unset, 
+                      details_fields: :unset, 
+                      hidden_details: :unset, 
+                      auth_payload: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -172,7 +172,11 @@ module Twilio
                             order: order,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -212,9 +216,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -340,8 +348,8 @@ module Twilio
                     # @param [Object] metadata Custom metadata associated with the challenge. This is added by the Device/SDK directly to allow for the inclusion of device information. It must be a stringified JSON with only strings values eg. `{\\\"os\\\": \\\"Android\\\"}`. Can be up to 1024 characters in length.
                     # @return [ChallengeInstance] Updated ChallengeInstance
                     def update(
-                        auth_payload: :unset, 
-                        metadata: :unset
+                      auth_payload: :unset, 
+                      metadata: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -519,7 +527,7 @@ module Twilio
                             @challenge_page << ChallengeListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -541,7 +549,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -739,8 +747,8 @@ module Twilio
                     # @param [Object] metadata Custom metadata associated with the challenge. This is added by the Device/SDK directly to allow for the inclusion of device information. It must be a stringified JSON with only strings values eg. `{\\\"os\\\": \\\"Android\\\"}`. Can be up to 1024 characters in length.
                     # @return [ChallengeInstance] Updated ChallengeInstance
                     def update(
-                        auth_payload: :unset, 
-                        metadata: :unset
+                      auth_payload: :unset, 
+                      metadata: :unset
                     )
 
                         context.update(

@@ -32,6 +32,7 @@ module Twilio
                     if id.nil?
                         raise ArgumentError, 'id cannot be nil'
                     end
+
                     if id == :unset
                         @knowledge ||= KnowledgeList.new self
                     else

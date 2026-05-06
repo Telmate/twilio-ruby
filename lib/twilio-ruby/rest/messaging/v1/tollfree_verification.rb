@@ -72,43 +72,43 @@ module Twilio
                     # @param [String] vetting_id The unique ID of the vetting
                     # @return [TollfreeVerificationInstance] Created TollfreeVerificationInstance
                     def create(
-                        business_name: nil, 
-                        business_website: nil, 
-                        notification_email: nil, 
-                        use_case_categories: nil, 
-                        use_case_summary: nil, 
-                        production_message_sample: nil, 
-                        opt_in_image_urls: nil, 
-                        opt_in_type: nil, 
-                        message_volume: nil, 
-                        tollfree_phone_number_sid: nil, 
-                        customer_profile_sid: :unset, 
-                        business_street_address: :unset, 
-                        business_street_address2: :unset, 
-                        business_city: :unset, 
-                        business_state_province_region: :unset, 
-                        business_postal_code: :unset, 
-                        business_country: :unset, 
-                        additional_information: :unset, 
-                        business_contact_first_name: :unset, 
-                        business_contact_last_name: :unset, 
-                        business_contact_email: :unset, 
-                        business_contact_phone: :unset, 
-                        external_reference_id: :unset, 
-                        business_registration_number: :unset, 
-                        business_registration_authority: :unset, 
-                        business_registration_country: :unset, 
-                        business_type: :unset, 
-                        business_registration_phone_number: :unset, 
-                        doing_business_as: :unset, 
-                        opt_in_confirmation_message: :unset, 
-                        help_message_sample: :unset, 
-                        privacy_policy_url: :unset, 
-                        terms_and_conditions_url: :unset, 
-                        age_gated_content: :unset, 
-                        opt_in_keywords: :unset, 
-                        vetting_provider: :unset, 
-                        vetting_id: :unset
+                      business_name: nil, 
+                      business_website: nil, 
+                      notification_email: nil, 
+                      use_case_categories: nil, 
+                      use_case_summary: nil, 
+                      production_message_sample: nil, 
+                      opt_in_image_urls: nil, 
+                      opt_in_type: nil, 
+                      message_volume: nil, 
+                      tollfree_phone_number_sid: nil, 
+                      customer_profile_sid: :unset, 
+                      business_street_address: :unset, 
+                      business_street_address2: :unset, 
+                      business_city: :unset, 
+                      business_state_province_region: :unset, 
+                      business_postal_code: :unset, 
+                      business_country: :unset, 
+                      additional_information: :unset, 
+                      business_contact_first_name: :unset, 
+                      business_contact_last_name: :unset, 
+                      business_contact_email: :unset, 
+                      business_contact_phone: :unset, 
+                      external_reference_id: :unset, 
+                      business_registration_number: :unset, 
+                      business_registration_authority: :unset, 
+                      business_registration_country: :unset, 
+                      business_type: :unset, 
+                      business_registration_phone_number: :unset, 
+                      doing_business_as: :unset, 
+                      opt_in_confirmation_message: :unset, 
+                      help_message_sample: :unset, 
+                      privacy_policy_url: :unset, 
+                      terms_and_conditions_url: :unset, 
+                      age_gated_content: :unset, 
+                      opt_in_keywords: :unset, 
+                      vetting_provider: :unset, 
+                      vetting_id: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -359,7 +359,11 @@ module Twilio
                             trust_product_sid: trust_product_sid,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -404,9 +408,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -595,41 +603,41 @@ module Twilio
                     # @param [String] vetting_id The unique ID of the vetting
                     # @return [TollfreeVerificationInstance] Updated TollfreeVerificationInstance
                     def update(
-                        business_name: :unset, 
-                        business_website: :unset, 
-                        notification_email: :unset, 
-                        use_case_categories: :unset, 
-                        use_case_summary: :unset, 
-                        production_message_sample: :unset, 
-                        opt_in_image_urls: :unset, 
-                        opt_in_type: :unset, 
-                        message_volume: :unset, 
-                        business_street_address: :unset, 
-                        business_street_address2: :unset, 
-                        business_city: :unset, 
-                        business_state_province_region: :unset, 
-                        business_postal_code: :unset, 
-                        business_country: :unset, 
-                        additional_information: :unset, 
-                        business_contact_first_name: :unset, 
-                        business_contact_last_name: :unset, 
-                        business_contact_email: :unset, 
-                        business_contact_phone: :unset, 
-                        edit_reason: :unset, 
-                        business_registration_number: :unset, 
-                        business_registration_authority: :unset, 
-                        business_registration_country: :unset, 
-                        business_type: :unset, 
-                        business_registration_phone_number: :unset, 
-                        doing_business_as: :unset, 
-                        opt_in_confirmation_message: :unset, 
-                        help_message_sample: :unset, 
-                        privacy_policy_url: :unset, 
-                        terms_and_conditions_url: :unset, 
-                        age_gated_content: :unset, 
-                        opt_in_keywords: :unset, 
-                        vetting_provider: :unset, 
-                        vetting_id: :unset
+                      business_name: :unset, 
+                      business_website: :unset, 
+                      notification_email: :unset, 
+                      use_case_categories: :unset, 
+                      use_case_summary: :unset, 
+                      production_message_sample: :unset, 
+                      opt_in_image_urls: :unset, 
+                      opt_in_type: :unset, 
+                      message_volume: :unset, 
+                      business_street_address: :unset, 
+                      business_street_address2: :unset, 
+                      business_city: :unset, 
+                      business_state_province_region: :unset, 
+                      business_postal_code: :unset, 
+                      business_country: :unset, 
+                      additional_information: :unset, 
+                      business_contact_first_name: :unset, 
+                      business_contact_last_name: :unset, 
+                      business_contact_email: :unset, 
+                      business_contact_phone: :unset, 
+                      edit_reason: :unset, 
+                      business_registration_number: :unset, 
+                      business_registration_authority: :unset, 
+                      business_registration_country: :unset, 
+                      business_type: :unset, 
+                      business_registration_phone_number: :unset, 
+                      doing_business_as: :unset, 
+                      opt_in_confirmation_message: :unset, 
+                      help_message_sample: :unset, 
+                      privacy_policy_url: :unset, 
+                      terms_and_conditions_url: :unset, 
+                      age_gated_content: :unset, 
+                      opt_in_keywords: :unset, 
+                      vetting_provider: :unset, 
+                      vetting_id: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -924,7 +932,7 @@ module Twilio
                             @tollfree_verification_page << TollfreeVerificationListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -946,7 +954,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -1430,41 +1438,41 @@ module Twilio
                     # @param [String] vetting_id The unique ID of the vetting
                     # @return [TollfreeVerificationInstance] Updated TollfreeVerificationInstance
                     def update(
-                        business_name: :unset, 
-                        business_website: :unset, 
-                        notification_email: :unset, 
-                        use_case_categories: :unset, 
-                        use_case_summary: :unset, 
-                        production_message_sample: :unset, 
-                        opt_in_image_urls: :unset, 
-                        opt_in_type: :unset, 
-                        message_volume: :unset, 
-                        business_street_address: :unset, 
-                        business_street_address2: :unset, 
-                        business_city: :unset, 
-                        business_state_province_region: :unset, 
-                        business_postal_code: :unset, 
-                        business_country: :unset, 
-                        additional_information: :unset, 
-                        business_contact_first_name: :unset, 
-                        business_contact_last_name: :unset, 
-                        business_contact_email: :unset, 
-                        business_contact_phone: :unset, 
-                        edit_reason: :unset, 
-                        business_registration_number: :unset, 
-                        business_registration_authority: :unset, 
-                        business_registration_country: :unset, 
-                        business_type: :unset, 
-                        business_registration_phone_number: :unset, 
-                        doing_business_as: :unset, 
-                        opt_in_confirmation_message: :unset, 
-                        help_message_sample: :unset, 
-                        privacy_policy_url: :unset, 
-                        terms_and_conditions_url: :unset, 
-                        age_gated_content: :unset, 
-                        opt_in_keywords: :unset, 
-                        vetting_provider: :unset, 
-                        vetting_id: :unset
+                      business_name: :unset, 
+                      business_website: :unset, 
+                      notification_email: :unset, 
+                      use_case_categories: :unset, 
+                      use_case_summary: :unset, 
+                      production_message_sample: :unset, 
+                      opt_in_image_urls: :unset, 
+                      opt_in_type: :unset, 
+                      message_volume: :unset, 
+                      business_street_address: :unset, 
+                      business_street_address2: :unset, 
+                      business_city: :unset, 
+                      business_state_province_region: :unset, 
+                      business_postal_code: :unset, 
+                      business_country: :unset, 
+                      additional_information: :unset, 
+                      business_contact_first_name: :unset, 
+                      business_contact_last_name: :unset, 
+                      business_contact_email: :unset, 
+                      business_contact_phone: :unset, 
+                      edit_reason: :unset, 
+                      business_registration_number: :unset, 
+                      business_registration_authority: :unset, 
+                      business_registration_country: :unset, 
+                      business_type: :unset, 
+                      business_registration_phone_number: :unset, 
+                      doing_business_as: :unset, 
+                      opt_in_confirmation_message: :unset, 
+                      help_message_sample: :unset, 
+                      privacy_policy_url: :unset, 
+                      terms_and_conditions_url: :unset, 
+                      age_gated_content: :unset, 
+                      opt_in_keywords: :unset, 
+                      vetting_provider: :unset, 
+                      vetting_id: :unset
                     )
 
                         context.update(

@@ -108,7 +108,7 @@ module Twilio
                     # @param [String] order_status Order status can be used for filtering on Hosted Number Order status values. To see a complete list of order statuses, please check 'https://www.twilio.com/docs/phone-numbers/hosted-numbers/hosted-numbers-api/hosted-number-order-resource#status-values'.
                     # @return [BulkHostedNumberOrderInstance] Fetched BulkHostedNumberOrderInstance
                     def fetch(
-                        order_status: :unset
+                      order_status: :unset
                     )
 
                         params = Twilio::Values.of({
@@ -265,7 +265,7 @@ module Twilio
                             @bulk_hosted_number_order_page << BulkHostedNumberOrderListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -287,7 +287,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -413,7 +413,7 @@ module Twilio
                     # @param [String] order_status Order status can be used for filtering on Hosted Number Order status values. To see a complete list of order statuses, please check 'https://www.twilio.com/docs/phone-numbers/hosted-numbers/hosted-numbers-api/hosted-number-order-resource#status-values'.
                     # @return [BulkHostedNumberOrderInstance] Fetched BulkHostedNumberOrderInstance
                     def fetch(
-                        order_status: :unset
+                      order_status: :unset
                     )
 
                         context.fetch(

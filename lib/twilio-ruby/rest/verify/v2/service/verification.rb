@@ -55,24 +55,24 @@ module Twilio
                     # @param [String] tags A string containing a JSON map of key value pairs of tags to be recorded as metadata for the message. The tags will also be included as part of the verification and message status event type payloads. The object may contain up to 10 tags. Keys and values can each be up to 128 characters in length. **This value should not contain PII.**
                     # @return [VerificationInstance] Created VerificationInstance
                     def create(
-                        to: nil, 
-                        channel: nil, 
-                        custom_friendly_name: :unset, 
-                        custom_message: :unset, 
-                        send_digits: :unset, 
-                        locale: :unset, 
-                        custom_code: :unset, 
-                        amount: :unset, 
-                        payee: :unset, 
-                        rate_limits: :unset, 
-                        channel_configuration: :unset, 
-                        app_hash: :unset, 
-                        template_sid: :unset, 
-                        template_custom_substitutions: :unset, 
-                        device_ip: :unset, 
-                        enable_sna_client_token: :unset, 
-                        risk_check: :unset, 
-                        tags: :unset
+                      to: nil, 
+                      channel: nil, 
+                      custom_friendly_name: :unset, 
+                      custom_message: :unset, 
+                      send_digits: :unset, 
+                      locale: :unset, 
+                      custom_code: :unset, 
+                      amount: :unset, 
+                      payee: :unset, 
+                      rate_limits: :unset, 
+                      channel_configuration: :unset, 
+                      app_hash: :unset, 
+                      template_sid: :unset, 
+                      template_custom_substitutions: :unset, 
+                      device_ip: :unset, 
+                      enable_sna_client_token: :unset, 
+                      risk_check: :unset, 
+                      tags: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -271,7 +271,7 @@ module Twilio
                     # @param [Status] status 
                     # @return [VerificationInstance] Updated VerificationInstance
                     def update(
-                        status: nil
+                      status: nil
                     )
 
                         data = Twilio::Values.of({
@@ -432,7 +432,7 @@ module Twilio
                             @verification_page << VerificationListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -454,7 +454,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -630,7 +630,7 @@ module Twilio
                     # @param [Status] status 
                     # @return [VerificationInstance] Updated VerificationInstance
                     def update(
-                        status: nil
+                      status: nil
                     )
 
                         context.update(

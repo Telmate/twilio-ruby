@@ -56,24 +56,24 @@ module Twilio
                     # @param [String] confirmation Whether to prompt the caller to confirm their payment information before submitting to the payment gateway. If `true`, the caller will hear the last 4 digits of their card or account number and must press 1 to confirm or 2 to cancel. Default is `false`.
                     # @return [PaymentInstance] Created PaymentInstance
                     def create(
-                        idempotency_key: nil, 
-                        status_callback: nil, 
-                        bank_account_type: :unset, 
-                        charge_amount: :unset, 
-                        currency: :unset, 
-                        description: :unset, 
-                        input: :unset, 
-                        min_postal_code_length: :unset, 
-                        parameter: :unset, 
-                        payment_connector: :unset, 
-                        payment_method: :unset, 
-                        postal_code: :unset, 
-                        security_code: :unset, 
-                        timeout: :unset, 
-                        token_type: :unset, 
-                        valid_card_types: :unset, 
-                        require_matching_inputs: :unset, 
-                        confirmation: :unset
+                      idempotency_key: nil, 
+                      status_callback: nil, 
+                      bank_account_type: :unset, 
+                      charge_amount: :unset, 
+                      currency: :unset, 
+                      description: :unset, 
+                      input: :unset, 
+                      min_postal_code_length: :unset, 
+                      parameter: :unset, 
+                      payment_connector: :unset, 
+                      payment_method: :unset, 
+                      postal_code: :unset, 
+                      security_code: :unset, 
+                      timeout: :unset, 
+                      token_type: :unset, 
+                      valid_card_types: :unset, 
+                      require_matching_inputs: :unset, 
+                      confirmation: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -232,10 +232,10 @@ module Twilio
                     # @param [Status] status 
                     # @return [PaymentInstance] Updated PaymentInstance
                     def update(
-                        idempotency_key: nil, 
-                        status_callback: nil, 
-                        capture: :unset, 
-                        status: :unset
+                      idempotency_key: nil, 
+                      status_callback: nil, 
+                      capture: :unset, 
+                      status: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -410,7 +410,7 @@ module Twilio
                             @payment_page << PaymentListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -432,7 +432,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -540,10 +540,10 @@ module Twilio
                     # @param [Status] status 
                     # @return [PaymentInstance] Updated PaymentInstance
                     def update(
-                        idempotency_key: nil, 
-                        status_callback: nil, 
-                        capture: :unset, 
-                        status: :unset
+                      idempotency_key: nil, 
+                      status_callback: nil, 
+                      capture: :unset, 
+                      status: :unset
                     )
 
                         context.update(

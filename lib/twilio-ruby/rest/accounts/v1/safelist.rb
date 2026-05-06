@@ -36,7 +36,7 @@ module Twilio
                     # @param [String] phone_number The phone number or phone number 1k prefix to be added in SafeList. Phone numbers must be in [E.164 format](https://www.twilio.com/docs/glossary/what-e164).
                     # @return [SafelistInstance] Created SafelistInstance
                     def create(
-                        phone_number: nil
+                      phone_number: nil
                     )
 
                         data = Twilio::Values.of({
@@ -92,7 +92,7 @@ module Twilio
                     # @param [String] phone_number The phone number or phone number 1k prefix to be removed from SafeList. Phone numbers must be in [E.164 format](https://www.twilio.com/docs/glossary/what-e164).
                     # @return [Boolean] True if delete succeeds, false otherwise
                     def delete(
-                        phone_number: :unset
+                      phone_number: :unset
                     )
 
                         params = Twilio::Values.of({
@@ -136,7 +136,7 @@ module Twilio
                     # @param [String] phone_number The phone number or phone number 1k prefix to be fetched from SafeList. Phone numbers must be in [E.164 format](https://www.twilio.com/docs/glossary/what-e164).
                     # @return [SafelistInstance] Fetched SafelistInstance
                     def fetch(
-                        phone_number: :unset
+                      phone_number: :unset
                     )
 
                         params = Twilio::Values.of({
@@ -237,7 +237,7 @@ module Twilio
                             @safelist_page << SafelistListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -259,7 +259,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end

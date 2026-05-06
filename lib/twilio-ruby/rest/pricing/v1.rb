@@ -32,14 +32,32 @@ module Twilio
                     @messaging ||= MessagingList.new self
                 end
                 ##
+                # @param [String] iso_country The [ISO country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the pricing information to fetch.
                 # @return [Twilio::REST::Pricing::V1::PhoneNumberList]
-                def phone_numbers
-                    @phone_numbers ||= PhoneNumberList.new self
+                def phone_numbers(iso_country=:unset)
+                    if iso_country.nil?
+                        raise ArgumentError, 'iso_country cannot be nil'
+                    end
+
+                    if iso_country == :unset
+                        @phone_numbers ||= PhoneNumberList.new self
+                    else
+                        PhoneNumberList.new(self, iso_country: iso_country)
+                    end
                 end
                 ##
+                # @param [String] iso_country The [ISO country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the pricing information to fetch.
                 # @return [Twilio::REST::Pricing::V1::VoiceList]
-                def voice
-                    @voice ||= VoiceList.new self
+                def voice(iso_country=:unset)
+                    if iso_country.nil?
+                        raise ArgumentError, 'iso_country cannot be nil'
+                    end
+
+                    if iso_country == :unset
+                        @voice ||= VoiceList.new self
+                    else
+                        VoiceList.new(self, iso_country: iso_country)
+                    end
                 end
                 ##
                 # Provide a user friendly representation

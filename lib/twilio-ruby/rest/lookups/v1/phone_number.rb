@@ -65,10 +65,10 @@ module Twilio
                     # @param [Hash] add_ons_data Data specific to the add-on you would like to invoke. The content and format of this value depends on the add-on.
                     # @return [PhoneNumberInstance] Fetched PhoneNumberInstance
                     def fetch(
-                        country_code: :unset, 
-                        type: :unset, 
-                        add_ons: :unset, 
-                        add_ons_data: :unset
+                      country_code: :unset, 
+                      type: :unset, 
+                      add_ons: :unset, 
+                      add_ons_data: :unset
                     )
 
                         params = Twilio::Values.of({
@@ -237,7 +237,7 @@ module Twilio
                             @phone_number_page << PhoneNumberListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -259,7 +259,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -374,10 +374,10 @@ module Twilio
                     # @param [Hash] add_ons_data Data specific to the add-on you would like to invoke. The content and format of this value depends on the add-on.
                     # @return [PhoneNumberInstance] Fetched PhoneNumberInstance
                     def fetch(
-                        country_code: :unset, 
-                        type: :unset, 
-                        add_ons: :unset, 
-                        add_ons_data: :unset
+                      country_code: :unset, 
+                      type: :unset, 
+                      add_ons: :unset, 
+                      add_ons_data: :unset
                     )
 
                         context.fetch(

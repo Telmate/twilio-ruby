@@ -36,8 +36,11 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if service_sid == :unset && sid == :unset
                         @channels ||= ChannelList.new self
+                    elsif service_sid != :unset && sid == :unset
+                        ChannelList.new(self, service_sid: service_sid)
                     else
                         ChannelContext.new(self, service_sid, sid)
                     end
@@ -54,8 +57,11 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if service_sid == :unset && sid == :unset
                         @channels ||= ChannelList.new self
+                    elsif service_sid != :unset && sid == :unset
+                        ChannelList.new(self, service_sid: service_sid)
                     else
                         ChannelContext.new(self, service_sid, sid)
                     end

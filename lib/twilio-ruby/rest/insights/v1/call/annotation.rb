@@ -114,13 +114,13 @@ module Twilio
                     # @param [String] incident Associate this call with an incident or support ticket. The `incident` parameter is of type string with a maximum character limit of 100. Twilio does not treat this field as PII, so no PII should be included in `incident`.
                     # @return [AnnotationInstance] Updated AnnotationInstance
                     def update(
-                        answered_by: :unset, 
-                        connectivity_issue: :unset, 
-                        quality_issues: :unset, 
-                        spam: :unset, 
-                        call_score: :unset, 
-                        comment: :unset, 
-                        incident: :unset
+                      answered_by: :unset, 
+                      connectivity_issue: :unset, 
+                      quality_issues: :unset, 
+                      spam: :unset, 
+                      call_score: :unset, 
+                      comment: :unset, 
+                      incident: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -303,7 +303,7 @@ module Twilio
                             @annotation_page << AnnotationListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -325,7 +325,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -472,13 +472,13 @@ module Twilio
                     # @param [String] incident Associate this call with an incident or support ticket. The `incident` parameter is of type string with a maximum character limit of 100. Twilio does not treat this field as PII, so no PII should be included in `incident`.
                     # @return [AnnotationInstance] Updated AnnotationInstance
                     def update(
-                        answered_by: :unset, 
-                        connectivity_issue: :unset, 
-                        quality_issues: :unset, 
-                        spam: :unset, 
-                        call_score: :unset, 
-                        comment: :unset, 
-                        incident: :unset
+                      answered_by: :unset, 
+                      connectivity_issue: :unset, 
+                      quality_issues: :unset, 
+                      spam: :unset, 
+                      call_score: :unset, 
+                      comment: :unset, 
+                      incident: :unset
                     )
 
                         context.update(

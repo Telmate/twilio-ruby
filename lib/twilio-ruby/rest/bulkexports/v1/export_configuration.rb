@@ -108,9 +108,9 @@ module Twilio
                     # @param [String] webhook_method Sets whether Twilio should call a webhook URL when the automatic generation is complete, using GET or POST. The actual destination is set in the webhook_url
                     # @return [ExportConfigurationInstance] Updated ExportConfigurationInstance
                     def update(
-                        enabled: :unset, 
-                        webhook_url: :unset, 
-                        webhook_method: :unset
+                      enabled: :unset, 
+                      webhook_url: :unset, 
+                      webhook_method: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -277,7 +277,7 @@ module Twilio
                             @export_configuration_page << ExportConfigurationListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -299,7 +299,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -407,9 +407,9 @@ module Twilio
                     # @param [String] webhook_method Sets whether Twilio should call a webhook URL when the automatic generation is complete, using GET or POST. The actual destination is set in the webhook_url
                     # @return [ExportConfigurationInstance] Updated ExportConfigurationInstance
                     def update(
-                        enabled: :unset, 
-                        webhook_url: :unset, 
-                        webhook_method: :unset
+                      enabled: :unset, 
+                      webhook_url: :unset, 
+                      webhook_method: :unset
                     )
 
                         context.update(

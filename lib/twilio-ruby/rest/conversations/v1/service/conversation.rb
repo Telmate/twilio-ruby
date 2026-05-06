@@ -49,18 +49,18 @@ module Twilio
                     # @param [ServiceConversationEnumWebhookEnabledType] x_twilio_webhook_enabled The X-Twilio-Webhook-Enabled HTTP request header
                     # @return [ConversationInstance] Created ConversationInstance
                     def create(
-                        friendly_name: :unset, 
-                        unique_name: :unset, 
-                        attributes: :unset, 
-                        messaging_service_sid: :unset, 
-                        date_created: :unset, 
-                        date_updated: :unset, 
-                        state: :unset, 
-                        timers_inactive: :unset, 
-                        timers_closed: :unset, 
-                        bindings_email_address: :unset, 
-                        bindings_email_name: :unset, 
-                        x_twilio_webhook_enabled: :unset
+                      friendly_name: :unset, 
+                      unique_name: :unset, 
+                      attributes: :unset, 
+                      messaging_service_sid: :unset, 
+                      date_created: :unset, 
+                      date_updated: :unset, 
+                      state: :unset, 
+                      timers_inactive: :unset, 
+                      timers_closed: :unset, 
+                      bindings_email_address: :unset, 
+                      bindings_email_name: :unset, 
+                      x_twilio_webhook_enabled: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -203,7 +203,11 @@ module Twilio
                             state: state,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -243,9 +247,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -323,7 +331,7 @@ module Twilio
                     # @param [ServiceConversationEnumWebhookEnabledType] x_twilio_webhook_enabled The X-Twilio-Webhook-Enabled HTTP request header
                     # @return [Boolean] True if delete succeeds, false otherwise
                     def delete(
-                        x_twilio_webhook_enabled: :unset
+                      x_twilio_webhook_enabled: :unset
                     )
 
                         headers = Twilio::Values.of({'Content-Type' => 'application/x-www-form-urlencoded', 'X-Twilio-Webhook-Enabled' => x_twilio_webhook_enabled, })
@@ -418,18 +426,18 @@ module Twilio
                     # @param [ServiceConversationEnumWebhookEnabledType] x_twilio_webhook_enabled The X-Twilio-Webhook-Enabled HTTP request header
                     # @return [ConversationInstance] Updated ConversationInstance
                     def update(
-                        friendly_name: :unset, 
-                        date_created: :unset, 
-                        date_updated: :unset, 
-                        attributes: :unset, 
-                        messaging_service_sid: :unset, 
-                        state: :unset, 
-                        timers_inactive: :unset, 
-                        timers_closed: :unset, 
-                        unique_name: :unset, 
-                        bindings_email_address: :unset, 
-                        bindings_email_name: :unset, 
-                        x_twilio_webhook_enabled: :unset
+                      friendly_name: :unset, 
+                      date_created: :unset, 
+                      date_updated: :unset, 
+                      attributes: :unset, 
+                      messaging_service_sid: :unset, 
+                      state: :unset, 
+                      timers_inactive: :unset, 
+                      timers_closed: :unset, 
+                      unique_name: :unset, 
+                      bindings_email_address: :unset, 
+                      bindings_email_name: :unset, 
+                      x_twilio_webhook_enabled: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -689,7 +697,7 @@ module Twilio
                             @conversation_page << ConversationListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -711,7 +719,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -872,7 +880,7 @@ module Twilio
                     # @param [ServiceConversationEnumWebhookEnabledType] x_twilio_webhook_enabled The X-Twilio-Webhook-Enabled HTTP request header
                     # @return [Boolean] True if delete succeeds, false otherwise
                     def delete(
-                        x_twilio_webhook_enabled: :unset
+                      x_twilio_webhook_enabled: :unset
                     )
 
                         context.delete(
@@ -904,18 +912,18 @@ module Twilio
                     # @param [ServiceConversationEnumWebhookEnabledType] x_twilio_webhook_enabled The X-Twilio-Webhook-Enabled HTTP request header
                     # @return [ConversationInstance] Updated ConversationInstance
                     def update(
-                        friendly_name: :unset, 
-                        date_created: :unset, 
-                        date_updated: :unset, 
-                        attributes: :unset, 
-                        messaging_service_sid: :unset, 
-                        state: :unset, 
-                        timers_inactive: :unset, 
-                        timers_closed: :unset, 
-                        unique_name: :unset, 
-                        bindings_email_address: :unset, 
-                        bindings_email_name: :unset, 
-                        x_twilio_webhook_enabled: :unset
+                      friendly_name: :unset, 
+                      date_created: :unset, 
+                      date_updated: :unset, 
+                      attributes: :unset, 
+                      messaging_service_sid: :unset, 
+                      state: :unset, 
+                      timers_inactive: :unset, 
+                      timers_closed: :unset, 
+                      unique_name: :unset, 
+                      bindings_email_address: :unset, 
+                      bindings_email_name: :unset, 
+                      x_twilio_webhook_enabled: :unset
                     )
 
                         context.update(

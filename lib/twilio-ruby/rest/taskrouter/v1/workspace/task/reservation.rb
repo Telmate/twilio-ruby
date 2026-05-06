@@ -78,7 +78,11 @@ module Twilio
                             worker_sid: worker_sid,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -116,9 +120,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -294,61 +302,61 @@ module Twilio
                     # @param [String] if_match The If-Match HTTP request header
                     # @return [ReservationInstance] Updated ReservationInstance
                     def update(
-                        reservation_status: :unset, 
-                        worker_activity_sid: :unset, 
-                        instruction: :unset, 
-                        dequeue_post_work_activity_sid: :unset, 
-                        dequeue_from: :unset, 
-                        dequeue_record: :unset, 
-                        dequeue_timeout: :unset, 
-                        dequeue_to: :unset, 
-                        dequeue_status_callback_url: :unset, 
-                        call_from: :unset, 
-                        call_record: :unset, 
-                        call_timeout: :unset, 
-                        call_to: :unset, 
-                        call_url: :unset, 
-                        call_status_callback_url: :unset, 
-                        call_accept: :unset, 
-                        redirect_call_sid: :unset, 
-                        redirect_accept: :unset, 
-                        redirect_url: :unset, 
-                        to: :unset, 
-                        from: :unset, 
-                        status_callback: :unset, 
-                        status_callback_method: :unset, 
-                        status_callback_event: :unset, 
-                        timeout: :unset, 
-                        record: :unset, 
-                        muted: :unset, 
-                        beep: :unset, 
-                        start_conference_on_enter: :unset, 
-                        end_conference_on_exit: :unset, 
-                        wait_url: :unset, 
-                        wait_method: :unset, 
-                        early_media: :unset, 
-                        max_participants: :unset, 
-                        conference_status_callback: :unset, 
-                        conference_status_callback_method: :unset, 
-                        conference_status_callback_event: :unset, 
-                        conference_record: :unset, 
-                        conference_trim: :unset, 
-                        recording_channels: :unset, 
-                        recording_status_callback: :unset, 
-                        recording_status_callback_method: :unset, 
-                        conference_recording_status_callback: :unset, 
-                        conference_recording_status_callback_method: :unset, 
-                        region: :unset, 
-                        sip_auth_username: :unset, 
-                        sip_auth_password: :unset, 
-                        dequeue_status_callback_event: :unset, 
-                        post_work_activity_sid: :unset, 
-                        supervisor_mode: :unset, 
-                        supervisor: :unset, 
-                        end_conference_on_customer_exit: :unset, 
-                        beep_on_customer_entrance: :unset, 
-                        jitter_buffer_size: :unset, 
-                        if_match: :unset
+                      reservation_status: :unset, 
+                      worker_activity_sid: :unset, 
+                      instruction: :unset, 
+                      dequeue_post_work_activity_sid: :unset, 
+                      dequeue_from: :unset, 
+                      dequeue_record: :unset, 
+                      dequeue_timeout: :unset, 
+                      dequeue_to: :unset, 
+                      dequeue_status_callback_url: :unset, 
+                      call_from: :unset, 
+                      call_record: :unset, 
+                      call_timeout: :unset, 
+                      call_to: :unset, 
+                      call_url: :unset, 
+                      call_status_callback_url: :unset, 
+                      call_accept: :unset, 
+                      redirect_call_sid: :unset, 
+                      redirect_accept: :unset, 
+                      redirect_url: :unset, 
+                      to: :unset, 
+                      from: :unset, 
+                      status_callback: :unset, 
+                      status_callback_method: :unset, 
+                      status_callback_event: :unset, 
+                      timeout: :unset, 
+                      record: :unset, 
+                      muted: :unset, 
+                      beep: :unset, 
+                      start_conference_on_enter: :unset, 
+                      end_conference_on_exit: :unset, 
+                      wait_url: :unset, 
+                      wait_method: :unset, 
+                      early_media: :unset, 
+                      max_participants: :unset, 
+                      conference_status_callback: :unset, 
+                      conference_status_callback_method: :unset, 
+                      conference_status_callback_event: :unset, 
+                      conference_record: :unset, 
+                      conference_trim: :unset, 
+                      recording_channels: :unset, 
+                      recording_status_callback: :unset, 
+                      recording_status_callback_method: :unset, 
+                      conference_recording_status_callback: :unset, 
+                      conference_recording_status_callback_method: :unset, 
+                      region: :unset, 
+                      sip_auth_username: :unset, 
+                      sip_auth_password: :unset, 
+                      dequeue_status_callback_event: :unset, 
+                      post_work_activity_sid: :unset, 
+                      supervisor_mode: :unset, 
+                      supervisor: :unset, 
+                      end_conference_on_customer_exit: :unset, 
+                      beep_on_customer_entrance: :unset, 
+                      jitter_buffer_size: :unset, 
+                      if_match: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -725,7 +733,7 @@ module Twilio
                             @reservation_page << ReservationListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -747,7 +755,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -949,61 +957,61 @@ module Twilio
                     # @param [String] if_match The If-Match HTTP request header
                     # @return [ReservationInstance] Updated ReservationInstance
                     def update(
-                        reservation_status: :unset, 
-                        worker_activity_sid: :unset, 
-                        instruction: :unset, 
-                        dequeue_post_work_activity_sid: :unset, 
-                        dequeue_from: :unset, 
-                        dequeue_record: :unset, 
-                        dequeue_timeout: :unset, 
-                        dequeue_to: :unset, 
-                        dequeue_status_callback_url: :unset, 
-                        call_from: :unset, 
-                        call_record: :unset, 
-                        call_timeout: :unset, 
-                        call_to: :unset, 
-                        call_url: :unset, 
-                        call_status_callback_url: :unset, 
-                        call_accept: :unset, 
-                        redirect_call_sid: :unset, 
-                        redirect_accept: :unset, 
-                        redirect_url: :unset, 
-                        to: :unset, 
-                        from: :unset, 
-                        status_callback: :unset, 
-                        status_callback_method: :unset, 
-                        status_callback_event: :unset, 
-                        timeout: :unset, 
-                        record: :unset, 
-                        muted: :unset, 
-                        beep: :unset, 
-                        start_conference_on_enter: :unset, 
-                        end_conference_on_exit: :unset, 
-                        wait_url: :unset, 
-                        wait_method: :unset, 
-                        early_media: :unset, 
-                        max_participants: :unset, 
-                        conference_status_callback: :unset, 
-                        conference_status_callback_method: :unset, 
-                        conference_status_callback_event: :unset, 
-                        conference_record: :unset, 
-                        conference_trim: :unset, 
-                        recording_channels: :unset, 
-                        recording_status_callback: :unset, 
-                        recording_status_callback_method: :unset, 
-                        conference_recording_status_callback: :unset, 
-                        conference_recording_status_callback_method: :unset, 
-                        region: :unset, 
-                        sip_auth_username: :unset, 
-                        sip_auth_password: :unset, 
-                        dequeue_status_callback_event: :unset, 
-                        post_work_activity_sid: :unset, 
-                        supervisor_mode: :unset, 
-                        supervisor: :unset, 
-                        end_conference_on_customer_exit: :unset, 
-                        beep_on_customer_entrance: :unset, 
-                        jitter_buffer_size: :unset, 
-                        if_match: :unset
+                      reservation_status: :unset, 
+                      worker_activity_sid: :unset, 
+                      instruction: :unset, 
+                      dequeue_post_work_activity_sid: :unset, 
+                      dequeue_from: :unset, 
+                      dequeue_record: :unset, 
+                      dequeue_timeout: :unset, 
+                      dequeue_to: :unset, 
+                      dequeue_status_callback_url: :unset, 
+                      call_from: :unset, 
+                      call_record: :unset, 
+                      call_timeout: :unset, 
+                      call_to: :unset, 
+                      call_url: :unset, 
+                      call_status_callback_url: :unset, 
+                      call_accept: :unset, 
+                      redirect_call_sid: :unset, 
+                      redirect_accept: :unset, 
+                      redirect_url: :unset, 
+                      to: :unset, 
+                      from: :unset, 
+                      status_callback: :unset, 
+                      status_callback_method: :unset, 
+                      status_callback_event: :unset, 
+                      timeout: :unset, 
+                      record: :unset, 
+                      muted: :unset, 
+                      beep: :unset, 
+                      start_conference_on_enter: :unset, 
+                      end_conference_on_exit: :unset, 
+                      wait_url: :unset, 
+                      wait_method: :unset, 
+                      early_media: :unset, 
+                      max_participants: :unset, 
+                      conference_status_callback: :unset, 
+                      conference_status_callback_method: :unset, 
+                      conference_status_callback_event: :unset, 
+                      conference_record: :unset, 
+                      conference_trim: :unset, 
+                      recording_channels: :unset, 
+                      recording_status_callback: :unset, 
+                      recording_status_callback_method: :unset, 
+                      conference_recording_status_callback: :unset, 
+                      conference_recording_status_callback_method: :unset, 
+                      region: :unset, 
+                      sip_auth_username: :unset, 
+                      sip_auth_password: :unset, 
+                      dequeue_status_callback_event: :unset, 
+                      post_work_activity_sid: :unset, 
+                      supervisor_mode: :unset, 
+                      supervisor: :unset, 
+                      end_conference_on_customer_exit: :unset, 
+                      beep_on_customer_entrance: :unset, 
+                      jitter_buffer_size: :unset, 
+                      if_match: :unset
                     )
 
                         context.update(

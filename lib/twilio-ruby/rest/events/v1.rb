@@ -35,6 +35,7 @@ module Twilio
                     if type.nil?
                         raise ArgumentError, 'type cannot be nil'
                     end
+
                     if type == :unset
                         @event_types ||= EventTypeList.new self
                     else
@@ -49,6 +50,7 @@ module Twilio
                     if id.nil?
                         raise ArgumentError, 'id cannot be nil'
                     end
+
                     if id == :unset
                         @schemas ||= SchemaList.new self
                     else
@@ -63,6 +65,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @sinks ||= SinkList.new self
                     else
@@ -77,6 +80,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @subscriptions ||= SubscriptionList.new self
                     else

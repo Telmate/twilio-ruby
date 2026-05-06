@@ -62,7 +62,7 @@ module Twilio
                     # @param [String] flex_metadata The Flex-Metadata HTTP request header
                     # @return [PluginConfigurationArchiveInstance] Updated PluginConfigurationArchiveInstance
                     def update(
-                        flex_metadata: :unset
+                      flex_metadata: :unset
                     )
 
                         headers = Twilio::Values.of({'Content-Type' => 'application/x-www-form-urlencoded', 'Flex-Metadata' => flex_metadata, })
@@ -213,7 +213,7 @@ module Twilio
                             @plugin_configuration_archive_page << PluginConfigurationArchiveListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -235,7 +235,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -347,7 +347,7 @@ module Twilio
                     # @param [String] flex_metadata The Flex-Metadata HTTP request header
                     # @return [PluginConfigurationArchiveInstance] Updated PluginConfigurationArchiveInstance
                     def update(
-                        flex_metadata: :unset
+                      flex_metadata: :unset
                     )
 
                         context.update(

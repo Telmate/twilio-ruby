@@ -54,6 +54,7 @@ module Twilio
                     if assessment_sid.nil?
                         raise ArgumentError, 'assessment_sid cannot be nil'
                     end
+
                     if assessment_sid == :unset
                         @assessments ||= AssessmentsList.new self
                     else
@@ -68,6 +69,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @channel ||= ChannelList.new self
                     else
@@ -87,6 +89,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @flex_flow ||= FlexFlowList.new self
                     else
@@ -111,6 +114,7 @@ module Twilio
                     if questionnaire_sid.nil?
                         raise ArgumentError, 'questionnaire_sid cannot be nil'
                     end
+
                     if questionnaire_sid == :unset
                         @insights_questionnaires ||= InsightsQuestionnairesList.new self
                     else
@@ -125,6 +129,7 @@ module Twilio
                     if category_sid.nil?
                         raise ArgumentError, 'category_sid cannot be nil'
                     end
+
                     if category_sid == :unset
                         @insights_questionnaires_category ||= InsightsQuestionnairesCategoryList.new self
                     else
@@ -139,6 +144,7 @@ module Twilio
                     if question_sid.nil?
                         raise ArgumentError, 'question_sid cannot be nil'
                     end
+
                     if question_sid == :unset
                         @insights_questionnaires_question ||= InsightsQuestionnairesQuestionList.new self
                     else
@@ -178,6 +184,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @interaction ||= InteractionList.new self
                     else
@@ -192,6 +199,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @plugins ||= PluginList.new self
                     else
@@ -206,6 +214,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @plugin_archive ||= PluginArchiveList.new self
                     else
@@ -220,6 +229,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @plugin_configurations ||= PluginConfigurationList.new self
                     else
@@ -234,6 +244,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @plugin_configuration_archive ||= PluginConfigurationArchiveList.new self
                     else
@@ -248,6 +259,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @plugin_releases ||= PluginReleaseList.new self
                     else
@@ -266,8 +278,11 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if plugin_sid == :unset && sid == :unset
                         @plugin_version_archive ||= PluginVersionArchiveList.new self
+                    elsif plugin_sid != :unset && sid == :unset
+                        PluginVersionArchiveList.new(self, plugin_sid: plugin_sid)
                     else
                         PluginVersionArchiveContext.new(self, plugin_sid, sid)
                     end
@@ -284,8 +299,11 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if plugin_sid == :unset && sid == :unset
                         @plugin_version_archive ||= PluginVersionArchiveList.new self
+                    elsif plugin_sid != :unset && sid == :unset
+                        PluginVersionArchiveList.new(self, plugin_sid: plugin_sid)
                     else
                         PluginVersionArchiveContext.new(self, plugin_sid, sid)
                     end
@@ -303,6 +321,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @web_channel ||= WebChannelList.new self
                     else

@@ -32,6 +32,7 @@ module Twilio
                     if phone_number.nil?
                         raise ArgumentError, 'phone_number cannot be nil'
                     end
+
                     if phone_number == :unset
                         @phone_numbers ||= PhoneNumberList.new self
                     else

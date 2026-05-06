@@ -36,7 +36,7 @@ module Twilio
                     # @param [String] friendly_name 
                     # @return [ServiceInstance] Created ServiceInstance
                     def create(
-                        friendly_name: nil
+                      friendly_name: nil
                     )
 
                         data = Twilio::Values.of({
@@ -123,7 +123,11 @@ module Twilio
                         page = self.page(
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -157,9 +161,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -337,37 +345,37 @@ module Twilio
                     # @param [Boolean] notifications_log_enabled 
                     # @return [ServiceInstance] Updated ServiceInstance
                     def update(
-                        friendly_name: :unset, 
-                        default_service_role_sid: :unset, 
-                        default_channel_role_sid: :unset, 
-                        default_channel_creator_role_sid: :unset, 
-                        read_status_enabled: :unset, 
-                        reachability_enabled: :unset, 
-                        typing_indicator_timeout: :unset, 
-                        consumption_report_interval: :unset, 
-                        notifications_new_message_enabled: :unset, 
-                        notifications_new_message_template: :unset, 
-                        notifications_new_message_sound: :unset, 
-                        notifications_new_message_badge_count_enabled: :unset, 
-                        notifications_added_to_channel_enabled: :unset, 
-                        notifications_added_to_channel_template: :unset, 
-                        notifications_added_to_channel_sound: :unset, 
-                        notifications_removed_from_channel_enabled: :unset, 
-                        notifications_removed_from_channel_template: :unset, 
-                        notifications_removed_from_channel_sound: :unset, 
-                        notifications_invited_to_channel_enabled: :unset, 
-                        notifications_invited_to_channel_template: :unset, 
-                        notifications_invited_to_channel_sound: :unset, 
-                        pre_webhook_url: :unset, 
-                        post_webhook_url: :unset, 
-                        webhook_method: :unset, 
-                        webhook_filters: :unset, 
-                        limits_channel_members: :unset, 
-                        limits_user_channels: :unset, 
-                        media_compatibility_message: :unset, 
-                        pre_webhook_retry_count: :unset, 
-                        post_webhook_retry_count: :unset, 
-                        notifications_log_enabled: :unset
+                      friendly_name: :unset, 
+                      default_service_role_sid: :unset, 
+                      default_channel_role_sid: :unset, 
+                      default_channel_creator_role_sid: :unset, 
+                      read_status_enabled: :unset, 
+                      reachability_enabled: :unset, 
+                      typing_indicator_timeout: :unset, 
+                      consumption_report_interval: :unset, 
+                      notifications_new_message_enabled: :unset, 
+                      notifications_new_message_template: :unset, 
+                      notifications_new_message_sound: :unset, 
+                      notifications_new_message_badge_count_enabled: :unset, 
+                      notifications_added_to_channel_enabled: :unset, 
+                      notifications_added_to_channel_template: :unset, 
+                      notifications_added_to_channel_sound: :unset, 
+                      notifications_removed_from_channel_enabled: :unset, 
+                      notifications_removed_from_channel_template: :unset, 
+                      notifications_removed_from_channel_sound: :unset, 
+                      notifications_invited_to_channel_enabled: :unset, 
+                      notifications_invited_to_channel_template: :unset, 
+                      notifications_invited_to_channel_sound: :unset, 
+                      pre_webhook_url: :unset, 
+                      post_webhook_url: :unset, 
+                      webhook_method: :unset, 
+                      webhook_filters: :unset, 
+                      limits_channel_members: :unset, 
+                      limits_user_channels: :unset, 
+                      media_compatibility_message: :unset, 
+                      pre_webhook_retry_count: :unset, 
+                      post_webhook_retry_count: :unset, 
+                      notifications_log_enabled: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -722,7 +730,7 @@ module Twilio
                             @service_page << ServiceListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -744,7 +752,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -1014,37 +1022,37 @@ module Twilio
                     # @param [Boolean] notifications_log_enabled 
                     # @return [ServiceInstance] Updated ServiceInstance
                     def update(
-                        friendly_name: :unset, 
-                        default_service_role_sid: :unset, 
-                        default_channel_role_sid: :unset, 
-                        default_channel_creator_role_sid: :unset, 
-                        read_status_enabled: :unset, 
-                        reachability_enabled: :unset, 
-                        typing_indicator_timeout: :unset, 
-                        consumption_report_interval: :unset, 
-                        notifications_new_message_enabled: :unset, 
-                        notifications_new_message_template: :unset, 
-                        notifications_new_message_sound: :unset, 
-                        notifications_new_message_badge_count_enabled: :unset, 
-                        notifications_added_to_channel_enabled: :unset, 
-                        notifications_added_to_channel_template: :unset, 
-                        notifications_added_to_channel_sound: :unset, 
-                        notifications_removed_from_channel_enabled: :unset, 
-                        notifications_removed_from_channel_template: :unset, 
-                        notifications_removed_from_channel_sound: :unset, 
-                        notifications_invited_to_channel_enabled: :unset, 
-                        notifications_invited_to_channel_template: :unset, 
-                        notifications_invited_to_channel_sound: :unset, 
-                        pre_webhook_url: :unset, 
-                        post_webhook_url: :unset, 
-                        webhook_method: :unset, 
-                        webhook_filters: :unset, 
-                        limits_channel_members: :unset, 
-                        limits_user_channels: :unset, 
-                        media_compatibility_message: :unset, 
-                        pre_webhook_retry_count: :unset, 
-                        post_webhook_retry_count: :unset, 
-                        notifications_log_enabled: :unset
+                      friendly_name: :unset, 
+                      default_service_role_sid: :unset, 
+                      default_channel_role_sid: :unset, 
+                      default_channel_creator_role_sid: :unset, 
+                      read_status_enabled: :unset, 
+                      reachability_enabled: :unset, 
+                      typing_indicator_timeout: :unset, 
+                      consumption_report_interval: :unset, 
+                      notifications_new_message_enabled: :unset, 
+                      notifications_new_message_template: :unset, 
+                      notifications_new_message_sound: :unset, 
+                      notifications_new_message_badge_count_enabled: :unset, 
+                      notifications_added_to_channel_enabled: :unset, 
+                      notifications_added_to_channel_template: :unset, 
+                      notifications_added_to_channel_sound: :unset, 
+                      notifications_removed_from_channel_enabled: :unset, 
+                      notifications_removed_from_channel_template: :unset, 
+                      notifications_removed_from_channel_sound: :unset, 
+                      notifications_invited_to_channel_enabled: :unset, 
+                      notifications_invited_to_channel_template: :unset, 
+                      notifications_invited_to_channel_sound: :unset, 
+                      pre_webhook_url: :unset, 
+                      post_webhook_url: :unset, 
+                      webhook_method: :unset, 
+                      webhook_filters: :unset, 
+                      limits_channel_members: :unset, 
+                      limits_user_channels: :unset, 
+                      media_compatibility_message: :unset, 
+                      pre_webhook_retry_count: :unset, 
+                      post_webhook_retry_count: :unset, 
+                      notifications_log_enabled: :unset
                     )
 
                         context.update(

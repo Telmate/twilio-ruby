@@ -33,6 +33,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @authorization_documents ||= AuthorizationDocumentList.new self
                     else
@@ -47,6 +48,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @hosted_number_orders ||= HostedNumberOrderList.new self
                     else

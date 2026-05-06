@@ -46,15 +46,15 @@ module Twilio
                     # @param [String] task_queue_sid The SID of the TaskQueue in which the Task belongs
                     # @return [TaskInstance] Created TaskInstance
                     def create(
-                        timeout: :unset, 
-                        priority: :unset, 
-                        task_channel: :unset, 
-                        workflow_sid: :unset, 
-                        attributes: :unset, 
-                        virtual_start_time: :unset, 
-                        routing_target: :unset, 
-                        ignore_capacity: :unset, 
-                        task_queue_sid: :unset
+                      timeout: :unset, 
+                      priority: :unset, 
+                      task_channel: :unset, 
+                      workflow_sid: :unset, 
+                      attributes: :unset, 
+                      virtual_start_time: :unset, 
+                      routing_target: :unset, 
+                      ignore_capacity: :unset, 
+                      task_queue_sid: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -215,7 +215,11 @@ module Twilio
                             has_addons: has_addons,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -270,9 +274,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -363,7 +371,7 @@ module Twilio
                     # @param [String] if_match If provided, deletes this Task if (and only if) the [ETag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) header of the Task matches the provided value. This matches the semantics of (and is implemented with) the HTTP [If-Match header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-Match).
                     # @return [Boolean] True if delete succeeds, false otherwise
                     def delete(
-                        if_match: :unset
+                      if_match: :unset
                     )
 
                         headers = Twilio::Values.of({'Content-Type' => 'application/x-www-form-urlencoded', 'If-Match' => if_match, })
@@ -453,13 +461,13 @@ module Twilio
                     # @param [String] if_match If provided, applies this mutation if (and only if) the [ETag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) header of the Task matches the provided value. This matches the semantics of (and is implemented with) the HTTP [If-Match header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-Match).
                     # @return [TaskInstance] Updated TaskInstance
                     def update(
-                        attributes: :unset, 
-                        assignment_status: :unset, 
-                        reason: :unset, 
-                        priority: :unset, 
-                        task_channel: :unset, 
-                        virtual_start_time: :unset, 
-                        if_match: :unset
+                      attributes: :unset, 
+                      assignment_status: :unset, 
+                      reason: :unset, 
+                      priority: :unset, 
+                      task_channel: :unset, 
+                      virtual_start_time: :unset, 
+                      if_match: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -661,7 +669,7 @@ module Twilio
                             @task_page << TaskListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -683,7 +691,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -914,7 +922,7 @@ module Twilio
                     # @param [String] if_match If provided, deletes this Task if (and only if) the [ETag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) header of the Task matches the provided value. This matches the semantics of (and is implemented with) the HTTP [If-Match header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-Match).
                     # @return [Boolean] True if delete succeeds, false otherwise
                     def delete(
-                        if_match: :unset
+                      if_match: :unset
                     )
 
                         context.delete(
@@ -941,13 +949,13 @@ module Twilio
                     # @param [String] if_match If provided, applies this mutation if (and only if) the [ETag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag) header of the Task matches the provided value. This matches the semantics of (and is implemented with) the HTTP [If-Match header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-Match).
                     # @return [TaskInstance] Updated TaskInstance
                     def update(
-                        attributes: :unset, 
-                        assignment_status: :unset, 
-                        reason: :unset, 
-                        priority: :unset, 
-                        task_channel: :unset, 
-                        virtual_start_time: :unset, 
-                        if_match: :unset
+                      attributes: :unset, 
+                      assignment_status: :unset, 
+                      reason: :unset, 
+                      priority: :unset, 
+                      task_channel: :unset, 
+                      virtual_start_time: :unset, 
+                      if_match: :unset
                     )
 
                         context.update(

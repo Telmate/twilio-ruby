@@ -41,8 +41,11 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if date == :unset && sid == :unset
                         @archived_calls ||= ArchivedCallList.new self
+                    elsif date != :unset && sid == :unset
+                        ArchivedCallList.new(self, date: date)
                     else
                         ArchivedCallContext.new(self, date, sid)
                     end
@@ -59,8 +62,11 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if date == :unset && sid == :unset
                         @archived_calls ||= ArchivedCallList.new self
+                    elsif date != :unset && sid == :unset
+                        ArchivedCallList.new(self, date: date)
                     else
                         ArchivedCallContext.new(self, date, sid)
                     end
@@ -73,6 +79,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @byoc_trunks ||= ByocTrunkList.new self
                     else
@@ -87,6 +94,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @connection_policies ||= ConnectionPolicyList.new self
                     else
@@ -106,6 +114,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @ip_records ||= IpRecordList.new self
                     else
@@ -120,6 +129,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @source_ip_mappings ||= SourceIpMappingList.new self
                     else

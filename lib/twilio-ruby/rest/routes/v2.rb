@@ -34,6 +34,7 @@ module Twilio
                     if phone_number.nil?
                         raise ArgumentError, 'phone_number cannot be nil'
                     end
+
                     if phone_number == :unset
                         @phone_numbers ||= PhoneNumberList.new self
                     else
@@ -48,6 +49,7 @@ module Twilio
                     if sip_domain.nil?
                         raise ArgumentError, 'sip_domain cannot be nil'
                     end
+
                     if sip_domain == :unset
                         @sip_domains ||= SipDomainList.new self
                     else
@@ -62,6 +64,7 @@ module Twilio
                     if sip_trunk_domain.nil?
                         raise ArgumentError, 'sip_trunk_domain cannot be nil'
                     end
+
                     if sip_trunk_domain == :unset
                         @trunks ||= TrunkList.new self
                     else

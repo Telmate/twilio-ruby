@@ -138,7 +138,7 @@ module Twilio
                     # @param [String] tls_cert Contains the full TLS certificate and private for this domain in PEM format: https://en.wikipedia.org/wiki/Privacy-Enhanced_Mail. Twilio uses this information to process HTTPS traffic sent to your domain.
                     # @return [DomainCertsInstance] Updated DomainCertsInstance
                     def update(
-                        tls_cert: nil
+                      tls_cert: nil
                     )
 
                         data = Twilio::Values.of({
@@ -297,7 +297,7 @@ module Twilio
                             @domain_certs_page << DomainCertsListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -319,7 +319,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -454,7 +454,7 @@ module Twilio
                     # @param [String] tls_cert Contains the full TLS certificate and private for this domain in PEM format: https://en.wikipedia.org/wiki/Privacy-Enhanced_Mail. Twilio uses this information to process HTTPS traffic sent to your domain.
                     # @return [DomainCertsInstance] Updated DomainCertsInstance
                     def update(
-                        tls_cert: nil
+                      tls_cert: nil
                     )
 
                         context.update(

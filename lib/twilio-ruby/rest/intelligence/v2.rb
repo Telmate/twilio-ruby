@@ -39,6 +39,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @custom_operators ||= CustomOperatorList.new self
                     else
@@ -53,6 +54,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @operators ||= OperatorList.new self
                     else
@@ -71,8 +73,11 @@ module Twilio
                     if operator_sid.nil?
                         raise ArgumentError, 'operator_sid cannot be nil'
                     end
+
                     if service_sid == :unset && operator_sid == :unset
                         @operator_attachment ||= OperatorAttachmentList.new self
+                    elsif service_sid != :unset && operator_sid == :unset
+                        OperatorAttachmentList.new(self, service_sid: service_sid)
                     else
                         OperatorAttachmentContext.new(self, service_sid, operator_sid)
                     end
@@ -89,8 +94,11 @@ module Twilio
                     if operator_sid.nil?
                         raise ArgumentError, 'operator_sid cannot be nil'
                     end
+
                     if service_sid == :unset && operator_sid == :unset
                         @operator_attachment ||= OperatorAttachmentList.new self
+                    elsif service_sid != :unset && operator_sid == :unset
+                        OperatorAttachmentList.new(self, service_sid: service_sid)
                     else
                         OperatorAttachmentContext.new(self, service_sid, operator_sid)
                     end
@@ -103,6 +111,7 @@ module Twilio
                     if service_sid.nil?
                         raise ArgumentError, 'service_sid cannot be nil'
                     end
+
                     if service_sid == :unset
                         @operator_attachments ||= OperatorAttachmentsList.new self
                     else
@@ -117,6 +126,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @operator_type ||= OperatorTypeList.new self
                     else
@@ -131,6 +141,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @prebuilt_operators ||= PrebuiltOperatorList.new self
                     else
@@ -145,6 +156,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @services ||= ServiceList.new self
                     else
@@ -159,6 +171,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @transcripts ||= TranscriptList.new self
                     else

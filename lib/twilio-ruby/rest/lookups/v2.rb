@@ -40,8 +40,11 @@ module Twilio
                     if bucket.nil?
                         raise ArgumentError, 'bucket cannot be nil'
                     end
+
                     if field == :unset && bucket == :unset
                         @bucket ||= BucketList.new self
+                    elsif field != :unset && bucket == :unset
+                        BucketList.new(self, field: field)
                     else
                         BucketContext.new(self, field, bucket)
                     end
@@ -58,8 +61,11 @@ module Twilio
                     if bucket.nil?
                         raise ArgumentError, 'bucket cannot be nil'
                     end
+
                     if field == :unset && bucket == :unset
                         @bucket ||= BucketList.new self
+                    elsif field != :unset && bucket == :unset
+                        BucketList.new(self, field: field)
                     else
                         BucketContext.new(self, field, bucket)
                     end
@@ -76,8 +82,11 @@ module Twilio
                     if phone_number.nil?
                         raise ArgumentError, 'phone_number cannot be nil'
                     end
+
                     if field == :unset && phone_number == :unset
                         @lookup_overrides ||= LookupOverrideList.new self
+                    elsif field != :unset && phone_number == :unset
+                        LookupOverrideList.new(self, field: field)
                     else
                         LookupOverrideContext.new(self, field, phone_number)
                     end
@@ -94,8 +103,11 @@ module Twilio
                     if phone_number.nil?
                         raise ArgumentError, 'phone_number cannot be nil'
                     end
+
                     if field == :unset && phone_number == :unset
                         @lookup_overrides ||= LookupOverrideList.new self
+                    elsif field != :unset && phone_number == :unset
+                        LookupOverrideList.new(self, field: field)
                     else
                         LookupOverrideContext.new(self, field, phone_number)
                     end
@@ -108,6 +120,7 @@ module Twilio
                     if phone_number.nil?
                         raise ArgumentError, 'phone_number cannot be nil'
                     end
+
                     if phone_number == :unset
                         @phone_numbers ||= PhoneNumberList.new self
                     else

@@ -45,16 +45,16 @@ module Twilio
                     # @param [Boolean] trim Whether to clip the intervals where there is no active media in the Compositions triggered by the composition hook. The default is `true`. Compositions with `trim` enabled are shorter when the Room is created and no Participant joins for a while as well as if all the Participants leave the room and join later, because those gaps will be removed. See [Specifying Video Layouts](https://www.twilio.com/docs/video/api/compositions-resource#specifying-video-layouts) for more info.
                     # @return [CompositionHookInstance] Created CompositionHookInstance
                     def create(
-                        friendly_name: nil, 
-                        enabled: :unset, 
-                        video_layout: :unset, 
-                        audio_sources: :unset, 
-                        audio_sources_excluded: :unset, 
-                        resolution: :unset, 
-                        format: :unset, 
-                        status_callback: :unset, 
-                        status_callback_method: :unset, 
-                        trim: :unset
+                      friendly_name: nil, 
+                      enabled: :unset, 
+                      video_layout: :unset, 
+                      audio_sources: :unset, 
+                      audio_sources_excluded: :unset, 
+                      resolution: :unset, 
+                      format: :unset, 
+                      status_callback: :unset, 
+                      status_callback_method: :unset, 
+                      trim: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -193,7 +193,11 @@ module Twilio
                             friendly_name: friendly_name,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -235,9 +239,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -398,16 +406,16 @@ module Twilio
                     # @param [String] status_callback_method The HTTP method we should use to call `status_callback`. Can be: `POST` or `GET` and the default is `POST`.
                     # @return [CompositionHookInstance] Updated CompositionHookInstance
                     def update(
-                        friendly_name: nil, 
-                        enabled: :unset, 
-                        video_layout: :unset, 
-                        audio_sources: :unset, 
-                        audio_sources_excluded: :unset, 
-                        trim: :unset, 
-                        format: :unset, 
-                        resolution: :unset, 
-                        status_callback: :unset, 
-                        status_callback_method: :unset
+                      friendly_name: nil, 
+                      enabled: :unset, 
+                      video_layout: :unset, 
+                      audio_sources: :unset, 
+                      audio_sources_excluded: :unset, 
+                      trim: :unset, 
+                      format: :unset, 
+                      resolution: :unset, 
+                      status_callback: :unset, 
+                      status_callback_method: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -602,7 +610,7 @@ module Twilio
                             @composition_hook_page << CompositionHookListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -624,7 +632,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -817,16 +825,16 @@ module Twilio
                     # @param [String] status_callback_method The HTTP method we should use to call `status_callback`. Can be: `POST` or `GET` and the default is `POST`.
                     # @return [CompositionHookInstance] Updated CompositionHookInstance
                     def update(
-                        friendly_name: nil, 
-                        enabled: :unset, 
-                        video_layout: :unset, 
-                        audio_sources: :unset, 
-                        audio_sources_excluded: :unset, 
-                        trim: :unset, 
-                        format: :unset, 
-                        resolution: :unset, 
-                        status_callback: :unset, 
-                        status_callback_method: :unset
+                      friendly_name: nil, 
+                      enabled: :unset, 
+                      video_layout: :unset, 
+                      audio_sources: :unset, 
+                      audio_sources_excluded: :unset, 
+                      trim: :unset, 
+                      format: :unset, 
+                      resolution: :unset, 
+                      status_callback: :unset, 
+                      status_callback_method: :unset
                     )
 
                         context.update(

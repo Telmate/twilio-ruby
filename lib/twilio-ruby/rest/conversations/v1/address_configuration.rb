@@ -47,18 +47,18 @@ module Twilio
                     # @param [String] address_country An ISO 3166-1 alpha-2n country code which the address belongs to. This is currently only applicable to short code addresses.
                     # @return [AddressConfigurationInstance] Created AddressConfigurationInstance
                     def create(
-                        type: nil, 
-                        address: nil, 
-                        friendly_name: :unset, 
-                        auto_creation_enabled: :unset, 
-                        auto_creation_type: :unset, 
-                        auto_creation_conversation_service_sid: :unset, 
-                        auto_creation_webhook_url: :unset, 
-                        auto_creation_webhook_method: :unset, 
-                        auto_creation_webhook_filters: :unset, 
-                        auto_creation_studio_flow_sid: :unset, 
-                        auto_creation_studio_retry_count: :unset, 
-                        address_country: :unset
+                      type: nil, 
+                      address: nil, 
+                      friendly_name: :unset, 
+                      auto_creation_enabled: :unset, 
+                      auto_creation_type: :unset, 
+                      auto_creation_conversation_service_sid: :unset, 
+                      auto_creation_webhook_url: :unset, 
+                      auto_creation_webhook_method: :unset, 
+                      auto_creation_webhook_filters: :unset, 
+                      auto_creation_studio_flow_sid: :unset, 
+                      auto_creation_studio_retry_count: :unset, 
+                      address_country: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -193,7 +193,11 @@ module Twilio
                             type: type,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -229,9 +233,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -385,15 +393,15 @@ module Twilio
                     # @param [String] auto_creation_studio_retry_count For type `studio`, number of times to retry the webhook request
                     # @return [AddressConfigurationInstance] Updated AddressConfigurationInstance
                     def update(
-                        friendly_name: :unset, 
-                        auto_creation_enabled: :unset, 
-                        auto_creation_type: :unset, 
-                        auto_creation_conversation_service_sid: :unset, 
-                        auto_creation_webhook_url: :unset, 
-                        auto_creation_webhook_method: :unset, 
-                        auto_creation_webhook_filters: :unset, 
-                        auto_creation_studio_flow_sid: :unset, 
-                        auto_creation_studio_retry_count: :unset
+                      friendly_name: :unset, 
+                      auto_creation_enabled: :unset, 
+                      auto_creation_type: :unset, 
+                      auto_creation_conversation_service_sid: :unset, 
+                      auto_creation_webhook_url: :unset, 
+                      auto_creation_webhook_method: :unset, 
+                      auto_creation_webhook_filters: :unset, 
+                      auto_creation_studio_flow_sid: :unset, 
+                      auto_creation_studio_retry_count: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -584,7 +592,7 @@ module Twilio
                             @address_configuration_page << AddressConfigurationListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -606,7 +614,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -763,15 +771,15 @@ module Twilio
                     # @param [String] auto_creation_studio_retry_count For type `studio`, number of times to retry the webhook request
                     # @return [AddressConfigurationInstance] Updated AddressConfigurationInstance
                     def update(
-                        friendly_name: :unset, 
-                        auto_creation_enabled: :unset, 
-                        auto_creation_type: :unset, 
-                        auto_creation_conversation_service_sid: :unset, 
-                        auto_creation_webhook_url: :unset, 
-                        auto_creation_webhook_method: :unset, 
-                        auto_creation_webhook_filters: :unset, 
-                        auto_creation_studio_flow_sid: :unset, 
-                        auto_creation_studio_retry_count: :unset
+                      friendly_name: :unset, 
+                      auto_creation_enabled: :unset, 
+                      auto_creation_type: :unset, 
+                      auto_creation_conversation_service_sid: :unset, 
+                      auto_creation_webhook_url: :unset, 
+                      auto_creation_webhook_method: :unset, 
+                      auto_creation_webhook_filters: :unset, 
+                      auto_creation_studio_flow_sid: :unset, 
+                      auto_creation_studio_retry_count: :unset
                     )
 
                         context.update(

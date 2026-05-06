@@ -33,6 +33,7 @@ module Twilio
                     if resource_type.nil?
                         raise ArgumentError, 'resource_type cannot be nil'
                     end
+
                     if resource_type == :unset
                         @exports ||= ExportList.new self
                     else
@@ -47,6 +48,7 @@ module Twilio
                     if resource_type.nil?
                         raise ArgumentError, 'resource_type cannot be nil'
                     end
+
                     if resource_type == :unset
                         @export_configuration ||= ExportConfigurationList.new self
                     else

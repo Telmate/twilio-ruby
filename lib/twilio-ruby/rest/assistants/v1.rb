@@ -36,6 +36,7 @@ module Twilio
                     if id.nil?
                         raise ArgumentError, 'id cannot be nil'
                     end
+
                     if id == :unset
                         @assistants ||= AssistantList.new self
                     else
@@ -50,6 +51,7 @@ module Twilio
                     if id.nil?
                         raise ArgumentError, 'id cannot be nil'
                     end
+
                     if id == :unset
                         @knowledge ||= KnowledgeList.new self
                     else
@@ -69,6 +71,7 @@ module Twilio
                     if id.nil?
                         raise ArgumentError, 'id cannot be nil'
                     end
+
                     if id == :unset
                         @sessions ||= SessionList.new self
                     else
@@ -83,6 +86,7 @@ module Twilio
                     if id.nil?
                         raise ArgumentError, 'id cannot be nil'
                     end
+
                     if id == :unset
                         @tools ||= ToolList.new self
                     else

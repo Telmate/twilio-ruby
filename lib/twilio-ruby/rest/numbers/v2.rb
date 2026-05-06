@@ -37,6 +37,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @applications ||= ApplicationList.new self
                     else
@@ -51,6 +52,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @authorization_documents ||= AuthorizationDocumentList.new self
                     else
@@ -65,6 +67,7 @@ module Twilio
                     if bulk_hosting_sid.nil?
                         raise ArgumentError, 'bulk_hosting_sid cannot be nil'
                     end
+
                     if bulk_hosting_sid == :unset
                         @bulk_hosted_number_orders ||= BulkHostedNumberOrderList.new self
                     else
@@ -79,6 +82,7 @@ module Twilio
                     if bundle_sid.nil?
                         raise ArgumentError, 'bundle_sid cannot be nil'
                     end
+
                     if bundle_sid == :unset
                         @bundle_clone ||= BundleCloneList.new self
                     else
@@ -93,6 +97,7 @@ module Twilio
                     if sid.nil?
                         raise ArgumentError, 'sid cannot be nil'
                     end
+
                     if sid == :unset
                         @hosted_number_orders ||= HostedNumberOrderList.new self
                     else

@@ -32,6 +32,7 @@ module Twilio
                     if organization_sid.nil?
                         raise ArgumentError, 'organization_sid cannot be nil'
                     end
+
                     if organization_sid == :unset
                         @organization ||= OrganizationList.new self
                     else

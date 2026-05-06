@@ -52,23 +52,23 @@ module Twilio
                     # @param [String] verification_document_sid Optional. The unique sid identifier of the Identity Document that represents the document for verifying ownership of the number to be hosted. Required when VerificationType is phone-bill.
                     # @return [HostedNumberOrderInstance] Created HostedNumberOrderInstance
                     def create(
-                        phone_number: nil, 
-                        sms_capability: nil, 
-                        account_sid: :unset, 
-                        friendly_name: :unset, 
-                        unique_name: :unset, 
-                        cc_emails: :unset, 
-                        sms_url: :unset, 
-                        sms_method: :unset, 
-                        sms_fallback_url: :unset, 
-                        sms_fallback_method: :unset, 
-                        status_callback_url: :unset, 
-                        status_callback_method: :unset, 
-                        sms_application_sid: :unset, 
-                        address_sid: :unset, 
-                        email: :unset, 
-                        verification_type: :unset, 
-                        verification_document_sid: :unset
+                      phone_number: nil, 
+                      sms_capability: nil, 
+                      account_sid: :unset, 
+                      friendly_name: :unset, 
+                      unique_name: :unset, 
+                      cc_emails: :unset, 
+                      sms_url: :unset, 
+                      sms_method: :unset, 
+                      sms_fallback_url: :unset, 
+                      sms_fallback_method: :unset, 
+                      status_callback_url: :unset, 
+                      status_callback_method: :unset, 
+                      sms_application_sid: :unset, 
+                      address_sid: :unset, 
+                      email: :unset, 
+                      verification_type: :unset, 
+                      verification_document_sid: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -239,7 +239,11 @@ module Twilio
                             unique_name: unique_name,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -283,9 +287,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -448,16 +456,16 @@ module Twilio
                     # @param [String] call_delay The number of seconds, between 0 and 60, to delay before initiating the verification call. Defaults to 0.
                     # @return [HostedNumberOrderInstance] Updated HostedNumberOrderInstance
                     def update(
-                        friendly_name: :unset, 
-                        unique_name: :unset, 
-                        email: :unset, 
-                        cc_emails: :unset, 
-                        status: :unset, 
-                        verification_code: :unset, 
-                        verification_type: :unset, 
-                        verification_document_sid: :unset, 
-                        extension: :unset, 
-                        call_delay: :unset
+                      friendly_name: :unset, 
+                      unique_name: :unset, 
+                      email: :unset, 
+                      cc_emails: :unset, 
+                      status: :unset, 
+                      verification_code: :unset, 
+                      verification_type: :unset, 
+                      verification_document_sid: :unset, 
+                      extension: :unset, 
+                      call_delay: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -652,7 +660,7 @@ module Twilio
                             @hosted_number_order_page << HostedNumberOrderListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -674,7 +682,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -923,16 +931,16 @@ module Twilio
                     # @param [String] call_delay The number of seconds, between 0 and 60, to delay before initiating the verification call. Defaults to 0.
                     # @return [HostedNumberOrderInstance] Updated HostedNumberOrderInstance
                     def update(
-                        friendly_name: :unset, 
-                        unique_name: :unset, 
-                        email: :unset, 
-                        cc_emails: :unset, 
-                        status: :unset, 
-                        verification_code: :unset, 
-                        verification_type: :unset, 
-                        verification_document_sid: :unset, 
-                        extension: :unset, 
-                        call_delay: :unset
+                      friendly_name: :unset, 
+                      unique_name: :unset, 
+                      email: :unset, 
+                      cc_emails: :unset, 
+                      status: :unset, 
+                      verification_code: :unset, 
+                      verification_type: :unset, 
+                      verification_document_sid: :unset, 
+                      extension: :unset, 
+                      call_delay: :unset
                     )
 
                         context.update(

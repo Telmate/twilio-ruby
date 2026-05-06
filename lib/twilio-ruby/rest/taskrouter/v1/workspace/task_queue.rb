@@ -45,12 +45,12 @@ module Twilio
                     # @param [String] assignment_activity_sid The SID of the Activity to assign Workers when a task is assigned to them.
                     # @return [TaskQueueInstance] Created TaskQueueInstance
                     def create(
-                        friendly_name: nil, 
-                        target_workers: :unset, 
-                        max_reserved_workers: :unset, 
-                        task_order: :unset, 
-                        reservation_activity_sid: :unset, 
-                        assignment_activity_sid: :unset
+                      friendly_name: nil, 
+                      target_workers: :unset, 
+                      max_reserved_workers: :unset, 
+                      task_order: :unset, 
+                      reservation_activity_sid: :unset, 
+                      assignment_activity_sid: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -175,7 +175,11 @@ module Twilio
                             ordering: ordering,
                             page_size: limits[:page_size], )
 
-                        @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if page.nil?
+
+                        result = @version.stream(page, limit: limits[:limit], page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result
                     end
 
                     ##
@@ -217,9 +221,13 @@ module Twilio
 
                         page = self.page(page_size: limits[:page_size], )
 
-                        @version.stream(page,
+                        return [].each if page.nil?
+
+                        result = @version.stream(page,
                             limit: limits[:limit],
-                            page_limit: limits[:page_limit]).each {|x| yield x}
+                            page_limit: limits[:page_limit])
+                        return [].each if result.nil?
+                        result.each {|x| yield x}
                     end
 
                     ##
@@ -396,12 +404,12 @@ module Twilio
                     # @param [TaskOrder] task_order 
                     # @return [TaskQueueInstance] Updated TaskQueueInstance
                     def update(
-                        friendly_name: :unset, 
-                        target_workers: :unset, 
-                        reservation_activity_sid: :unset, 
-                        assignment_activity_sid: :unset, 
-                        max_reserved_workers: :unset, 
-                        task_order: :unset
+                      friendly_name: :unset, 
+                      target_workers: :unset, 
+                      reservation_activity_sid: :unset, 
+                      assignment_activity_sid: :unset, 
+                      max_reserved_workers: :unset, 
+                      task_order: :unset
                     )
 
                         data = Twilio::Values.of({
@@ -615,7 +623,7 @@ module Twilio
                             @task_queue_page << TaskQueueListResponse.new(version, @payload, key, limit - records)
                             @payload = self.next_page
                             break unless @payload
-                            records += @payload.body[key].size
+                            records += (@payload.body[key] || []).size
                         end
                         # Path Solution
                         @solution = solution
@@ -637,7 +645,7 @@ module Twilio
                     # @param [Hash{String => Object}] headers
                     # @param [Integer] status_code
                     def initialize(version, payload, key, limit = :unset)
-                      data_list = payload.body[key]
+                      data_list = payload.body[key]  || []
                       if limit != :unset
                         data_list = data_list[0, limit]
                       end
@@ -826,12 +834,12 @@ module Twilio
                     # @param [TaskOrder] task_order 
                     # @return [TaskQueueInstance] Updated TaskQueueInstance
                     def update(
-                        friendly_name: :unset, 
-                        target_workers: :unset, 
-                        reservation_activity_sid: :unset, 
-                        assignment_activity_sid: :unset, 
-                        max_reserved_workers: :unset, 
-                        task_order: :unset
+                      friendly_name: :unset, 
+                      target_workers: :unset, 
+                      reservation_activity_sid: :unset, 
+                      assignment_activity_sid: :unset, 
+                      max_reserved_workers: :unset, 
+                      task_order: :unset
                     )
 
                         context.update(
