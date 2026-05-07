@@ -21,6 +21,7 @@ module Twilio
                 def initialize(domain)
                     super
                     @version = 'v2'
+                    @actions = nil
                     @communications = nil
                     @configurations = nil
                     @conversations = nil
@@ -28,6 +29,21 @@ module Twilio
                     @participants = nil
                 end
 
+                ##
+                # @param [String] conversation_id 
+                # @return [Twilio::REST::Conversations::V2::ActionContext] if conversationId was passed.
+                # @return [Twilio::REST::Conversations::V2::ActionList]
+                def actions(conversation_id=:unset)
+                    if conversation_id.nil?
+                        raise ArgumentError, 'conversation_id cannot be nil'
+                    end
+
+                    if conversation_id == :unset
+                        @actions ||= ActionList.new self
+                    else
+                        ActionContext.new(self, conversation_id)
+                    end
+                end
                 ##
                 # @param [String] conversation_sid 
                 # @param [String] sid

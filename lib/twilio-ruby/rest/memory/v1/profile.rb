@@ -330,6 +330,64 @@ module Twilio
                     end
 
                     ##
+                    # Fetch the ProfileInstance
+                    # @param [String] trait_groups Comma separated list of trait group names to include.
+                    # @return [ProfileInstance] Fetched ProfileInstance
+                    def fetch(
+                      trait_groups: :unset
+                    )
+
+                        params = Twilio::Values.of({
+                            'traitGroups' => trait_groups,
+                        })
+                        headers = Twilio::Values.of({'Content-Type' => 'application/x-www-form-urlencoded', })
+                        
+                        
+                        
+                        
+                        
+                        payload = @version.fetch('GET', @uri, params: params, headers: headers)
+                        ProfileInstance.new(
+                            @version,
+                            payload,
+                            store_id: @solution[:store_id],
+                            profile_id: @solution[:profile_id],
+                        )
+                    end
+
+                    ##
+                    # Fetch the ProfileInstanceMetadata
+                    # @param [String] trait_groups Comma separated list of trait group names to include.
+                    # @return [ProfileInstance] Fetched ProfileInstance
+                    def fetch_with_metadata(
+                      trait_groups: :unset
+                    )
+
+                        params = Twilio::Values.of({
+                            'traitGroups' => trait_groups,
+                        })
+                        headers = Twilio::Values.of({'Content-Type' => 'application/x-www-form-urlencoded', })
+                        
+                        
+                        
+                        
+                        
+                        response = @version.fetch_with_metadata('GET', @uri, params: params, headers: headers)
+                        profile_instance = ProfileInstance.new(
+                            @version,
+                            response.body,
+                            store_id: @solution[:store_id],
+                            profile_id: @solution[:profile_id],
+                        )
+                        ProfileInstanceMetadata.new(
+                            @version,
+                            profile_instance,
+                            response.headers,
+                            response.status_code
+                        )
+                    end
+
+                    ##
                     # Patch the ProfileInstance
                     # @param [ProfilePatch] profile_patch 
                     # @return [ProfileInstance] Patched ProfileInstance
@@ -551,6 +609,8 @@ module Twilio
                         @properties = { 
                             'id' => payload['id'],
                             'message' => payload['message'],
+                            'created_at' => Twilio.deserialize_iso8601_datetime(payload['created_at']),
+                            'traits' => payload['traits'],
                             'profiles' => payload['profiles'],
                             'meta' => payload['meta'],
                         }
@@ -584,6 +644,18 @@ module Twilio
                     end
                     
                     ##
+                    # @return [Time] The time the profile was created.
+                    def created_at
+                        @properties['created_at']
+                    end
+                    
+                    ##
+                    # @return [Hash<String, Hash<String, Object>>] Multiple trait groups.
+                    def traits
+                        @properties['traits']
+                    end
+                    
+                    ##
                     # @return [Array<String>] 
                     def profiles
                         @properties['profiles']
@@ -601,6 +673,19 @@ module Twilio
                     def delete
 
                         context.delete
+                    end
+
+                    ##
+                    # Fetch the ProfileInstance
+                    # @param [String] trait_groups Comma separated list of trait group names to include.
+                    # @return [ProfileInstance] Fetched ProfileInstance
+                    def fetch(
+                      trait_groups: :unset
+                    )
+
+                        context.fetch(
+                            trait_groups: trait_groups, 
+                        )
                     end
 
                     ##

@@ -301,6 +301,43 @@ module Twilio
                         
                     end
                     ##
+                    # Delete the StoreInstance
+                    # @return [Boolean] True if delete succeeds, false otherwise
+                    def delete
+
+                        headers = Twilio::Values.of({'Content-Type' => 'application/x-www-form-urlencoded', })
+                        
+                        
+                        
+                        response = @version.delete_with_metadata('DELETE', @uri, headers: headers)
+                        StoreInstance.new(
+                          @version,
+                          response.body,
+                            store_id: @solution[:store_id],
+                        )
+                        
+                    end
+
+                    ##
+                    # Delete the StoreInstanceMetadata
+                    # @return [Boolean] True if delete succeeds, false otherwise
+                    def delete_with_metadata
+
+                        headers = Twilio::Values.of({'Content-Type' => 'application/x-www-form-urlencoded', })
+                        
+                        
+                        
+                          response = @version.delete_with_metadata('DELETE', @uri, headers: headers)
+                          store_instance = StoreInstance.new(
+                              @version,
+                              response.body,
+                              account_sid: @solution[:account_sid],
+                              sid: @solution[:sid],
+                          )
+                          StoreInstanceMetadata.new(@version, store_instance, response.headers, response.status_code)
+                    end
+
+                    ##
                     # Fetch the StoreInstance
                     # @return [StoreInstance] Fetched StoreInstance
                     def fetch
@@ -656,6 +693,14 @@ module Twilio
                         @properties['meta']
                     end
                     
+                    ##
+                    # Delete the StoreInstance
+                    # @return [Boolean] True if delete succeeds, false otherwise
+                    def delete
+
+                        context.delete
+                    end
+
                     ##
                     # Fetch the StoreInstance
                     # @return [StoreInstance] Fetched StoreInstance
